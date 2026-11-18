@@ -1,0 +1,67 @@
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest tests/seguridad/autenticacion.test.js -t SEG-09 --verbose
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/seguridad/[22m[1mautenticacion.test.js[22m
+  SEG-07 Almacenamiento de contraseñas
+    [33m○[39m [2mskipped SEG-07.1 el registro no guarda la contraseña en texto plano[22m
+    [33m○[39m [2mskipped SEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano[22m
+    [33m○[39m [2mskipped SEG-07.3 el login no compara la contraseña recibida directamente contra la BD[22m
+  SEG-08 Protección contra fuerza bruta en el login
+    [33m○[39m [2mskipped SEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429)[22m
+  SEG-09 Secreto JWT por defecto
+    [31m✕[39m [2mSEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado (22 ms)[22m
+    [31m✕[39m [2mSEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código (3 ms)[22m
+  SEG-18 Política de contraseñas
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (solo números)[22m
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (solo minúsculas)[22m
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario)[22m
+  SEG-22 Validación de tokens JWT (controles que SÍ funcionan)
+    [33m○[39m [2mskipped SEG-22.1 rechaza un token expirado[22m
+    [33m○[39m [2mskipped SEG-22.2 rechaza un token sin firma (alg: none)[22m
+    [33m○[39m [2mskipped SEG-22.3 rechaza un token firmado con otro secreto[22m
+    [33m○[39m [2mskipped SEG-22.4 el token emitido en el login expira en 2 horas o menos y no incluye la contraseña[22m
+    [33m○[39m [2mskipped SEG-22.5 el mensaje de error no revela si el usuario existe (anti-enumeración)[22m
+
+[1m[31m  [1m● [22m[1mSEG-09 Secreto JWT por defecto › SEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m401[39m
+    Received: [31m200[39m
+[2m[22m
+[2m    [0m [90m  95 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m request(app)[33m.[39m[36mget[39m([32m"/usuarios"[39m)[33m.[39m[36mset[39m([32m"Authorization"[39m[33m,[39m [32m`Bearer ${forjado}`[39m)[33m;[39m[22m
+[2m     [90m  96 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m  97 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m401[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m  98 |[39m   })[33m;[39m[22m
+[2m     [90m  99 |[39m[22m
+[2m     [90m 100 |[39m   test([32m"SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código"[39m[33m,[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:97:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-09 Secreto JWT por defecto › SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";    ",[39m
+    [31m+ ][39m
+[2m[22m
+[2m    [0m [90m 101 |[39m     [36mconst[39m fuente [33m=[39m require([32m"fs"[39m)[33m.[39mreadFileSync(require[33m.[39mresolve([32m"../../src/routes/auth"[39m)[33m,[39m [32m"utf8"[39m)[33m;[39m[22m
+[2m     [90m 102 |[39m     [36mconst[39m lineasConSecreto [33m=[39m fuente[33m.[39msplit([32m"\n"[39m)[33m.[39mfilter((l) [33m=>[39m [35m/JWT_SECRET\s*\|\|\s*["'][^"']+["']/[39m[33m.[39mtest(l))[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 103 |[39m     expect(lineasConSecreto)[33m.[39mtoEqual([])[33m;[39m[22m
+[2m     [90m     |[39m                              [31m[1m^[22m[2m[39m[22m
+[2m     [90m 104 |[39m   })[33m;[39m[22m
+[2m     [90m 105 |[39m })[33m;[39m[22m
+[2m     [90m 106 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toEqual ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:103:30)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m2 failed[39m[22m, [1m[33m12 skipped[39m[22m, 14 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.419 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22m/tests\/seguridad\/autenticacion.test.js/i[2m with tests matching [22m"SEG-09"[2m.[22m
+

@@ -1,0 +1,244 @@
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest tests/seguridad/autenticacion.test.js -t SEG-07 --verbose
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/seguridad/[22m[1mautenticacion.test.js[22m
+  SEG-07 Almacenamiento de contraseñas
+    [31m✕[39m [2mSEG-07.1 el registro no guarda la contraseña en texto plano (32 ms)[22m
+    [31m✕[39m [2mSEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano (7 ms)[22m
+    [31m✕[39m [2mSEG-07.3 el login no compara la contraseña recibida directamente contra la BD (4 ms)[22m
+  SEG-08 Protección contra fuerza bruta en el login
+    [33m○[39m [2mskipped SEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429)[22m
+  SEG-09 Secreto JWT por defecto
+    [33m○[39m [2mskipped SEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado[22m
+    [33m○[39m [2mskipped SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código[22m
+  SEG-18 Política de contraseñas
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (solo números)[22m
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (solo minúsculas)[22m
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario)[22m
+  SEG-22 Validación de tokens JWT (controles que SÍ funcionan)
+    [33m○[39m [2mskipped SEG-22.1 rechaza un token expirado[22m
+    [33m○[39m [2mskipped SEG-22.2 rechaza un token sin firma (alg: none)[22m
+    [33m○[39m [2mskipped SEG-22.3 rechaza un token firmado con otro secreto[22m
+    [33m○[39m [2mskipped SEG-22.4 el token emitido en el login expira en 2 horas o menos y no incluye la contraseña[22m
+    [33m○[39m [2mskipped SEG-22.5 el mensaje de error no revela si el usuario existe (anti-enumeración)[22m
+
+[1m[31m  [1m● [22m[1mSEG-07 Almacenamiento de contraseñas › SEG-07.1 el registro no guarda la contraseña en texto plano[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: not [32m"Clave$egura2026"[39m
+[2m[22m
+[2m    [0m [90m 36 |[39m[22m
+[2m     [90m 37 |[39m     [36mconst[39m [[[33m,[39m params]] [33m=[39m consultas(q[33m,[39m [35m/INSERT INTO usuarios/[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 38 |[39m     expect(params[[35m1[39m])[33m.[39mnot[33m.[39mtoBe([32m"Clave$egura2026"[39m)[33m;[39m[22m
+[2m     [90m    |[39m                           [31m[1m^[22m[2m[39m[22m
+[2m     [90m 39 |[39m     [90m// Se espera un hash con algoritmo lento y sal (bcrypt / argon2 / scrypt)[39m[22m
+[2m     [90m 40 |[39m     expect(params[[35m1[39m])[33m.[39mtoMatch([35m/^\$(2[aby]|argon2(id|i)?|scrypt)\$/[39m)[33m;[39m[22m
+[2m     [90m 41 |[39m   })[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:38:27)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-07 Almacenamiento de contraseñas › SEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: not [32m"Medico$2026"[39m
+[2m[22m
+[2m    [0m [90m 53 |[39m[22m
+[2m     [90m 54 |[39m     [36mconst[39m [[[33m,[39m params]] [33m=[39m consultas(q[33m,[39m [35m/INSERT INTO usuarios/[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 55 |[39m     expect(params[[35m1[39m])[33m.[39mnot[33m.[39mtoBe([32m"Medico$2026"[39m)[33m;[39m[22m
+[2m     [90m    |[39m                           [31m[1m^[22m[2m[39m[22m
+[2m     [90m 56 |[39m   })[33m;[39m[22m
+[2m     [90m 57 |[39m[22m
+[2m     [90m 58 |[39m   test([32m"SEG-07.3 el login no compara la contraseña recibida directamente contra la BD"[39m[33m,[39m [36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:55:27)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-07 Almacenamiento de contraseñas › SEG-07.3 el login no compara la contraseña recibida directamente contra la BD[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m401[39m
+    Received: [31m200[39m
+[2m[22m
+[2m    [0m [90m 65 |[39m       [33m.[39msend({ nombre_usuario[33m:[39m [32m"admin"[39m[33m,[39m password[33m:[39m hash })[33m;[39m[22m
+[2m     [90m 66 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 67 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m401[39m)[33m;[39m[22m
+[2m     [90m    |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 68 |[39m   })[33m;[39m[22m
+[2m     [90m 69 |[39m })[33m;[39m[22m
+[2m     [90m 70 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:67:24)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m3 failed[39m[22m, [1m[33m11 skipped[39m[22m, 14 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.457 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22m/tests\/seguridad\/autenticacion.test.js/i[2m with tests matching [22m"SEG-07"[2m.[22m
+
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest tests/seguridad/autenticacion.test.js -t SEG-18 --verbose
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/seguridad/[22m[1mautenticacion.test.js[22m
+  SEG-07 Almacenamiento de contraseñas
+    [33m○[39m [2mskipped SEG-07.1 el registro no guarda la contraseña en texto plano[22m
+    [33m○[39m [2mskipped SEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano[22m
+    [33m○[39m [2mskipped SEG-07.3 el login no compara la contraseña recibida directamente contra la BD[22m
+  SEG-08 Protección contra fuerza bruta en el login
+    [33m○[39m [2mskipped SEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429)[22m
+  SEG-09 Secreto JWT por defecto
+    [33m○[39m [2mskipped SEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado[22m
+    [33m○[39m [2mskipped SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código[22m
+  SEG-18 Política de contraseñas
+    [31m✕[39m [2mSEG-18.1 el registro rechaza una contraseña débil (solo números) (33 ms)[22m
+    [31m✕[39m [2mSEG-18.1 el registro rechaza una contraseña débil (solo minúsculas) (4 ms)[22m
+    [31m✕[39m [2mSEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario) (3 ms)[22m
+  SEG-22 Validación de tokens JWT (controles que SÍ funcionan)
+    [33m○[39m [2mskipped SEG-22.1 rechaza un token expirado[22m
+    [33m○[39m [2mskipped SEG-22.2 rechaza un token sin firma (alg: none)[22m
+    [33m○[39m [2mskipped SEG-22.3 rechaza un token firmado con otro secreto[22m
+    [33m○[39m [2mskipped SEG-22.4 el token emitido en el login expira en 2 horas o menos y no incluye la contraseña[22m
+    [33m○[39m [2mskipped SEG-22.5 el mensaje de error no revela si el usuario existe (anti-enumeración)[22m
+
+[1m[31m  [1m● [22m[1mSEG-18 Política de contraseñas › SEG-18.1 el registro rechaza una contraseña débil (solo números)[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m400[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m 119 |[39m     })[33m;[39m[22m
+[2m     [90m 120 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 121 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 122 |[39m     expect(consultas(q[33m,[39m [35m/INSERT INTO usuarios/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 123 |[39m   })[33m;[39m[22m
+[2m     [90m 124 |[39m })[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:121:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-18 Política de contraseñas › SEG-18.1 el registro rechaza una contraseña débil (solo minúsculas)[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m400[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m 119 |[39m     })[33m;[39m[22m
+[2m     [90m 120 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 121 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 122 |[39m     expect(consultas(q[33m,[39m [35m/INSERT INTO usuarios/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 123 |[39m   })[33m;[39m[22m
+[2m     [90m 124 |[39m })[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:121:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-18 Política de contraseñas › SEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario)[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m400[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m 119 |[39m     })[33m;[39m[22m
+[2m     [90m 120 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 121 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 122 |[39m     expect(consultas(q[33m,[39m [35m/INSERT INTO usuarios/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 123 |[39m   })[33m;[39m[22m
+[2m     [90m 124 |[39m })[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat toBe ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:121:24)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m3 failed[39m[22m, [1m[33m11 skipped[39m[22m, 14 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.437 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22m/tests\/seguridad\/autenticacion.test.js/i[2m with tests matching [22m"SEG-18"[2m.[22m
+
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/FRONTEND[0m$ npx vitest run tests/funcionales/usuarios-auditoria.test.jsx -t SEG-FE-02
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/home/benja/Escritorio/Seguridad_Calidad/CodigoFuenteB/FRONTEND[39m
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ [31m❯[39m tests/funcionales/usuarios-auditoria.test.jsx [2m([22m[2m29 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m28 skipped[39m[2m)[22m[33m 408[2mms[22m[39m
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.1 el administrador ve todos los usuarios con rol, avatar y acciones
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mUSA-FE-05 la fecha de creación se muestra en un formato legible
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.2 respuesta vacía deja la tabla sin filas
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.3 el administrador elimina un usuario tras confirmar
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.4 cancelar la eliminación no llama a la API y editar navega al formulario
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.5 un rol no administrador ve la lista en solo lectura y no puede eliminar
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.6 un 'editor' solo puede editar su propia fila
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.7 la eliminación de un no administrador se ignora
+   [2m[90m↓[39m[22m CP-FE-09.A Listado de usuarios[2m > [22mCP-FE-09.8 crear un usuario vuelve a la pestaña de listado y recarga
+   [2m[90m↓[39m[22m CP-FE-09.B Crear usuario (UsuariosTabCreate)[2m > [22mCP-FE-09.9 muestra solo roles válidos con etiquetas legibles y envía el rol elegido
+   [2m[90m↓[39m[22m CP-FE-09.B Crear usuario (UsuariosTabCreate)[2m > [22mCP-FE-09.10 valida los campos obligatorios y el botón Limpiar reinicia el formulario
+   [2m[90m↓[39m[22m CP-FE-09.B Crear usuario (UsuariosTabCreate)[2m > [22mCP-FE-09.11 sin roles disponibles advierte y deshabilita la creación
+   [2m[90m↓[39m[22m CP-FE-09.B Crear usuario (UsuariosTabCreate)[2m > [22mCP-FE-09.12 error al cargar roles o al crear el usuario
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.13 el admin edita otro usuario: nombre, correo y rol
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.14 el admin no puede cambiar el rol del único administrador ni dejar el nombre vacío
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.15 un usuario editando su propia cuenta no puede cambiar nombre ni rol
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.16 el administrador editando su propia cuenta tampoco cambia su rol ni su nombre
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.17 cambio de contraseña: valida coincidencia, envía y limpia el formulario
+[31m   [31m×[31m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mSEG-FE-02 la contraseña nueva exige una política robusta (no solo 6 caracteres)[39m[33m 407[2mms[22m[39m
+[31m     → expected "wrap" to not be called at all, but actually been called 1 times[90m
+
+Received: 
+
+[1m  1st wrap call:
+
+[22m    Array [
+      "/usuarios/2",
+      Object {
+        "contrasena_hash": "123456",
+      },
+    ]
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.18 Volver y Cancelar regresan al listado de usuarios
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.19 error al cargar el usuario muestra un mensaje
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mCP-FE-09.20 sin parámetro :id no se consulta la API
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mcuenta del paciente[2m > [22mCP-FE-09.21 el paciente ve 'Mi Cuenta' con su ficha y la actualiza con el RUT normalizado
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mcuenta del paciente[2m > [22mSEG-FE-03 el paciente no debería poder modificar su propio RUT desde 'Mi Cuenta'
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mcuenta del paciente[2m > [22mCP-FE-09.22 validación de la ficha y botón Volver hacia el inicio
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mcuenta del paciente[2m > [22mCP-FE-09.23 Cancelar del paciente vuelve al inicio; un error al cargar la ficha se registra
+   [2m[90m↓[39m[22m CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mcuenta del paciente[2m > [22mCP-FE-09.24 un paciente sin ficha asociada no carga datos clínicos
+   [2m[90m↓[39m[22m CP-FE-10 Auditoría[2m > [22mCP-FE-10.1 lista los eventos con usuario y fecha formateada
+   [2m[90m↓[39m[22m CP-FE-10 Auditoría[2m > [22mCP-FE-10.2 respuesta vacía deja la bitácora sin filas
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/funcionales/usuarios-auditoria.test.jsx[2m > [22mCP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm)[2m > [22mSEG-FE-02 la contraseña nueva exige una política robusta (no solo 6 caracteres)
+[31m[1mAssertionError[22m: expected "wrap" to not be called at all, but actually been called 1 times[90m
+
+Received: 
+
+[1m  1st wrap call:
+
+[22m    Array [
+      "/usuarios/2",
+      Object {
+        "contrasena_hash": "123456",
+      },
+    ]
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[36m [2m❯[22m tests/funcionales/usuarios-auditoria.test.jsx:[2m278:25[22m[39m
+    [90m276| [39m    [35mawait[39m [35mnew[39m [33mPromise[39m((r) [33m=>[39m [34msetTimeout[39m(r[33m,[39m [34m50[39m))[33m;[39m
+    [90m277| [39m    [90m// Hallazgo: "123456" es aceptada y enviada al servidor.[39m
+    [90m278| [39m    [34mexpect[39m(api[33m.[39mput)[33m.[39mnot[33m.[39m[34mtoHaveBeenCalled[39m()[33m;[39m
+    [90m   | [39m                        [31m^[39m
+    [90m279| [39m  })[33m;[39m
+    [90m280| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m28 skipped[39m[90m (29)[39m
+[2m   Start at [22m 00:59:33
+[2m   Duration [22m 2.39s[2m (transform 162ms, setup 97ms, collect 1.29s, tests 408ms, environment 281ms, prepare 112ms)[22m
+
+

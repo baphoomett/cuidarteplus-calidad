@@ -1,0 +1,52 @@
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest --config jest.rendimiento.config.js --runInBand --verbose -t REN-01
+{"prueba":"GET /tipo-examen","req_seg":2342.81,"p50_ms":8,"p97_5_ms":13,"max_ms":74,"errores":0,"timeouts":0,"no_2xx":0}
+{"prueba":"GET /pacientes","req_seg":2,"p50_ms":5025,"p97_5_ms":5031,"max_ms":5031,"errores":0,"timeouts":0,"no_2xx":0}
+{"prueba":"GET /examenes","req_seg":2,"p50_ms":5044,"p97_5_ms":5046,"max_ms":5046,"errores":0,"timeouts":0,"no_2xx":0}
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/rendimiento/[22m[1mcarga.test.js[22m ([0m[1m[41m30.382 s[49m[22m[0m)
+  REN-01 Tiempo de respuesta de endpoints de consulta
+    [32m✓[39m [2mREN-01.1 GET /tipo-examen soporta 20 usuarios concurrentes con p97,5 < 1 s (10022 ms)[22m
+    [31m✕[39m [2mREN-01.2 GET /pacientes (listado clínico) responde con p97,5 < 1 s (10017 ms)[22m
+    [31m✕[39m [2mREN-01.3 GET /examenes (listado de exámenes) responde con p97,5 < 1 s (10013 ms)[22m
+  REN-02 Autenticación bajo carga
+    [33m○[39m [2mskipped REN-02.1 POST /autenticacion/login mantiene p97,5 < 1 s y 0 errores[22m
+
+[1m[31m  [1m● [22m[1mREN-01 Tiempo de respuesta de endpoints de consulta › REN-01.2 GET /pacientes (listado clínico) responde con p97,5 < 1 s[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m1000[39m
+    Received:   [31m5031[39m
+[2m[22m
+[2m    [0m [90m 62 |[39m     )[33m;[39m[22m
+[2m     [90m 63 |[39m     expect(r[33m.[39merrores [33m+[39m r[33m.[39mtimeouts [33m+[39m r[33m.[39mno_2xx)[33m.[39mtoBe([35m0[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 64 |[39m     expect(r[33m.[39mp97_5_ms)[33m.[39mtoBeLessThan([33mP_LIMITE_MS[39m)[33m;[39m[22m
+[2m     [90m    |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 65 |[39m   })[33m;[39m[22m
+[2m     [90m 66 |[39m[22m
+[2m     [90m 67 |[39m   test([32m"REN-01.3 GET /examenes (listado de exámenes) responde con p97,5 < 1 s"[39m[33m,[39m [36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBeLessThan ([22m[2m[0m[36mtests/rendimiento/carga.test.js[39m[0m[2m:64:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mREN-01 Tiempo de respuesta de endpoints de consulta › REN-01.3 GET /examenes (listado de exámenes) responde con p97,5 < 1 s[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m1000[39m
+    Received:   [31m5046[39m
+[2m[22m
+[2m    [0m [90m 71 |[39m     )[33m;[39m[22m
+[2m     [90m 72 |[39m     expect(r[33m.[39merrores [33m+[39m r[33m.[39mtimeouts [33m+[39m r[33m.[39mno_2xx)[33m.[39mtoBe([35m0[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 73 |[39m     expect(r[33m.[39mp97_5_ms)[33m.[39mtoBeLessThan([33mP_LIMITE_MS[39m)[33m;[39m[22m
+[2m     [90m    |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 74 |[39m   })[33m;[39m[22m
+[2m     [90m 75 |[39m })[33m;[39m[22m
+[2m     [90m 76 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBeLessThan ([22m[2m[0m[36mtests/rendimiento/carga.test.js[39m[0m[2m:73:24)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 4 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        30.422 s, estimated 31 s
+[2mRan all test suites[22m[2m with tests matching [22m"REN-01"[2m.[22m
+

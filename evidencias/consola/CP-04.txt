@@ -1,0 +1,110 @@
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest tests/seguridad/control-acceso.test.js -t SEG-03 --verbose
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/seguridad/[22m[1mcontrol-acceso.test.js[22m
+  SEG-01 Ficha clínica expuesta sin autenticación (GET /pacientes/buscar/rut/:rut)
+    [33m○[39m [2mskipped SEG-01.1 un visitante anónimo no puede consultar la ficha de un paciente por RUT[22m
+    [33m○[39m [2mskipped SEG-01.2 un paciente autenticado no puede consultar la ficha de OTRO paciente por RUT[22m
+  SEG-02 Eliminación de usuarios sin autenticación (DELETE /usuarios/:id)
+    [33m○[39m [2mskipped SEG-02.1 un visitante anónimo no puede eliminar al administrador[22m
+    [33m○[39m [2mskipped SEG-02.2 un paciente autenticado no puede eliminar a otros usuarios[22m
+  SEG-03 Administración de roles sin autenticación (/roles)
+    [31m✕[39m [2mSEG-03.1 un visitante anónimo no puede crear roles (27 ms)[22m
+    [31m✕[39m [2mSEG-03.2 un visitante anónimo no puede renombrar el rol 'paciente' a 'admin' (8 ms)[22m
+    [31m✕[39m [2mSEG-03.3 un visitante anónimo no puede eliminar el rol administrador (3 ms)[22m
+    [31m✕[39m [2mSEG-03.4 un médico autenticado no puede crear roles (solo admin) (3 ms)[22m
+  SEG-04 Escalamiento de privilegios al crear usuarios (POST /usuarios)
+    [33m○[39m [2mskipped SEG-04.1 un paciente no puede crear una cuenta con rol administrador[22m
+  SEG-05 Autoasignación de rol administrador (PUT /usuarios/:id)
+    [33m○[39m [2mskipped SEG-05.1 un médico no puede cambiar su propio rol a administrador[22m
+    [33m○[39m [2mskipped SEG-05.2 un médico no puede otorgar el rol administrador a otro usuario[22m
+  SEG-06 Apropiación de ficha clínica en el registro (POST /autenticacion/registro)
+    [33m○[39m [2mskipped SEG-06.1 registrarse con el RUT de un paciente existente no vincula su historial clínico[22m
+  SEG-16 Asignación masiva en la ficha del paciente (PUT /pacientes/:id)
+    [33m○[39m [2mskipped SEG-16.1 un paciente no puede reasignar el usuario dueño de su ficha[22m
+    [33m○[39m [2mskipped SEG-16.2 un paciente no puede modificar su propio RUT[22m
+  SEG-17 Registros de auditoría falsificables (POST /auditoria)
+    [33m○[39m [2mskipped SEG-17.1 un paciente no puede insertar eventos arbitrarios en la bitácora[22m
+  SEG-20 Archivos subidos accesibles sin autenticación (/files/documentos)
+    [33m○[39m [2mskipped SEG-20.1 un visitante anónimo no puede descargar documentos del directorio público[22m
+  SEG-21 Controles de acceso horizontales que SÍ funcionan (IDOR)
+    [33m○[39m [2mskipped SEG-21.1 un paciente no puede ver la ficha de otro paciente por ID[22m
+    [33m○[39m [2mskipped SEG-21.2 un paciente no puede listar los exámenes de otro paciente[22m
+    [33m○[39m [2mskipped SEG-21.3 un paciente no puede descargar documentos de otro paciente[22m
+    [33m○[39m [2mskipped SEG-21.4 un paciente no puede listar todos los usuarios[22m
+    [33m○[39m [2mskipped SEG-21.5 un médico no puede eliminar pacientes (solo admin)[22m
+    [33m○[39m [2mskipped SEG-21.6 un paciente no puede ver la bitácora de auditoría[22m
+    [33m○[39m [2mskipped SEG-21.7 el administrador sí puede ver la bitácora de auditoría[22m
+
+[1m[31m  [1m● [22m[1mSEG-03 Administración de roles sin autenticación (/roles) › SEG-03.1 un visitante anónimo no puede crear roles[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m401[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m  96 |[39m     simularBD(q[33m,[39m [[[35m/INSERT INTO roles/[39m[33m,[39m rows({ id[33m:[39m [35m9[39m[33m,[39m nombre[33m:[39m [32m"superadmin"[39m })]])[33m;[39m[22m
+[2m     [90m  97 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m request(app)[33m.[39mpost([32m"/roles"[39m)[33m.[39msend({ nombre[33m:[39m [32m"superadmin"[39m })[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m  98 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m401[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m  99 |[39m     expect(consultas(q[33m,[39m [35m/INSERT INTO roles/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 100 |[39m   })[33m;[39m[22m
+[2m     [90m 101 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/control-acceso.test.js[39m[0m[2m:98:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-03 Administración de roles sin autenticación (/roles) › SEG-03.2 un visitante anónimo no puede renombrar el rol 'paciente' a 'admin'[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m401[39m
+    Received: [31m200[39m
+[2m[22m
+[2m    [0m [90m 103 |[39m     simularBD(q[33m,[39m [[[35m/UPDATE roles/[39m[33m,[39m rows({ id[33m:[39m [35m3[39m[33m,[39m nombre[33m:[39m [32m"admin"[39m })]])[33m;[39m[22m
+[2m     [90m 104 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m request(app)[33m.[39mput([32m"/roles/3"[39m)[33m.[39msend({ nombre[33m:[39m [32m"admin"[39m })[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 105 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m401[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 106 |[39m     expect(consultas(q[33m,[39m [35m/UPDATE roles/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 107 |[39m   })[33m;[39m[22m
+[2m     [90m 108 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/control-acceso.test.js[39m[0m[2m:105:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-03 Administración de roles sin autenticación (/roles) › SEG-03.3 un visitante anónimo no puede eliminar el rol administrador[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m401[39m
+    Received: [31m200[39m
+[2m[22m
+[2m    [0m [90m 110 |[39m     simularBD(q[33m,[39m [[[35m/DELETE FROM roles/[39m[33m,[39m rows({ id[33m:[39m [35m1[39m[33m,[39m nombre[33m:[39m [32m"admin"[39m })]])[33m;[39m[22m
+[2m     [90m 111 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m request(app)[33m.[39m[36mdelete[39m([32m"/roles/1"[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 112 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m401[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 113 |[39m     expect(consultas(q[33m,[39m [35m/DELETE FROM roles/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 114 |[39m   })[33m;[39m[22m
+[2m     [90m 115 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/control-acceso.test.js[39m[0m[2m:112:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-03 Administración de roles sin autenticación (/roles) › SEG-03.4 un médico autenticado no puede crear roles (solo admin)[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m403[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m 123 |[39m       [33m.[39m[36mset[39m([32m"Authorization"[39m[33m,[39m [33mMEDICO[39m)[22m
+[2m     [90m 124 |[39m       [33m.[39msend({ nombre[33m:[39m [32m"superadmin"[39m })[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 125 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m403[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 126 |[39m   })[33m;[39m[22m
+[2m     [90m 127 |[39m })[33m;[39m[22m
+[2m     [90m 128 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/control-acceso.test.js[39m[0m[2m:125:24)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m4 failed[39m[22m, [1m[33m19 skipped[39m[22m, 23 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.433 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22m/tests\/seguridad\/control-acceso.test.js/i[2m with tests matching [22m"SEG-03"[2m.[22m
+

@@ -1,0 +1,45 @@
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest tests/seguridad/autenticacion.test.js -t SEG-08 --verbose
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/seguridad/[22m[1mautenticacion.test.js[22m
+  SEG-07 Almacenamiento de contraseñas
+    [33m○[39m [2mskipped SEG-07.1 el registro no guarda la contraseña en texto plano[22m
+    [33m○[39m [2mskipped SEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano[22m
+    [33m○[39m [2mskipped SEG-07.3 el login no compara la contraseña recibida directamente contra la BD[22m
+  SEG-08 Protección contra fuerza bruta en el login
+    [31m✕[39m [2mSEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429) (56 ms)[22m
+  SEG-09 Secreto JWT por defecto
+    [33m○[39m [2mskipped SEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado[22m
+    [33m○[39m [2mskipped SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código[22m
+  SEG-18 Política de contraseñas
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (solo números)[22m
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (solo minúsculas)[22m
+    [33m○[39m [2mskipped SEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario)[22m
+  SEG-22 Validación de tokens JWT (controles que SÍ funcionan)
+    [33m○[39m [2mskipped SEG-22.1 rechaza un token expirado[22m
+    [33m○[39m [2mskipped SEG-22.2 rechaza un token sin firma (alg: none)[22m
+    [33m○[39m [2mskipped SEG-22.3 rechaza un token firmado con otro secreto[22m
+    [33m○[39m [2mskipped SEG-22.4 el token emitido en el login expira en 2 horas o menos y no incluye la contraseña[22m
+    [33m○[39m [2mskipped SEG-22.5 el mensaje de error no revela si el usuario existe (anti-enumeración)[22m
+
+[1m[31m  [1m● [22m[1mSEG-08 Protección contra fuerza bruta en el login › SEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429)[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m429[39m
+    Received array: [31m[401, 401, 401, 401, 401, 401, 401, 401, 401, 401, …][39m
+[2m[22m
+[2m    [0m [90m 81 |[39m     }[22m
+[2m     [90m 82 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 83 |[39m     expect(estados)[33m.[39mtoContain([35m429[39m)[33m;[39m[22m
+[2m     [90m    |[39m                     [31m[1m^[22m[2m[39m[22m
+[2m     [90m 84 |[39m   })[33m;[39m[22m
+[2m     [90m 85 |[39m })[33m;[39m[22m
+[2m     [90m 86 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toContain ([22m[2m[0m[36mtests/seguridad/autenticacion.test.js[39m[0m[2m:83:21)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m1 failed[39m[22m, [1m[33m13 skipped[39m[22m, 14 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.434 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22m/tests\/seguridad\/autenticacion.test.js/i[2m with tests matching [22m"SEG-08"[2m.[22m
+

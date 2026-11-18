@@ -1,0 +1,51 @@
+FAIL tests/integracion/flujos.test.js (21.208 s)
+  INT-01 Ciclo de vida clínico completo (paciente → examen → documento)
+    ✓ INT-01.1 médico registra paciente, examen y documento; admin los elimina y queda trazabilidad (10191 ms)
+  INT-02 Registro e inicio de sesión de un paciente nuevo
+    ✓ INT-02.1 el usuario registrado inicia sesión con rol paciente y ve su ficha básica (5119 ms)
+    ✓ INT-02.2 la BD rechaza un RUT duplicado y la API responde 400 (13 ms)
+  INT-03 Aislamiento de datos del paciente con datos reales
+    ✓ INT-03.1 el paciente semilla solo ve sus propios exámenes y su propia ficha (5027 ms)
+    ✓ INT-03.2 el inicio de sesión con inyección SQL es rechazado por la BD real (3 ms)
+  INT-04 Vulnerabilidades reproducidas contra el entorno real
+    ✕ INT-04.1 la ficha clínica de un paciente real NO debe obtenerse sin token (3 ms)
+    ✕ INT-04.2 registrarse con el RUT de un paciente real NO debe dar acceso a su historial (95 ms)
+
+  ● INT-04 Vulnerabilidades reproducidas contra el entorno real › INT-04.1 la ficha clínica de un paciente real NO debe obtenerse sin token
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+      198 |   test("INT-04.1 la ficha clínica de un paciente real NO debe obtenerse sin token", async () => {
+      199 |     const res = await api("GET", "/pacientes/buscar/rut/16789456-K");
+    > 200 |     expect(res.status).toBe(401);
+          |                        ^
+      201 |   });
+      202 |
+      203 |   test("INT-04.2 registrarse con el RUT de un paciente real NO debe dar acceso a su historial", async () => {
+
+      at Object.toBe (tests/integracion/flujos.test.js:200:24)
+
+  ● INT-04 Vulnerabilidades reproducidas contra el entorno real › INT-04.2 registrarse con el RUT de un paciente real NO debe dar acceso a su historial
+
+    expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not 200
+
+      210 |         const token = await login(nombre, "Clave$2026");
+      211 |         const ficha = await api("GET", "/pacientes/10", { token });
+    > 212 |         expect(ficha.status).not.toBe(200);
+          |                                  ^
+      213 |       } else {
+      214 |         expect([400, 409]).toContain(registro.status);
+      215 |       }
+
+      at Object.toBe (tests/integracion/flujos.test.js:212:34)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 5 passed, 7 total
+Snapshots:   0 total
+Time:        21.26 s
+Ran all test suites.

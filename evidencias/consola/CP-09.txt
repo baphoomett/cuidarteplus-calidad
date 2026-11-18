@@ -1,0 +1,78 @@
+[1;32mbenja@cuidarteplus[0m:[1;34m~/CodigoFuenteB/BACKEND[0m$ npx jest tests/seguridad/datos-configuracion.test.js -t SEG-15 --verbose
+[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2mtests/seguridad/[22m[1mdatos-configuracion.test.js[22m
+  SEG-10 Inyección SQL (controles que SÍ funcionan)
+    [33m○[39m [2mskipped SEG-10.1 el login usa consultas parametrizadas y no permite bypass con ' OR '1'='1[22m
+    [33m○[39m [2mskipped SEG-10.2 el parámetro :id de la URL viaja como parámetro y no como SQL[22m
+    [33m○[39m [2mskipped SEG-10.3 el UPDATE dinámico ignora nombres de columna inyectados en el cuerpo[22m
+  SEG-12 Exposición de información interna en errores
+    [33m○[39m [2mskipped SEG-12.1 un error de base de datos en el login no expone detalles internos[22m
+    [33m○[39m [2mskipped SEG-12.2 un error de base de datos al listar pacientes no expone detalles internos[22m
+  SEG-13 Cabeceras HTTP de seguridad
+    [33m○[39m [2mskipped SEG-13.1 la API envía cabeceras de endurecimiento y oculta la tecnología[22m
+  SEG-14 Política CORS
+    [33m○[39m [2mskipped SEG-14.1 la API no autoriza peticiones desde un origen arbitrario[22m
+  SEG-15 Validación del contenido de archivos subidos (POST /documentos)
+    [31m✕[39m [2mSEG-15.1 rechaza un ejecutable disfrazado de PDF (MIME declarado por el cliente) (28 ms)[22m
+    [31m✕[39m [2mSEG-15.2 rechaza un HTML con script declarado como imagen PNG (8 ms)[22m
+    [31m✕[39m [2mSEG-15.3 sanea el nombre de archivo en la cabecera Content-Disposition (3 ms)[22m
+    [32m✓[39m [2mSEG-15.4 rechaza tipos MIME no permitidos (control que SÍ funciona) (8 ms)[22m
+  SEG-23 Documentación de la API expuesta públicamente
+    [33m○[39m [2mskipped SEG-23.1 la especificación OpenAPI no es accesible sin autenticación[22m
+
+[1m[31m  [1m● [22m[1mSEG-15 Validación del contenido de archivos subidos (POST /documentos) › SEG-15.1 rechaza un ejecutable disfrazado de PDF (MIME declarado por el cliente)[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m400[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m 134 |[39m   test([32m"SEG-15.1 rechaza un ejecutable disfrazado de PDF (MIME declarado por el cliente)"[39m[33m,[39m [36masync[39m () [33m=>[39m {[22m
+[2m     [90m 135 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m subir([32m"resultado.exe"[39m[33m,[39m [32m"MZ\x90\x00\x03 ejecutable"[39m[33m,[39m [32m"application/pdf"[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 136 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 137 |[39m     expect(consultas(q[33m,[39m [35m/INSERT INTO documentos_examen/[39m))[33m.[39mtoHaveLength([35m0[39m)[33m;[39m[22m
+[2m     [90m 138 |[39m   })[33m;[39m[22m
+[2m     [90m 139 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/datos-configuracion.test.js[39m[0m[2m:136:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-15 Validación del contenido de archivos subidos (POST /documentos) › SEG-15.2 rechaza un HTML con script declarado como imagen PNG[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m400[39m
+    Received: [31m201[39m
+[2m[22m
+[2m    [0m [90m 140 |[39m   test([32m"SEG-15.2 rechaza un HTML con script declarado como imagen PNG"[39m[33m,[39m [36masync[39m () [33m=>[39m {[22m
+[2m     [90m 141 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m subir([32m"foto.png"[39m[33m,[39m [32m"<script>alert(document.cookie)</script>"[39m[33m,[39m [32m"image/png"[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 142 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m[22m
+[2m     [90m     |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 143 |[39m   })[33m;[39m[22m
+[2m     [90m 144 |[39m[22m
+[2m     [90m 145 |[39m   test([32m"SEG-15.3 sanea el nombre de archivo en la cabecera Content-Disposition"[39m[33m,[39m [36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe ([22m[2m[0m[36mtests/seguridad/datos-configuracion.test.js[39m[0m[2m:142:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mSEG-15 Validación del contenido de archivos subidos (POST /documentos) › SEG-15.3 sanea el nombre de archivo en la cabecera Content-Disposition[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: not [32m"malware.html"[39m
+    Received string:        [31m"attachment; filename=\"a.pdf\"; filename*=UTF-8''[7mmalware.html[27m\""[39m
+[2m[22m
+[2m    [0m [90m 152 |[39m     ])[33m;[39m[22m
+[2m     [90m 153 |[39m     [36mconst[39m res [33m=[39m [36mawait[39m request(app)[33m.[39m[36mget[39m([32m"/documentos/9"[39m)[33m.[39m[36mset[39m([32m"Authorization"[39m[33m,[39m [33mMEDICO[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 154 |[39m     expect(res[33m.[39mheaders[[32m"content-disposition"[39m])[33m.[39mnot[33m.[39mtoContain([32m"malware.html"[39m)[33m;[39m[22m
+[2m     [90m     |[39m                                                    [31m[1m^[22m[2m[39m[22m
+[2m     [90m 155 |[39m   })[33m;[39m[22m
+[2m     [90m 156 |[39m[22m
+[2m     [90m 157 |[39m   test([32m"SEG-15.4 rechaza tipos MIME no permitidos (control que SÍ funciona)"[39m[33m,[39m [36masync[39m () [33m=>[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toContain ([22m[2m[0m[36mtests/seguridad/datos-configuracion.test.js[39m[0m[2m:154:52)[22m[2m[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 total
+[1mTests:       [22m[1m[31m3 failed[39m[22m, [1m[33m8 skipped[39m[22m, [1m[32m1 passed[39m[22m, 12 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.437 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22m/tests\/seguridad\/datos-configuracion.test.js/i[2m with tests matching [22m"SEG-15"[2m.[22m
+

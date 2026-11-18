@@ -1,0 +1,60 @@
+{
+  "name": "cuidarteplus",
+  "version": "1.0.0",
+  "description": "API cuidarteplus - Express + PostgreSQL (intencionalmente vulnerable)",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon",
+    "test": "jest --coverage",
+    "test:integracion": "jest --config jest.integracion.config.js --runInBand",
+    "test:rendimiento": "jest --config jest.rendimiento.config.js --runInBand"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.12.0",
+    "swagger-ui-express": "^5.0.1",
+    "yup": "^1.7.1"
+  },
+  "devDependencies": {
+    "autocannon": "^8.0.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^7.1.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/tests"
+    ],
+    "testMatch": [
+      "<rootDir>/tests/{unitarias,funcionales,seguridad}/**/*.test.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/helpers/setup.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "lcov",
+      "text",
+      "text-summary",
+      "json-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  }
+}

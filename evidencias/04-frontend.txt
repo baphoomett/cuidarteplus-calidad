@@ -1,0 +1,566 @@
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+
+ RUN  v3.2.4 /home/benja/Escritorio/Seguridad_Calidad/CodigoFuenteB/FRONTEND
+      Coverage enabled with v8
+
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.A Inicio de sesión > CP-FE-03.1 credenciales válidas inician sesión y redirigen a /home 676ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.A Inicio de sesión > CP-FE-03.2 credenciales inválidas muestran error y no navegan 325ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.A Inicio de sesión > CP-FE-03.3 campos vacíos muestran los mensajes de validación 63ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.A Inicio de sesión > CP-FE-03.4 mientras carga el botón se deshabilita y muestra 'Ingresando...' 20ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > CP-FE-07.1 muestra indicador de carga y luego la tabla con los datos formateados 700ms
+ × tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.A Inicio de sesión > SEG-FE-01 la pantalla de login NO debe publicar las credenciales por defecto 670ms
+   → expected [ 'UsuarioContraseña', …(3) ] to not include 'adminadmin'
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.1 el administrador ve todos los usuarios con rol, avatar y acciones 984ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11 Código defensivo > CP-FE-11.1 ExamenForm no sube documentos pendientes si el examen queda sin paciente 1884ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11 Código defensivo > CP-FE-11.2 ExamenDetalle ignora archivos soltados si el examen no está cargado 24ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > CP-FE-07.2 respuesta vacía o error de la API dejan la tabla vacía 334ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.B Registro de pacientes > CP-FE-03.5 registro con RUT lo formatea, lo normaliza y redirige a /login 589ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.1 el médico ve la gestión de exámenes con datos del paciente 1049ms
+ × tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > USA-FE-05 la fecha de creación se muestra en un formato legible 473ms
+   → expected <span …(1)></span> to be null
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.2 respuesta vacía deja la tabla sin filas 319ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.B Registro de pacientes > CP-FE-03.6 registro sin RUT envía rut indefinido 587ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.2 el paciente ve 'Mis Exámenes', sin columnas de paciente y solo puede ver detalles 761ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > CP-FE-07.3 el botón editar abre el formulario del paciente 756ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.3 respuesta vacía o error de carga dejan el listado vacío 331ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11 Código defensivo > CP-FE-11.3 ExamenDetalle: los diálogos de subida y eliminación se cierran con Escape 1602ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.3 el administrador elimina un usuario tras confirmar 1148ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11 Código defensivo > CP-FE-11.4 UsuarioForm no envía la ficha clínica si no hay paciente asociado 364ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11 Código defensivo > CP-FE-11.5 UsuariosList ignora solicitudes de eliminación de un no administrador 30ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > CP-FE-07.4 el administrador confirma la eliminación y la lista se recarga 1125ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.B Registro de pacientes > CP-FE-03.7 si la API rechaza el registro el usuario permanece en el formulario 693ms
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.4 editar desde la tabla abre el formulario en modo edición y volver al listado lo cierra
+MUI: You have provided an out-of-range value `undefined` for the select (name="tipo_examen_medico_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `1`, `2`.
+MUI: You have provided an out-of-range value `undefined` for the select (name="tipo_examen_medico_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `1`, `2`.
+
+stderr | tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11.B Casos límite adicionales > CP-FE-11.7 Home trata respuestas vacías de la API como listas vacías
+MUI Grid: The `item` prop has been removed and is no longer necessary. You can safely remove it.
+
+MUI Grid: The `xs` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+MUI Grid: The `sm` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+MUI Grid: The `md` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11 Código defensivo > CP-FE-11.6 UsuariosTabCreate muestra el nombre crudo de un rol sin etiqueta conocida 294ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11.B Casos límite adicionales > CP-FE-11.7 Home trata respuestas vacías de la API como listas vacías 93ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.1 el menú del rol admin muestra solo sus opciones 536ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11.B Casos límite adicionales > CP-FE-11.8 Home con rol desconocido saluda al usuario por su nombre 11ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.1 el menú del rol medico muestra solo sus opciones 202ms
+stderr | tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11.B Casos límite adicionales > CP-FE-11.9 Cancelar en la edición de otro usuario vuelve al listado
+No routes matched location "/usuarios" 
+
+ × tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > USA-FE-02 el diálogo de eliminación muestra el nombre del paciente 586ms
+   → expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  juan
+Received:
+  ¿Estás seguro de que deseas eliminar al paciente ? Esta acción no se puede deshacer.
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11.B Casos límite adicionales > CP-FE-11.9 Cancelar en la edición de otro usuario vuelve al listado 209ms
+ ✓ tests/funcionales/codigo-defensivo.test.jsx > CP-FE-11.B Casos límite adicionales > CP-FE-11.10 sin VITE_API_URL el cliente usa la URL por defecto del backend 5ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.1 el menú del rol paciente muestra solo sus opciones 153ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.2 sin rol ni usuario muestra valores genéricos y ningún menú 145ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.4 cancelar la eliminación no llama a la API y editar navega al formulario 1030ms
+ × tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > USA-FE-01 todos los enlaces del menú tienen un nombre accesible descriptivo 115ms
+   → expected [ 'Ir a undefined', …(2) ] to not include 'Ir a undefined'
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.5 un rol no administrador ve la lista en solo lectura y no puede eliminar 198ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.4 editar desde la tabla abre el formulario en modo edición y volver al listado lo cierra 1774ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.5 el parámetro ?edit=ID abre directamente la edición y se limpia de la URL 61ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > CP-FE-07.5 cancelar la eliminación no llama a la API 655ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.3 el menú de usuario permite editar la cuenta y cerrar sesión 610ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.6 un 'editor' solo puede editar su propia fila 409ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.7 la eliminación de un no administrador se ignora 400ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.4 editar cuenta sin usuarioId navega al usuario 1 414ms
+ × tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > USA-FE-03 un médico que intenta eliminar recibe retroalimentación (no un silencio) 610ms
+   → expected "spy" to be called at least once
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.5 en pantallas móviles se abre y cierra el menú lateral 627ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > CP-FE-09.8 crear un usuario vuelve a la pestaña de listado y recarga 872ms
+stderr | tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.1 Acerca de se muestra y el botón Volver regresa a la página anterior
+MUI Grid: The `item` prop has been removed and is no longer necessary. You can safely remove it.
+
+MUI Grid: The `xs` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+MUI Grid: The `md` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > CP-FE-04.6 el pie de página muestra enlaces rápidos según el rol 183ms
+stderr | tests/funcionales/home.test.jsx > CP-FE-06.A Panel del médico / administrador > CP-FE-06.1 muestra métricas, últimos pacientes atendidos y navega a su ficha
+MUI Grid: The `item` prop has been removed and is no longer necessary. You can safely remove it.
+
+MUI Grid: The `xs` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+MUI Grid: The `sm` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+MUI Grid: The `md` prop has been removed. See https://mui.com/material-ui/migration/upgrade-to-grid-v2/ for migration instructions.
+
+
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.1 Acerca de se muestra y el botón Volver regresa a la página anterior 252ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.1 Política de privacidad se muestra y el botón Volver regresa a la página anterior 199ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.A Panel del médico / administrador > CP-FE-06.1 muestra métricas, últimos pacientes atendidos y navega a su ficha 395ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.B Crear usuario (UsuariosTabCreate) > CP-FE-09.9 muestra solo roles válidos con etiquetas legibles y envía el rol elegido 622ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.1 Términos de uso se muestra y el botón Volver regresa a la página anterior 133ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.A Listado de exámenes > CP-FE-08.6 crear un examen vuelve al listado y lo recarga 2039ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.1 Ayuda se muestra y el botón Volver regresa a la página anterior 432ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.B Crear usuario (UsuariosTabCreate) > CP-FE-09.10 valida los campos obligatorios y el botón Limpiar reinicia el formulario 465ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.2 la ayuda del rol medico muestra sus preguntas frecuentes 85ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.2 la ayuda del rol admin muestra sus preguntas frecuentes 71ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.B Crear usuario (UsuariosTabCreate) > CP-FE-09.11 sin roles disponibles advierte y deshabilita la creación 135ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.A Panel del médico / administrador > CP-FE-06.2 la pestaña de informes lista los últimos exámenes y abre su detalle 600ms
+ ✓ tests/funcionales/acceso-navegacion.test.jsx > CP-FE-05 Páginas informativas > CP-FE-05.2 la ayuda del rol paciente muestra sus preguntas frecuentes 72ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.A Panel del médico / administrador > CP-FE-06.3 sin datos (o con error de la API) muestra mensajes vacíos 261ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.B Crear usuario (UsuariosTabCreate) > CP-FE-09.12 error al cargar roles o al crear el usuario 480ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.B Eliminación de exámenes (ExamenesTabList) > CP-FE-08.7 el administrador elimina un examen tras confirmar 792ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.A Panel del médico / administrador > CP-FE-06.4 accesos rápidos: cargar examen y editar cuenta 345ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.A Panel del médico / administrador > CP-FE-06.5 un fallo inesperado al cargar se registra y se oculta el indicador de carga 46ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.B Eliminación de exámenes (ExamenesTabList) > CP-FE-08.8 un error al eliminar muestra el mensaje y mantiene el diálogo 736ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.B Panel del paciente > CP-FE-06.6 lista los exámenes del paciente y permite abrirlos 513ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.13 el admin edita otro usuario: nombre, correo y rol 714ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.B Panel del paciente > CP-FE-06.7 la búsqueda filtra por tipo de examen y por fecha 179ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.14 el admin no puede cambiar el rol del único administrador ni dejar el nombre vacío 459ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.B Panel del paciente > CP-FE-06.8 accesos rápidos del paciente y estado sin exámenes 300ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.B Panel del paciente > CP-FE-06.9 respuesta vacía de la API se trata como lista vacía 41ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.B Panel del paciente > CP-FE-06.10 un paciente sin ficha asociada no consulta exámenes 40ms
+ ✓ tests/funcionales/home.test.jsx > CP-FE-06.C Rol desconocido > CP-FE-06.11 muestra un mensaje genérico sin consultar la API 14ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.15 un usuario editando su propia cuenta no puede cambiar nombre ni rol 215ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.16 el administrador editando su propia cuenta tampoco cambia su rol ni su nombre 249ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.1 setAuthToken agrega y elimina la cabecera Authorization por defecto 2ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.2 el interceptor adjunta el token guardado salvo en rutas públicas 1ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.3 sin token no agrega cabecera (incluye registro de empresas) 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.4 los errores de configuración de la petición se propagan 6ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.5 las respuestas exitosas pasan sin cambios 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para error + glosa y rechaza la promesa 3ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para solo error y rechaza la promesa 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para message y rechaza la promesa 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para sin cuerpo y rechaza la promesa 5ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para sin statusText y rechaza la promesa 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para sin respuesta (red) y rechaza la promesa 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para error genérico y rechaza la promesa 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.A Cliente HTTP (lib/api) > CP-FE-01.6 muestra un toast adecuado para error vacío y rechaza la promesa 0ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.7 login guarda token y usuario decodificado; logout los elimina 67ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.B Eliminación de exámenes (ExamenesTabList) > CP-FE-08.9 cancelar no elimina; sin onEdit el botón editar navega al detalle 1228ms
+stderr | tests/funcionales/nucleo.test.jsx > CP-FE-01.C Guardas de rol (RoleGuard) > CP-FE-01.11 RequireAuth redirige a /login sin token y deja pasar con token
+No routes matched location "/login" 
+
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.8 token no decodificable: conserva el nombre de usuario sin rol 16ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.9 respuesta sin token y error de red terminan el estado de carga 7ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.10 restaura la sesión de localStorage y deduce el rol de {"rolId":1} 3ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.10 restaura la sesión de localStorage y deduce el rol de {"rolId":2} 6ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.10 restaura la sesión de localStorage y deduce el rol de {"rolId":3} 8ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.10 restaura la sesión de localStorage y deduce el rol de {"rolId":9} 2ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.B Sesión (AuthContext) > CP-FE-01.10 restaura la sesión de localStorage y deduce el rol de {"rolNombre":"admin"} 5ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.C Guardas de rol (RoleGuard) > CP-FE-01.11 RequireAuth redirige a /login sin token y deja pasar con token 32ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.C Guardas de rol (RoleGuard) > CP-FE-01.12 RequireAdmin solo permite al administrador 7ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.C Guardas de rol (RoleGuard) > CP-FE-01.13 RequireMedico permite médico y admin, no paciente 9ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.C Guardas de rol (RoleGuard) > CP-FE-01.14 RequireAdminOrOwnUser: admin edita a cualquiera, otros solo a sí mismos 24ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.C Guardas de rol (RoleGuard) > CP-FE-01.15 RequireAdminOrOwnUser sin parámetro :id no autoriza a un no-admin 3ms
+Browserslist: browsers data (caniuse-lite) is 11 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.D Componentes y arranque > CP-FE-01.16 PageHeader muestra título y acciones 106ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > CP-FE-07.6 al registrar un paciente vuelve a la pestaña de listado y recarga 4218ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.10 sin selección de tipo y paciente muestra errores y no envía 685ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.17 cambio de contraseña: valida coincidencia, envía y limpia el formulario 806ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /login (null) muestra la pantalla login 148ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /registro (null) muestra la pantalla registro 11ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 / (medico) muestra la pantalla home 12ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /home (medico) muestra la pantalla home 10ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /pacientes (medico) muestra la pantalla pacientes 9ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /pacientes/nuevo (medico) muestra la pantalla paciente-form 7ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /pacientes/3/editar (medico) muestra la pantalla paciente-form 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /examenes (medico) muestra la pantalla examenes 7ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /examenes/4 (paciente) muestra la pantalla examen-detalle 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /mis-resultados (paciente) muestra la pantalla mis-resultados 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /auditoria (admin) muestra la pantalla auditoria 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /usuarios (admin) muestra la pantalla usuarios 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /usuarios/2/editar (medico) muestra la pantalla usuario-form 7ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /politica-privacidad (paciente) muestra la pantalla privacidad 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /terminos-uso (paciente) muestra la pantalla terminos 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /acerca-de (paciente) muestra la pantalla acerca 6ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.1 /ayuda (paciente) muestra la pantalla ayuda 14ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.2 rutas protegidas sin sesión redirigen a /login 13ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.3 una ruta inexistente redirige a /login 10ms
+ ✓ tests/funcionales/rutas.test.jsx > CP-FE-02 Rutas > CP-FE-02.4 un médico no puede abrir la auditoría ni el listado de usuarios 10ms
+ × tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > SEG-FE-02 la contraseña nueva exige una política robusta (no solo 6 caracteres) 478ms
+   → expected "wrap" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st wrap call:
+
+    Array [
+      "/usuarios/2",
+      Object {
+        "contrasena_hash": "123456",
+      },
+    ]
+
+
+Number of calls: 1
+
+stderr | tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.18 Volver y Cancelar regresan al listado de usuarios
+No routes matched location "/usuarios" 
+
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.18 Volver y Cancelar regresan al listado de usuarios 376ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.19 error al cargar el usuario muestra un mensaje 135ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.B Formulario de paciente (PacientesTabCreate) > CP-FE-07.7 enviar el formulario vacío muestra los errores de los campos obligatorios 934ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.11 adjuntar un documento antes de elegir paciente muestra un error 921ms
+ ✓ tests/funcionales/nucleo.test.jsx > CP-FE-01.D Componentes y arranque > CP-FE-01.17 main.jsx monta la aplicación en #root 1456ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > CP-FE-09.20 sin parámetro :id no se consulta la API 92ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-01 lib/utils > UT-FE-01.1 normalizeRut elimina los puntos y respeta valores vacíos 3ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-01 lib/utils > UT-FE-01.2 catálogos de Chile: comunas ordenadas y mapeadas a su región 8ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-02 validations/auth > UT-FE-02.1 loginSchema exige usuario (3-50) y contraseña 6ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-02 validations/auth > UT-FE-02.2 registerUserSchema valida correo y largo mínimo de contraseña 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-02 validations/auth > UT-FE-02.3 registerEmpresaSchema exige todos los datos de la empresa 2ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-03 validations/pacientes > UT-FE-03.1 acepta una ficha mínima válida 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-03 validations/pacientes > UT-FE-03.2 rechaza RUT mal formado, sexo y grupo sanguíneo inválidos y fecha futura 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-04 validations/users > UT-FE-04.1 updateUsuarioSchema exige correo válido 0ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-04 validations/users > UT-FE-04.2 updatePasswordSchema exige que ambas contraseñas coincidan 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.1 clienteSchema valida el día de pago 15 → true 9ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.1 clienteSchema valida el día de pago 0 → false 6ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.1 clienteSchema valida el día de pago 32 → false 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.1 clienteSchema valida el día de pago abc → false 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.1 clienteSchema valida el día de pago  → false 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.2 contratoSchema exige fecha de fin posterior a la de inicio 3ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-05 Esquemas heredados sin uso (clientes, contratos, empresas) > UT-FE-05.3 updateEmpresaSchema exige nombre, dirección, teléfono y correo 1ms
+ ✓ tests/unitarias/validaciones-utils.test.js > UT-FE-06 Tema visual > UT-FE-06.1 usa la paleta institucional y botones sin mayúsculas forzadas 1ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.B Formulario de paciente (PacientesTabCreate) > CP-FE-07.8 el RUT se formatea al salir del campo y se envía normalizado 1999ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.12 crea el examen y sube el documento pendiente 2793ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.13 el documento pendiente se puede quitar antes de crear 1146ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.B Formulario de paciente (PacientesTabCreate) > CP-FE-07.9 se pueden completar selects, casilla de convenio y campos médicos 2795ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.B Formulario de paciente (PacientesTabCreate) > CP-FE-07.10 si la API falla el formulario se rehabilita y no se llama onSuccess 923ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.14 si falla la subida del documento pendiente se informa el error 1715ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.B Formulario de paciente (PacientesTabCreate) > CP-FE-07.11 Cancelar vuelve al listado de pacientes 647ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.15 crear sin documento y respuesta sin id no intenta subir archivos 257ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > CP-FE-09.21 el paciente ve 'Mi Cuenta' con su ficha y la actualiza con el RUT normalizado 5944ms
+stderr | tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > CP-FE-07.12 carga los datos del paciente, los actualiza y vuelve al listado
+No routes matched location "/pacientes" 
+
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > CP-FE-07.12 carga los datos del paciente, los actualiza y vuelve al listado 1385ms
+ × tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > SEG-FE-03 el paciente no debería poder modificar su propio RUT desde 'Mi Cuenta' 810ms
+   → expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <input
+  aria-invalid="false"
+  class="MuiInputBase-input MuiOutlinedInput-input css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input"
+  id="_r_ct_"
+  name="rut"
+  required=""
+  type="text"
+  value="12.345.678-5"
+/>
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.16 un error de la API al crear mantiene el formulario 1863ms
+ × tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > USA-FE-04 el encabezado de edición se refiere a 'paciente' (no a 'cliente') 504ms
+   → expected <h5 …(1)></h5> to be null
+stderr | tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > CP-FE-09.22 validación de la ficha y botón Volver hacia el inicio
+No routes matched location "/home" 
+
+stderr | tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > CP-FE-07.14 si el paciente no existe muestra error y vuelve al listado
+No routes matched location "/pacientes" 
+
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.17 error al cargar catálogos se registra en consola 268ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > CP-FE-09.22 validación de la ficha y botón Volver hacia el inicio 1190ms
+stderr | tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > CP-FE-09.23 Cancelar del paciente vuelve al inicio; un error al cargar la ficha se registra
+No routes matched location "/home" 
+
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > CP-FE-09.23 Cancelar del paciente vuelve al inicio; un error al cargar la ficha se registra 181ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > CP-FE-08.18 el paciente (sin rol clínico) no ve la sección de documentos 302ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > CP-FE-09.24 un paciente sin ficha asociada no carga datos clínicos 157ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-10 Auditoría > CP-FE-10.1 lista los eventos con usuario y fecha formateada 179ms
+ ✓ tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-10 Auditoría > CP-FE-10.2 respuesta vacía deja la bitácora sin filas 103ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.19 carga el examen y sus documentos y permite actualizarlo 801ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > CP-FE-07.13 una ficha con campos vacíos se carga con valores por defecto 671ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > CP-FE-07.14 si el paciente no existe muestra error y vuelve al listado 12ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.20 sube un documento directamente mostrando el estado 'Subiendo...' 836ms
+ ✓ tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > CP-FE-07.15 sin :id se muestra el formulario de registro vacío 2428ms
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.22 un examen sin paciente no permite subir documentos
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.21 informa el error si la subida directa falla 669ms
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.22 un examen sin paciente no permite subir documentos
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.22 un examen sin paciente no permite subir documentos
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.22 un examen sin paciente no permite subir documentos
+MUI: You have provided an out-of-range value `null` for the select (name="paciente_id") component.
+Consider providing a value that matches one of the available options or ''.
+The available values are `11`, `12`.
+
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.22 un examen sin paciente no permite subir documentos 713ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.23 descarga un documento como archivo 330ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.24 error de descarga muestra un mensaje 371ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.25 eliminar documento pide confirmación y recarga la lista 412ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.26 errores al cargar examen o documentos se registran en consola 363ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.C Formulario de examen (ExamenForm) > modo edición > CP-FE-08.27 arrastrar un archivo resalta la zona y un tipo no permitido se ignora 459ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.28 muestra todos los datos clínicos y los documentos 96ms
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.30 documentos nulos se tratan como lista vacía y Volver regresa al listado
+No routes matched location "/examenes" 
+
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.29 examen sin campos opcionales ni documentos 88ms
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.31 si el examen no existe muestra error y vuelve al listado
+No routes matched location "/examenes" 
+
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.33 Editar navega al listado con el parámetro de edición
+No routes matched location "/examenes?edit=1" 
+
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.30 documentos nulos se tratan como lista vacía y Volver regresa al listado 89ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.31 si el examen no existe muestra error y vuelve al listado 5ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.32 una respuesta vacía no renderiza contenido 5ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.33 Editar navega al listado con el parámetro de edición 79ms
+stderr | tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.34 el admin elimina el examen tras confirmar (y puede cancelar)
+No routes matched location "/examenes" 
+
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.34 el admin elimina el examen tras confirmar (y puede cancelar) 645ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.35 el admin elimina documentos con confirmación 254ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.36 descarga de documento exitosa y con error 155ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.37 el médico sube un documento desde el diálogo 739ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.D Detalle de examen > CP-FE-08.38 arrastrar un archivo no permitido sobre el diálogo no lo sube 192ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.E Mis resultados (paciente) > CP-FE-08.39 lista los exámenes del paciente con su detalle y documentos descargables 303ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.E Mis resultados (paciente) > CP-FE-08.40 error de descarga muestra un mensaje 230ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.E Mis resultados (paciente) > CP-FE-08.41 sin exámenes (o sin ficha de paciente) muestra el mensaje vacío 22ms
+ ✓ tests/funcionales/examenes.test.jsx > CP-FE-08.E Mis resultados (paciente) > CP-FE-08.42 error al cargar resultados informa al usuario 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/funcionales/acceso-navegacion.test.jsx > CP-FE-03.A Inicio de sesión > SEG-FE-01 la pantalla de login NO debe publicar las credenciales por defecto
+AssertionError: expected [ 'UsuarioContraseña', …(3) ] to not include 'adminadmin'
+ ❯ tests/funcionales/acceso-navegacion.test.jsx:64:23
+     62|     await userEvent.click(within(dialogo).getByRole("button", { name: …
+     63|     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeI…
+     64|     expect(filas).not.toContain("adminadmin");
+       |                       ^
+     65|   });
+     66| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/funcionales/acceso-navegacion.test.jsx > CP-FE-04 Navegación principal (Layout) > USA-FE-01 todos los enlaces del menú tienen un nombre accesible descriptivo
+AssertionError: expected [ 'Ir a undefined', …(2) ] to not include 'Ir a undefined'
+ ❯ tests/funcionales/acceso-navegacion.test.jsx:137:25
+    135|     const nombres = within(nav()).getAllByRole("link").map((l) => l.ge…
+    136|     // Hallazgo: el enlace de Inicio no tiene etiqueta y se anuncia co…
+    137|     expect(nombres).not.toContain("Ir a undefined");
+       |                         ^
+    138|   });
+    139| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > USA-FE-02 el diálogo de eliminación muestra el nombre del paciente
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  juan
+Received:
+  ¿Estás seguro de que deseas eliminar al paciente ? Esta acción no se puede deshacer.
+ ❯ tests/funcionales/pacientes.test.jsx:94:70
+     92|     const dialogo = await screen.findByRole("dialog");
+     93|     // Hallazgo: se usa row.original.nombre (inexistente) y el nombre …
+     94|     expect(within(dialogo).getByText(/deseas eliminar al paciente/)).t…
+       |                                                                      ^
+     95|   });
+     96| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/funcionales/pacientes.test.jsx > CP-FE-07.A Listado de pacientes > USA-FE-03 un médico que intenta eliminar recibe retroalimentación (no un silencio)
+AssertionError: expected "spy" to be called at least once
+ ❯ tests/funcionales/pacientes.test.jsx:118:25
+    116|     expect(del).not.toHaveBeenCalled();
+    117|     // Hallazgo: el botón se muestra al médico, pero la acción se igno…
+    118|     expect(toast.error).toHaveBeenCalled();
+       |                         ^
+    119|   });
+    120| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/funcionales/pacientes.test.jsx > CP-FE-07.C Edición de paciente (PacienteForm) > USA-FE-04 el encabezado de edición se refiere a 'paciente' (no a 'cliente')
+AssertionError: expected <h5 …(1)></h5> to be null
+
+- Expected: 
+null
+
++ Received: 
+<h5
+  class="MuiTypography-root MuiTypography-h5 css-5wi9gl-MuiTypography-root"
+>
+  Editar Cliente
+</h5>
+
+ ❯ tests/funcionales/pacientes.test.jsx:225:50
+    223|     expect(await screen.findByText("Editar paciente")).toBeInTheDocume…
+    224|     // Hallazgo: el título dice "Editar Cliente" (texto heredado de ot…
+    225|     expect(screen.queryByText("Editar Cliente")).toBeNull();
+       |                                                  ^
+    226|   });
+    227| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.A Listado de usuarios > USA-FE-05 la fecha de creación se muestra en un formato legible
+AssertionError: expected <span …(1)></span> to be null
+
+- Expected: 
+null
+
++ Received: 
+<span
+  class="MuiTypography-root MuiTypography-body css-z2uw0f-MuiTypography-root"
+>
+  2026-01-01T10:00:00Z
+</span>
+
+ ❯ tests/funcionales/usuarios-auditoria.test.jsx:54:56
+     52|     await screen.findByText("admin@c.cl");
+     53|     // Hallazgo: se muestra el timestamp ISO crudo de la base de datos.
+     54|     expect(screen.queryByText("2026-01-01T10:00:00Z")).toBeNull();
+       |                                                        ^
+     55|   });
+     56| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > SEG-FE-02 la contraseña nueva exige una política robusta (no solo 6 caracteres)
+AssertionError: expected "wrap" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st wrap call:
+
+    Array [
+      "/usuarios/2",
+      Object {
+        "contrasena_hash": "123456",
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ tests/funcionales/usuarios-auditoria.test.jsx:278:25
+    276|     await new Promise((r) => setTimeout(r, 50));
+    277|     // Hallazgo: "123456" es aceptada y enviada al servidor.
+    278|     expect(api.put).not.toHaveBeenCalled();
+       |                         ^
+    279|   });
+    280| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/funcionales/usuarios-auditoria.test.jsx > CP-FE-09.C Editar usuario / Mi cuenta (UsuarioForm) > cuenta del paciente > SEG-FE-03 el paciente no debería poder modificar su propio RUT desde 'Mi Cuenta'
+Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  <input
+  aria-invalid="false"
+  class="MuiInputBase-input MuiOutlinedInput-input css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input"
+  id="_r_ct_"
+  name="rut"
+  required=""
+  type="text"
+  value="12.345.678-5"
+/>
+ ❯ tests/funcionales/usuarios-auditoria.test.jsx:346:39
+    344|       await waitFor(() => expect(campo(container, "rut")).toHaveValue(…
+    345|       // Hallazgo: el RUT (identificador clínico) es editable por el p…
+    346|       expect(campo(container, "rut")).toBeDisabled();
+       |                                       ^
+    347|     });
+    348| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  3 failed | 6 passed (9)
+      Tests  8 failed | 191 passed (199)
+   Start at  00:41:50
+   Duration  30.95s (transform 1.34s, setup 1.72s, collect 12.29s, tests 84.76s, environment 5.97s, prepare 1.05s)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |     100 |      100 |     100 |     100 |                   
+ src               |     100 |      100 |     100 |     100 |                   
+  App.jsx          |     100 |      100 |     100 |     100 |                   
+  main.jsx         |     100 |      100 |     100 |     100 |                   
+  theme.js         |     100 |      100 |     100 |     100 |                   
+ src/components    |     100 |      100 |     100 |     100 |                   
+  Layout.jsx       |     100 |      100 |     100 |     100 |                   
+  PageHeader.jsx   |     100 |      100 |     100 |     100 |                   
+  RoleGuard.jsx    |     100 |      100 |     100 |     100 |                   
+ src/context       |     100 |      100 |     100 |     100 |                   
+  AuthContext.jsx  |     100 |      100 |     100 |     100 |                   
+  ...xtInstance.js |     100 |      100 |     100 |     100 |                   
+ src/hooks         |     100 |      100 |     100 |     100 |                   
+  useAuth.js       |     100 |      100 |     100 |     100 |                   
+ src/lib           |     100 |      100 |     100 |     100 |                   
+  api.jsx          |     100 |      100 |     100 |     100 |                   
+  utils.js         |     100 |      100 |     100 |     100 |                   
+ src/pages         |     100 |      100 |     100 |     100 |                   
+  Home.jsx         |     100 |      100 |     100 |     100 |                   
+ ...ages/auditoria |     100 |      100 |     100 |     100 |                   
+  ...toriaList.jsx |     100 |      100 |     100 |     100 |                   
+ src/pages/auth    |     100 |      100 |     100 |     100 |                   
+  Login.jsx        |     100 |      100 |     100 |     100 |                   
+  Register.jsx     |     100 |      100 |     100 |     100 |                   
+ ...pages/examenes |     100 |      100 |     100 |     100 |                   
+  ...enDetalle.jsx |     100 |      100 |     100 |     100 |                   
+  ExamenForm.jsx   |     100 |      100 |     100 |     100 |                   
+  ExamenesList.jsx |     100 |      100 |     100 |     100 |                   
+  ...esTabList.jsx |     100 |      100 |     100 |     100 |                   
+  ...esultados.jsx |     100 |      100 |     100 |     100 |                   
+ ...es/informacion |     100 |      100 |     100 |     100 |                   
+  AcercaDe.jsx     |     100 |      100 |     100 |     100 |                   
+  Ayuda.jsx        |     100 |      100 |     100 |     100 |                   
+  ...rivacidad.jsx |     100 |      100 |     100 |     100 |                   
+  TerminosUso.jsx  |     100 |      100 |     100 |     100 |                   
+ ...ages/pacientes |     100 |      100 |     100 |     100 |                   
+  PacienteForm.jsx |     100 |      100 |     100 |     100 |                   
+  ...entesList.jsx |     100 |      100 |     100 |     100 |                   
+  ...TabCreate.jsx |     100 |      100 |     100 |     100 |                   
+  ...esTabList.jsx |     100 |      100 |     100 |     100 |                   
+ ...pages/usuarios |     100 |      100 |     100 |     100 |                   
+  UsuarioForm.jsx  |     100 |      100 |     100 |     100 |                   
+  UsuariosList.jsx |     100 |      100 |     100 |     100 |                   
+  ...TabCreate.jsx |     100 |      100 |     100 |     100 |                   
+  ...osTabList.jsx |     100 |      100 |     100 |     100 |                   
+ src/validations   |     100 |      100 |     100 |     100 |                   
+  auth.js          |     100 |      100 |     100 |     100 |                   
+  clients.js       |     100 |      100 |     100 |     100 |                   
+  contracts.js     |     100 |      100 |     100 |     100 |                   
+  empresas.js      |     100 |      100 |     100 |     100 |                   
+  pacientes.js     |     100 |      100 |     100 |     100 |                   
+  users.js         |     100 |      100 |     100 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 100% ( 6817/6817 )
+Branches     : 100% ( 810/810 )
+Functions    : 100% ( 143/143 )
+Lines        : 100% ( 6817/6817 )
+================================================================================

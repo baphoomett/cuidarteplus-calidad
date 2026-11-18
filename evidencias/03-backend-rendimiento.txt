@@ -1,0 +1,51 @@
+{"prueba":"GET /tipo-examen","req_seg":1990.9,"p50_ms":9,"p97_5_ms":19,"max_ms":115,"errores":0,"timeouts":0,"no_2xx":0}
+{"prueba":"GET /pacientes","req_seg":2,"p50_ms":5031,"p97_5_ms":5038,"max_ms":5038,"errores":0,"timeouts":0,"no_2xx":0}
+{"prueba":"GET /examenes","req_seg":2,"p50_ms":5025,"p97_5_ms":5029,"max_ms":5029,"errores":0,"timeouts":0,"no_2xx":0}
+{"prueba":"POST /autenticacion/login","req_seg":333.1,"p50_ms":45,"p97_5_ms":188,"max_ms":339,"errores":0,"timeouts":0,"no_2xx":0}
+FAIL tests/rendimiento/carga.test.js (43.884 s)
+  REN-01 Tiempo de respuesta de endpoints de consulta
+    ✓ REN-01.1 GET /tipo-examen soporta 20 usuarios concurrentes con p97,5 < 1 s (10024 ms)
+    ✕ REN-01.2 GET /pacientes (listado clínico) responde con p97,5 < 1 s (10019 ms)
+    ✕ REN-01.3 GET /examenes (listado de exámenes) responde con p97,5 < 1 s (10015 ms)
+  REN-02 Autenticación bajo carga
+    ✓ REN-02.1 POST /autenticacion/login mantiene p97,5 < 1 s y 0 errores (10010 ms)
+
+  ● REN-01 Tiempo de respuesta de endpoints de consulta › REN-01.2 GET /pacientes (listado clínico) responde con p97,5 < 1 s
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 1000
+    Received:   5038
+
+      62 |     );
+      63 |     expect(r.errores + r.timeouts + r.no_2xx).toBe(0);
+    > 64 |     expect(r.p97_5_ms).toBeLessThan(P_LIMITE_MS);
+         |                        ^
+      65 |   });
+      66 |
+      67 |   test("REN-01.3 GET /examenes (listado de exámenes) responde con p97,5 < 1 s", async () => {
+
+      at Object.toBeLessThan (tests/rendimiento/carga.test.js:64:24)
+
+  ● REN-01 Tiempo de respuesta de endpoints de consulta › REN-01.3 GET /examenes (listado de exámenes) responde con p97,5 < 1 s
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 1000
+    Received:   5029
+
+      71 |     );
+      72 |     expect(r.errores + r.timeouts + r.no_2xx).toBe(0);
+    > 73 |     expect(r.p97_5_ms).toBeLessThan(P_LIMITE_MS);
+         |                        ^
+      74 |   });
+      75 | });
+      76 |
+
+      at Object.toBeLessThan (tests/rendimiento/carga.test.js:73:24)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 2 passed, 4 total
+Snapshots:   0 total
+Time:        43.936 s
+Ran all test suites.

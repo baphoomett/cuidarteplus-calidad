@@ -1,0 +1,1139 @@
+PASS tests/funcionales/examenes.test.js
+  CP-04.A Crear examen (POST /examenes)
+    ✓ CP-04.1 médico crea examen con diagnóstico y tratamiento (34 ms)
+    ✓ CP-04.2 campos clínicos vacíos se guardan como NULL (6 ms)
+    ✓ CP-04.3 sin token responde 401 (4 ms)
+    ✓ CP-04.4 paciente no puede crear exámenes (403) (5 ms)
+    ✓ NF-02.18 falla al consultar roles responde 500 (5 ms)
+    ✓ NF-02.19 error de BD al crear responde 500 ([Error: x]) (4 ms)
+    ✓ NF-02.19 error de BD al crear responde 500 ("y") (4 ms)
+    ✓ CP-04.5 sin tipo de examen responde 400 (3 ms)
+  CP-04.B Listar exámenes (GET /examenes)
+    ✓ CP-04.6 rechaza sin cabecera Authorization con 401 (4 ms)
+    ✓ CP-04.6 rechaza esquema distinto de Bearer con 401 (5 ms)
+    ✓ CP-04.6 rechaza token con firma inválida con 401 (2 ms)
+    ✓ CP-04.7 rol sin permisos recibe 403 (2 ms)
+    ✓ CP-04.10 médico ve todos los exámenes (3 ms)
+    ✓ CP-04.11 paciente con rol mixto (paciente+admin) ve todos (3 ms)
+    ✓ CP-04.12 paciente solo ve sus exámenes (3 ms)
+    ✓ CP-04.13 paciente sin ficha recibe 404 (2 ms)
+    ✓ CP-04.14 paciente+médico ve todos (13 ms)
+    ✓ NF-02.20 error de BD responde 500 ([Error: x]) (13 ms)
+    ✓ NF-02.20 error de BD responde 500 ("y") (4 ms)
+  CP-04.C Detalle de examen (GET /examenes/:id)
+    ✓ CP-04.15 rechaza sin cabecera Authorization con 401 (2 ms)
+    ✓ CP-04.15 rechaza esquema distinto de Bearer con 401 (2 ms)
+    ✓ CP-04.15 rechaza token con firma inválida con 401 (4 ms)
+    ✓ CP-04.16 rol sin permisos recibe 403 (5 ms)
+    ✓ CP-04.17 médico obtiene el detalle (3 ms)
+    ✓ CP-04.18 examen inexistente responde 404 (2 ms)
+    ✓ CP-04.19 paciente solo obtiene exámenes propios (2 ms)
+    ✓ CP-04.20 paciente sin ficha recibe 404 (2 ms)
+    ✓ CP-04.21 roles mixtos con médico o admin no filtran por paciente (4 ms)
+    ✓ NF-02.21 error de BD responde 500 ([Error: x]) (2 ms)
+    ✓ NF-02.21 error de BD responde 500 ("y") (2 ms)
+  CP-04.D Exámenes por paciente (GET /examenes/paciente/:id)
+    ✓ CP-04.22 rechaza sin cabecera Authorization con 401 (2 ms)
+    ✓ CP-04.22 rechaza esquema distinto de Bearer con 401 (2 ms)
+    ✓ CP-04.22 rechaza token con firma inválida con 401 (2 ms)
+    ✓ CP-04.23 paciente ve sus exámenes (2 ms)
+    ✓ CP-04.24 paciente no ve exámenes de otro paciente (403) (3 ms)
+    ✓ CP-04.25 paciente sin ficha recibe 403 (2 ms)
+    ✓ CP-04.26 rol sin permisos recibe 403 (2 ms)
+    ✓ CP-04.27 medico ve exámenes de cualquier paciente (2 ms)
+    ✓ CP-04.27 admin ve exámenes de cualquier paciente (2 ms)
+    ✓ NF-02.22 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.22 error de BD responde 500 ("y") (2 ms)
+  CP-04.E Actualizar examen (PUT /examenes/:id)
+    ✓ CP-04.28 médico actualiza diagnóstico y notas (4 ms)
+    ✓ CP-04.29 sin token responde 401 y paciente recibe 403 (5 ms)
+    ✓ CP-04.30 examen inexistente responde 404 (2 ms)
+    ✓ CP-04.31 auditoría registra NULL si el token no trae usuarioId (3 ms)
+    ✓ CP-04.32 sin campos para actualizar responde 400 (handler directo) (1 ms)
+    ✓ NF-02.23 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.23 error de BD responde 500 ("y") (3 ms)
+  CP-04.F Eliminar examen (DELETE /examenes/:id)
+    ✓ CP-04.33 admin elimina examen (3 ms)
+    ✓ CP-04.34 médico no puede eliminar (403) (3 ms)
+    ✓ CP-04.35 examen inexistente responde 404 (3 ms)
+    ✓ CP-04.36 auditoría registra NULL si el token no trae usuarioId (2 ms)
+    ✓ NF-02.24 error de BD responde 500 ([Error: x]) (2 ms)
+    ✓ NF-02.24 error de BD responde 500 ("y") (4 ms)
+
+FAIL tests/seguridad/control-acceso.test.js
+  SEG-01 Ficha clínica expuesta sin autenticación (GET /pacientes/buscar/rut/:rut)
+    ✕ SEG-01.1 un visitante anónimo no puede consultar la ficha de un paciente por RUT (66 ms)
+    ✕ SEG-01.2 un paciente autenticado no puede consultar la ficha de OTRO paciente por RUT (5 ms)
+  SEG-02 Eliminación de usuarios sin autenticación (DELETE /usuarios/:id)
+    ✕ SEG-02.1 un visitante anónimo no puede eliminar al administrador (4 ms)
+    ✕ SEG-02.2 un paciente autenticado no puede eliminar a otros usuarios (5 ms)
+  SEG-03 Administración de roles sin autenticación (/roles)
+    ✕ SEG-03.1 un visitante anónimo no puede crear roles (13 ms)
+    ✕ SEG-03.2 un visitante anónimo no puede renombrar el rol 'paciente' a 'admin' (3 ms)
+    ✕ SEG-03.3 un visitante anónimo no puede eliminar el rol administrador (3 ms)
+    ✕ SEG-03.4 un médico autenticado no puede crear roles (solo admin) (6 ms)
+  SEG-04 Escalamiento de privilegios al crear usuarios (POST /usuarios)
+    ✕ SEG-04.1 un paciente no puede crear una cuenta con rol administrador (8 ms)
+  SEG-05 Autoasignación de rol administrador (PUT /usuarios/:id)
+    ✕ SEG-05.1 un médico no puede cambiar su propio rol a administrador (5 ms)
+    ✓ SEG-05.2 un médico no puede otorgar el rol administrador a otro usuario (6 ms)
+  SEG-06 Apropiación de ficha clínica en el registro (POST /autenticacion/registro)
+    ✕ SEG-06.1 registrarse con el RUT de un paciente existente no vincula su historial clínico (4 ms)
+  SEG-16 Asignación masiva en la ficha del paciente (PUT /pacientes/:id)
+    ✕ SEG-16.1 un paciente no puede reasignar el usuario dueño de su ficha (5 ms)
+    ✕ SEG-16.2 un paciente no puede modificar su propio RUT (4 ms)
+  SEG-17 Registros de auditoría falsificables (POST /auditoria)
+    ✕ SEG-17.1 un paciente no puede insertar eventos arbitrarios en la bitácora (3 ms)
+  SEG-20 Archivos subidos accesibles sin autenticación (/files/documentos)
+    ✕ SEG-20.1 un visitante anónimo no puede descargar documentos del directorio público (10 ms)
+  SEG-21 Controles de acceso horizontales que SÍ funcionan (IDOR)
+    ✓ SEG-21.1 un paciente no puede ver la ficha de otro paciente por ID (4 ms)
+    ✓ SEG-21.2 un paciente no puede listar los exámenes de otro paciente (4 ms)
+    ✓ SEG-21.3 un paciente no puede descargar documentos de otro paciente (3 ms)
+    ✓ SEG-21.4 un paciente no puede listar todos los usuarios (2 ms)
+    ✓ SEG-21.5 un médico no puede eliminar pacientes (solo admin) (3 ms)
+    ✓ SEG-21.6 un paciente no puede ver la bitácora de auditoría (4 ms)
+    ✓ SEG-21.7 el administrador sí puede ver la bitácora de auditoría (4 ms)
+
+  ● SEG-01 Ficha clínica expuesta sin autenticación (GET /pacientes/buscar/rut/:rut) › SEG-01.1 un visitante anónimo no puede consultar la ficha de un paciente por RUT
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+      48 |     const res = await request(app).get("/pacientes/buscar/rut/16.789.456-K");
+      49 |
+    > 50 |     expect(res.status).toBe(401);
+         |                        ^
+      51 |     expect(res.body).not.toHaveProperty("alergias");
+      52 |     expect(consultas(q, /FROM pacientes/)).toHaveLength(0);
+      53 |   });
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:50:24)
+
+  ● SEG-01 Ficha clínica expuesta sin autenticación (GET /pacientes/buscar/rut/:rut) › SEG-01.2 un paciente autenticado no puede consultar la ficha de OTRO paciente por RUT
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      64 |       .set("Authorization", PACIENTE);
+      65 |
+    > 66 |     expect(res.status).toBe(403);
+         |                        ^
+      67 |     expect(res.body).not.toHaveProperty("enfermedades_cronicas");
+      68 |   });
+      69 | });
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:66:24)
+
+  ● SEG-02 Eliminación de usuarios sin autenticación (DELETE /usuarios/:id) › SEG-02.1 un visitante anónimo no puede eliminar al administrador
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+      75 |     const res = await request(app).delete("/usuarios/1");
+      76 |
+    > 77 |     expect(res.status).toBe(401);
+         |                        ^
+      78 |     expect(consultas(q, /DELETE FROM usuarios/)).toHaveLength(0);
+      79 |   });
+      80 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:77:24)
+
+  ● SEG-02 Eliminación de usuarios sin autenticación (DELETE /usuarios/:id) › SEG-02.2 un paciente autenticado no puede eliminar a otros usuarios
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      87 |     const res = await request(app).delete("/usuarios/2").set("Authorization", PACIENTE);
+      88 |
+    > 89 |     expect(res.status).toBe(403);
+         |                        ^
+      90 |     expect(consultas(q, /DELETE FROM usuarios/)).toHaveLength(0);
+      91 |   });
+      92 | });
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:89:24)
+
+  ● SEG-03 Administración de roles sin autenticación (/roles) › SEG-03.1 un visitante anónimo no puede crear roles
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 201
+
+       96 |     simularBD(q, [[/INSERT INTO roles/, rows({ id: 9, nombre: "superadmin" })]]);
+       97 |     const res = await request(app).post("/roles").send({ nombre: "superadmin" });
+    >  98 |     expect(res.status).toBe(401);
+          |                        ^
+       99 |     expect(consultas(q, /INSERT INTO roles/)).toHaveLength(0);
+      100 |   });
+      101 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:98:24)
+
+  ● SEG-03 Administración de roles sin autenticación (/roles) › SEG-03.2 un visitante anónimo no puede renombrar el rol 'paciente' a 'admin'
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+      103 |     simularBD(q, [[/UPDATE roles/, rows({ id: 3, nombre: "admin" })]]);
+      104 |     const res = await request(app).put("/roles/3").send({ nombre: "admin" });
+    > 105 |     expect(res.status).toBe(401);
+          |                        ^
+      106 |     expect(consultas(q, /UPDATE roles/)).toHaveLength(0);
+      107 |   });
+      108 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:105:24)
+
+  ● SEG-03 Administración de roles sin autenticación (/roles) › SEG-03.3 un visitante anónimo no puede eliminar el rol administrador
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+      110 |     simularBD(q, [[/DELETE FROM roles/, rows({ id: 1, nombre: "admin" })]]);
+      111 |     const res = await request(app).delete("/roles/1");
+    > 112 |     expect(res.status).toBe(401);
+          |                        ^
+      113 |     expect(consultas(q, /DELETE FROM roles/)).toHaveLength(0);
+      114 |   });
+      115 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:112:24)
+
+  ● SEG-03 Administración de roles sin autenticación (/roles) › SEG-03.4 un médico autenticado no puede crear roles (solo admin)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 201
+
+      123 |       .set("Authorization", MEDICO)
+      124 |       .send({ nombre: "superadmin" });
+    > 125 |     expect(res.status).toBe(403);
+          |                        ^
+      126 |   });
+      127 | });
+      128 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:125:24)
+
+  ● SEG-04 Escalamiento de privilegios al crear usuarios (POST /usuarios) › SEG-04.1 un paciente no puede crear una cuenta con rol administrador
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 201
+
+      144 |       });
+      145 |
+    > 146 |     expect(res.status).toBe(403);
+          |                        ^
+      147 |     expect(consultas(q, /INSERT INTO usuarios/)).toHaveLength(0);
+      148 |     expect(consultas(q, /INSERT INTO usuario_roles/)).toHaveLength(0);
+      149 |   });
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:146:24)
+
+  ● SEG-05 Autoasignación de rol administrador (PUT /usuarios/:id) › SEG-05.1 un médico no puede cambiar su propio rol a administrador
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 200
+
+      163 |       .send({ nombre_usuario: "medico", rol_id: 1 });
+      164 |
+    > 165 |     expect(res.status).toBe(403);
+          |                        ^
+      166 |     expect(consultas(q, /INSERT INTO usuario_roles/)).toHaveLength(0);
+      167 |   });
+      168 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:165:24)
+
+  ● SEG-06 Apropiación de ficha clínica en el registro (POST /autenticacion/registro) › SEG-06.1 registrarse con el RUT de un paciente existente no vincula su historial clínico
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 0
+    Received length: 1
+    Received array:  [["UPDATE pacientes SET usuario_id = $1 WHERE rut = $2", [50, "16789456-K"]]]
+
+      197 |     // Sin verificación de identidad (correo de la ficha, código, etc.) no debe
+      198 |     // asociarse la cuenta nueva a la ficha clínica de otra persona.
+    > 199 |     expect(consultas(q, /UPDATE pacientes SET usuario_id/)).toHaveLength(0);
+          |                                                             ^
+      200 |     expect(res.status).not.toBe(201);
+      201 |   });
+      202 | });
+
+      at Object.toHaveLength (tests/seguridad/control-acceso.test.js:199:61)
+
+  ● SEG-16 Asignación masiva en la ficha del paciente (PUT /pacientes/:id) › SEG-16.1 un paciente no puede reasignar el usuario dueño de su ficha
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      216 |
+      217 |     const updates = consultas(q, /UPDATE pacientes SET/);
+    > 218 |     expect(updates.some(([sql]) => /usuario_id=/.test(sql))).toBe(false);
+          |                                                              ^
+      219 |   });
+      220 |
+      221 |   test("SEG-16.2 un paciente no puede modificar su propio RUT", async () => {
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:218:62)
+
+  ● SEG-16 Asignación masiva en la ficha del paciente (PUT /pacientes/:id) › SEG-16.2 un paciente no puede modificar su propio RUT
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      232 |
+      233 |     const updates = consultas(q, /UPDATE pacientes SET/);
+    > 234 |     expect(updates.some(([sql]) => /rut=/.test(sql))).toBe(false);
+          |                                                       ^
+      235 |   });
+      236 | });
+      237 |
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:234:55)
+
+  ● SEG-17 Registros de auditoría falsificables (POST /auditoria) › SEG-17.1 un paciente no puede insertar eventos arbitrarios en la bitácora
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 403
+    Received: 201
+
+      248 |       .send({ accion: "LOGIN", detalles: "admin borró los exámenes" });
+      249 |
+    > 250 |     expect(res.status).toBe(403);
+          |                        ^
+      251 |     expect(consultas(q, /INSERT INTO auditoria/)).toHaveLength(0);
+      252 |   });
+      253 | });
+
+      at Object.toBe (tests/seguridad/control-acceso.test.js:250:24)
+
+  ● SEG-20 Archivos subidos accesibles sin autenticación (/files/documentos) › SEG-20.1 un visitante anónimo no puede descargar documentos del directorio público
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected value: 200
+    Received array: [401, 403, 404]
+
+      263 |   test("SEG-20.1 un visitante anónimo no puede descargar documentos del directorio público", async () => {
+      264 |     const res = await request(app).get("/files/documentos/seg-20-resultado.pdf");
+    > 265 |     expect([401, 403, 404]).toContain(res.status);
+          |                             ^
+      266 |   });
+      267 | });
+      268 |
+
+      at Object.toContain (tests/seguridad/control-acceso.test.js:265:29)
+
+FAIL tests/seguridad/autenticacion.test.js
+  SEG-07 Almacenamiento de contraseñas
+    ✕ SEG-07.1 el registro no guarda la contraseña en texto plano (48 ms)
+    ✕ SEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano (9 ms)
+    ✕ SEG-07.3 el login no compara la contraseña recibida directamente contra la BD (8 ms)
+  SEG-08 Protección contra fuerza bruta en el login
+    ✕ SEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429) (45 ms)
+  SEG-09 Secreto JWT por defecto
+    ✕ SEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado (6 ms)
+    ✕ SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código (1 ms)
+  SEG-18 Política de contraseñas
+    ✕ SEG-18.1 el registro rechaza una contraseña débil (solo números) (5 ms)
+    ✕ SEG-18.1 el registro rechaza una contraseña débil (solo minúsculas) (3 ms)
+    ✕ SEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario) (4 ms)
+  SEG-22 Validación de tokens JWT (controles que SÍ funcionan)
+    ✓ SEG-22.1 rechaza un token expirado (4 ms)
+    ✓ SEG-22.2 rechaza un token sin firma (alg: none) (4 ms)
+    ✓ SEG-22.3 rechaza un token firmado con otro secreto (4 ms)
+    ✓ SEG-22.4 el token emitido en el login expira en 2 horas o menos y no incluye la contraseña (6 ms)
+    ✓ SEG-22.5 el mensaje de error no revela si el usuario existe (anti-enumeración) (5 ms)
+
+  ● SEG-07 Almacenamiento de contraseñas › SEG-07.1 el registro no guarda la contraseña en texto plano
+
+    expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not "Clave$egura2026"
+
+      36 |
+      37 |     const [[, params]] = consultas(q, /INSERT INTO usuarios/);
+    > 38 |     expect(params[1]).not.toBe("Clave$egura2026");
+         |                           ^
+      39 |     // Se espera un hash con algoritmo lento y sal (bcrypt / argon2 / scrypt)
+      40 |     expect(params[1]).toMatch(/^\$(2[aby]|argon2(id|i)?|scrypt)\$/);
+      41 |   });
+
+      at Object.toBe (tests/seguridad/autenticacion.test.js:38:27)
+
+  ● SEG-07 Almacenamiento de contraseñas › SEG-07.2 la creación de usuarios por el administrador no guarda la contraseña en texto plano
+
+    expect(received).not.toBe(expected) // Object.is equality
+
+    Expected: not "Medico$2026"
+
+      53 |
+      54 |     const [[, params]] = consultas(q, /INSERT INTO usuarios/);
+    > 55 |     expect(params[1]).not.toBe("Medico$2026");
+         |                           ^
+      56 |   });
+      57 |
+      58 |   test("SEG-07.3 el login no compara la contraseña recibida directamente contra la BD", async () => {
+
+      at Object.toBe (tests/seguridad/autenticacion.test.js:55:27)
+
+  ● SEG-07 Almacenamiento de contraseñas › SEG-07.3 el login no compara la contraseña recibida directamente contra la BD
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+      65 |       .send({ nombre_usuario: "admin", password: hash });
+      66 |
+    > 67 |     expect(res.status).toBe(401);
+         |                        ^
+      68 |   });
+      69 | });
+      70 |
+
+      at Object.toBe (tests/seguridad/autenticacion.test.js:67:24)
+
+  ● SEG-08 Protección contra fuerza bruta en el login › SEG-08.1 tras 10 intentos fallidos consecutivos la API limita las peticiones (429)
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected value: 429
+    Received array: [401, 401, 401, 401, 401, 401, 401, 401, 401, 401, …]
+
+      81 |     }
+      82 |
+    > 83 |     expect(estados).toContain(429);
+         |                     ^
+      84 |   });
+      85 | });
+      86 |
+
+      at Object.toContain (tests/seguridad/autenticacion.test.js:83:21)
+
+  ● SEG-09 Secreto JWT por defecto › SEG-09.1 un token forjado con el secreto por defecto 'inseguro' es rechazado
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 200
+
+       95 |     const res = await request(app).get("/usuarios").set("Authorization", `Bearer ${forjado}`);
+       96 |
+    >  97 |     expect(res.status).toBe(401);
+          |                        ^
+       98 |   });
+       99 |
+      100 |   test("SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código", () => {
+
+      at Object.toBe (tests/seguridad/autenticacion.test.js:97:24)
+
+  ● SEG-09 Secreto JWT por defecto › SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código
+
+    expect(received).not.toMatch(expected)
+
+    Expected pattern: not /JWT_SECRET\s*\|\|\s*["'][^"']+["']/
+    Received string:      "const express = require(\"express\");
+    const jwt = require(\"jsonwebtoken\");
+    const { pool } = require(\"../db\");
+    const validate = require(\"../middleware/validate\");
+    const { loginSchema, registerSchema } = require(\"../validations/auth\");
+    const { normalizeRut } = require(\"../utils/rut\");
+    const router = express.Router();
+    const JWT_SECRET = process.env.JWT_SECRET || \"inseguro\";
+
+    router.post(\"/login\", validate(loginSchema), async (req, res) => {
+      const { nombre_usuario, password } = req.body;
+      try {
+        const result = await pool.query(
+          \"SELECT id, nombre_usuario, contrasena, correo FROM usuarios WHERE nombre_usuario = $1\",
+          [nombre_usuario]
+        );
+        if (result.rows.length === 0) {
+          return res.status(401).json({ error: \"Credenciales inválidas\" });
+        }
+        const user = result.rows[0];
+        if (user.contrasena !== password) {
+          return res.status(401).json({ error: \"Credenciales inválidas\" });
+        }
+
+        // Obtener roles del usuario
+        const rolesResult = await pool.query(
+          `SELECT r.id, r.nombre 
+           FROM usuario_roles ur
+           JOIN roles r ON r.id = ur.rol_id
+           WHERE ur.usuario_id = $1`,
+          [user.id]
+        );
+        const roles = rolesResult.rows.map(r => ({ id: r.id, nombre: r.nombre }));
+        const rolNombre = roles.length > 0 ? roles[0].nombre : null;
+        const rolId = roles.length > 0 ? roles[0].id : null;
+
+        // Obtener paciente asociado si existe
+        const pacienteResult = await pool.query(
+          \"SELECT id FROM pacientes WHERE usuario_id = $1\",
+          [user.id]
+        );
+        const pacienteId = pacienteResult.rows.length > 0 ? pacienteResult.rows[0].id : null;
+
+        const token = jwt.sign(
+          { 
+            usuarioId: user.id, 
+            nombreUsuario: user.nombre_usuario,
+            rolId: rolId,
+            rolNombre: rolNombre,
+            pacienteId: pacienteId,
+            roles: roles
+          },
+          JWT_SECRET,
+          { expiresIn: \"2h\" }
+        );
+
+        await pool.query(
+          \"INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)\",
+          [user.id, \"LOGIN: usuario inició sesión\"]
+        );
+
+        res.json({ token });
+      } catch (err) {
+        console.error(err);
+        res
+          .status(500)
+          .json({ error: \"Error en login\", glosa: err.message || err.toString() });
+      }
+    });
+
+    router.post(\"/registro\", validate(registerSchema), async (req, res) => {
+      const { nombre_usuario, password, correo, rut } = req.body;
+      try {
+        // Normalizar RUT antes de procesar
+        const normalizedRut = rut ? normalizeRut(rut) : null;
+        
+        // Verificar si el RUT ya existe en pacientes
+        let pacienteExistente = null;
+        if (normalizedRut) {
+          const rutCheck = await pool.query(
+            \"SELECT id, usuario_id FROM pacientes WHERE rut = $1\",
+            [normalizedRut]
+          );
+          if (rutCheck.rows.length > 0) {
+            pacienteExistente = rutCheck.rows[0];
+            // Si el paciente ya tiene un usuario asociado, rechazar
+            if (pacienteExistente.usuario_id) {
+              return res.status(400).json({
+                error: \"RUT ya registrado\",
+                glosa: \"Este RUT ya tiene una cuenta de usuario asociada\",
+              });
+            }
+          }
+        }
+
+        // Verificar que el nombre de usuario y correo no estén duplicados
+        const usuarioCheck = await pool.query(
+          \"SELECT id FROM usuarios WHERE nombre_usuario = $1 OR correo = $2\",
+          [nombre_usuario, correo]
+        );
+        if (usuarioCheck.rows.length > 0) {
+          return res.status(400).json({
+            error: \"Usuario o correo duplicado\",
+            glosa: \"El nombre de usuario o correo electrónico ya está en uso\",
+          });
+        }
+
+        // Crear usuario
+        const userResult = await pool.query(
+          \"INSERT INTO usuarios (nombre_usuario, contrasena, correo) VALUES ($1, $2, $3) RETURNING id, nombre_usuario, correo, created_at\",
+          [nombre_usuario, password, correo]
+        );
+        const user = userResult.rows[0];
+
+        // Asignar rol de paciente
+        const rolPacienteResult = await pool.query(
+          \"SELECT id FROM roles WHERE nombre = 'paciente'\"
+        );
+        if (rolPacienteResult.rows.length > 0) {
+          await pool.query(
+            \"INSERT INTO usuario_roles (usuario_id, rol_id) VALUES ($1, $2)\",
+            [user.id, rolPacienteResult.rows[0].id]
+          );
+        }
+
+        // Si se proporciona RUT, crear o actualizar paciente
+        if (normalizedRut) {
+          if (pacienteExistente) {
+            // Actualizar paciente existente con usuario_id (ya verificado que no tiene usuario)
+            await pool.query(
+              \"UPDATE pacientes SET usuario_id = $1 WHERE rut = $2\",
+              [user.id, normalizedRut]
+            );
+          } else {
+            // Crear paciente básico (se completará después)
+            await pool.query(
+              `INSERT INTO pacientes (rut, primer_nombre, apellido_paterno, email, fecha_nacimiento, sexo, usuario_id)
+               VALUES ($1, $2, $3, $4, '2000-01-01', 'M', $5)`,
+              [normalizedRut, nombre_usuario, \"\", correo, user.id]
+            );
+          }
+        }
+
+        await pool.query(
+          \"INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)\",
+          [user.id, \"REGISTRO: nuevo usuario registrado\"]
+        );
+
+        res.status(201).json({
+          message: \"Usuario registrado exitosamente\",
+          usuario: user,
+        });
+      } catch (err) {
+        console.error(err);
+        if (err.code === \"23505\") {
+          return res.status(400).json({
+            error: \"Error al registrar\",
+            glosa: \"El nombre de usuario o correo ya existe\",
+          });
+        }
+        res.status(500).json({
+          error: \"Error al registrar\",
+          glosa: err.message || err.toString(),
+        });
+      }
+    });
+
+    module.exports = router;
+    "
+
+      100 |   test("SEG-09.2 la aplicación no arranca con un secreto JWT embebido en el código", () => {
+      101 |     const fuente = require("fs").readFileSync(require.resolve("../../src/routes/auth"), "utf8");
+    > 102 |     expect(fuente).not.toMatch(/JWT_SECRET\s*\|\|\s*["'][^"']+["']/);
+          |                        ^
+      103 |   });
+      104 | });
+      105 |
+
+      at Object.toMatch (tests/seguridad/autenticacion.test.js:102:24)
+
+  ● SEG-18 Política de contraseñas › SEG-18.1 el registro rechaza una contraseña débil (solo números)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 201
+
+      118 |     });
+      119 |
+    > 120 |     expect(res.status).toBe(400);
+          |                        ^
+      121 |     expect(consultas(q, /INSERT INTO usuarios/)).toHaveLength(0);
+      122 |   });
+      123 | });
+
+      at toBe (tests/seguridad/autenticacion.test.js:120:24)
+
+  ● SEG-18 Política de contraseñas › SEG-18.1 el registro rechaza una contraseña débil (solo minúsculas)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 201
+
+      118 |     });
+      119 |
+    > 120 |     expect(res.status).toBe(400);
+          |                        ^
+      121 |     expect(consultas(q, /INSERT INTO usuarios/)).toHaveLength(0);
+      122 |   });
+      123 | });
+
+      at toBe (tests/seguridad/autenticacion.test.js:120:24)
+
+  ● SEG-18 Política de contraseñas › SEG-18.1 el registro rechaza una contraseña débil (igual al nombre de usuario)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 201
+
+      118 |     });
+      119 |
+    > 120 |     expect(res.status).toBe(400);
+          |                        ^
+      121 |     expect(consultas(q, /INSERT INTO usuarios/)).toHaveLength(0);
+      122 |   });
+      123 | });
+
+      at toBe (tests/seguridad/autenticacion.test.js:120:24)
+
+FAIL tests/seguridad/datos-configuracion.test.js
+  SEG-10 Inyección SQL (controles que SÍ funcionan)
+    ✓ SEG-10.1 el login usa consultas parametrizadas y no permite bypass con ' OR '1'='1 (48 ms)
+    ✓ SEG-10.2 el parámetro :id de la URL viaja como parámetro y no como SQL (22 ms)
+    ✓ SEG-10.3 el UPDATE dinámico ignora nombres de columna inyectados en el cuerpo (9 ms)
+  SEG-12 Exposición de información interna en errores
+    ✕ SEG-12.1 un error de base de datos en el login no expone detalles internos (6 ms)
+    ✕ SEG-12.2 un error de base de datos al listar pacientes no expone detalles internos (9 ms)
+  SEG-13 Cabeceras HTTP de seguridad
+    ✕ SEG-13.1 la API envía cabeceras de endurecimiento y oculta la tecnología (3 ms)
+  SEG-14 Política CORS
+    ✕ SEG-14.1 la API no autoriza peticiones desde un origen arbitrario (6 ms)
+  SEG-15 Validación del contenido de archivos subidos (POST /documentos)
+    ✕ SEG-15.1 rechaza un ejecutable disfrazado de PDF (MIME declarado por el cliente) (14 ms)
+    ✕ SEG-15.2 rechaza un HTML con script declarado como imagen PNG (9 ms)
+    ✕ SEG-15.3 sanea el nombre de archivo en la cabecera Content-Disposition (5 ms)
+    ✓ SEG-15.4 rechaza tipos MIME no permitidos (control que SÍ funciona) (28 ms)
+  SEG-23 Documentación de la API expuesta públicamente
+    ✕ SEG-23.1 la especificación OpenAPI no es accesible sin autenticación (4 ms)
+
+  ● SEG-12 Exposición de información interna en errores › SEG-12.1 un error de base de datos en el login no expone detalles internos
+
+    expect(received).not.toMatch(expected)
+
+    Expected pattern: not /relation|postgres|host=|character/
+    Received string:      "{\"error\":\"Error en login\",\"glosa\":\"relation \\\"usuarios\\\" does not exist at character 47 (host=10.0.0.5 user=postgres)\"}"
+
+      81 |
+      82 |     expect(res.status).toBe(500);
+    > 83 |     expect(JSON.stringify(res.body)).not.toMatch(/relation|postgres|host=|character/);
+         |                                          ^
+      84 |   });
+      85 |
+      86 |   test("SEG-12.2 un error de base de datos al listar pacientes no expone detalles internos", async () => {
+
+      at Object.toMatch (tests/seguridad/datos-configuracion.test.js:83:42)
+
+  ● SEG-12 Exposición de información interna en errores › SEG-12.2 un error de base de datos al listar pacientes no expone detalles internos
+
+    expect(received).not.toMatch(expected)
+
+    Expected pattern: not /relation|postgres|host=|character/
+    Received string:      "{\"error\":\"Error al listar pacientes\",\"glosa\":\"relation \\\"usuarios\\\" does not exist at character 47 (host=10.0.0.5 user=postgres)\"}"
+
+      92 |
+      93 |     expect(res.status).toBe(500);
+    > 94 |     expect(JSON.stringify(res.body)).not.toMatch(/relation|postgres|host=|character/);
+         |                                          ^
+      95 |   });
+      96 | });
+      97 |
+
+      at Object.toMatch (tests/seguridad/datos-configuracion.test.js:94:42)
+
+  ● SEG-13 Cabeceras HTTP de seguridad › SEG-13.1 la API envía cabeceras de endurecimiento y oculta la tecnología
+
+    expect(received).toBeUndefined()
+
+    Received: "Express"
+
+      100 |     const res = await request(app).get("/");
+      101 |
+    > 102 |     expect(res.headers["x-powered-by"]).toBeUndefined();
+          |                                         ^
+      103 |     expect(res.headers["x-content-type-options"]).toBe("nosniff");
+      104 |     expect(res.headers["x-frame-options"]).toBeDefined();
+      105 |     expect(res.headers["strict-transport-security"]).toBeDefined();
+
+      at Object.toBeUndefined (tests/seguridad/datos-configuracion.test.js:102:41)
+
+  ● SEG-14 Política CORS › SEG-14.1 la API no autoriza peticiones desde un origen arbitrario
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      111 |     const res = await request(app).get("/").set("Origin", "https://sitio-malicioso.example");
+      112 |     const permitido = res.headers["access-control-allow-origin"];
+    > 113 |     expect(permitido === "*" || permitido === "https://sitio-malicioso.example").toBe(false);
+          |                                                                                  ^
+      114 |   });
+      115 | });
+      116 |
+
+      at Object.toBe (tests/seguridad/datos-configuracion.test.js:113:82)
+
+  ● SEG-15 Validación del contenido de archivos subidos (POST /documentos) › SEG-15.1 rechaza un ejecutable disfrazado de PDF (MIME declarado por el cliente)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 201
+
+      134 |   test("SEG-15.1 rechaza un ejecutable disfrazado de PDF (MIME declarado por el cliente)", async () => {
+      135 |     const res = await subir("resultado.exe", "MZ\x90\x00\x03 ejecutable", "application/pdf");
+    > 136 |     expect(res.status).toBe(400);
+          |                        ^
+      137 |     expect(consultas(q, /INSERT INTO documentos_examen/)).toHaveLength(0);
+      138 |   });
+      139 |
+
+      at Object.toBe (tests/seguridad/datos-configuracion.test.js:136:24)
+
+  ● SEG-15 Validación del contenido de archivos subidos (POST /documentos) › SEG-15.2 rechaza un HTML con script declarado como imagen PNG
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 201
+
+      140 |   test("SEG-15.2 rechaza un HTML con script declarado como imagen PNG", async () => {
+      141 |     const res = await subir("foto.png", "<script>alert(document.cookie)</script>", "image/png");
+    > 142 |     expect(res.status).toBe(400);
+          |                        ^
+      143 |   });
+      144 |
+      145 |   test("SEG-15.3 sanea el nombre de archivo en la cabecera Content-Disposition", async () => {
+
+      at Object.toBe (tests/seguridad/datos-configuracion.test.js:142:24)
+
+  ● SEG-15 Validación del contenido de archivos subidos (POST /documentos) › SEG-15.3 sanea el nombre de archivo en la cabecera Content-Disposition
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "malware.html"
+    Received string:        "attachment; filename=\"a.pdf\"; filename*=UTF-8''malware.html\""
+
+      152 |     ]);
+      153 |     const res = await request(app).get("/documentos/9").set("Authorization", MEDICO);
+    > 154 |     expect(res.headers["content-disposition"]).not.toContain("malware.html");
+          |                                                    ^
+      155 |   });
+      156 |
+      157 |   test("SEG-15.4 rechaza tipos MIME no permitidos (control que SÍ funciona)", async () => {
+
+      at Object.toContain (tests/seguridad/datos-configuracion.test.js:154:52)
+
+  ● SEG-23 Documentación de la API expuesta públicamente › SEG-23.1 la especificación OpenAPI no es accesible sin autenticación
+
+    expect(received).toContain(expected) // indexOf
+
+    Expected value: 200
+    Received array: [401, 403, 404]
+
+      165 |   test("SEG-23.1 la especificación OpenAPI no es accesible sin autenticación", async () => {
+      166 |     const res = await request(app).get("/openapi.json");
+    > 167 |     expect([401, 403, 404]).toContain(res.status);
+          |                             ^
+      168 |   });
+      169 | });
+      170 |
+
+      at Object.toContain (tests/seguridad/datos-configuracion.test.js:167:29)
+
+PASS tests/unitarias/modulos-base.test.js
+  utils/rut - normalizeRut
+    ✓ CP-03.1 elimina los puntos de un RUT formateado (7 ms)
+    ✓ CP-03.2 devuelve el mismo valor si viene vacío (2 ms)
+  middleware/validate
+    ✓ NF-02.1 deja pasar el request cuando los datos son válidos (4 ms)
+    ✓ NF-02.2 responde 400 con el detalle por campo cuando falla la validación (4 ms)
+    ✓ NF-02.3 valida otra fuente del request (query) (2 ms)
+    ✓ NF-02.4 responde 500 si el esquema lanza un error inesperado (1 ms)
+    ✓ NF-02.5 responde 500 con toString() si el error no trae mensaje (1 ms)
+  middleware/delay
+    ✓ REN-00.1 retrasa la respuesta 5000 ms por defecto (4 ms)
+    ✓ REN-00.2 acepta un retraso personalizado (1 ms)
+  db.js - pool de conexiones
+    ✓ SEG-19.1 sin DATABASE_URL usa la cadena de conexión embebida en el código (3 ms)
+    ✓ NF-02.6 usa DATABASE_URL cuando está definida (1 ms)
+  app.js - arranque del servidor
+    ✓ CP-00.1 escucha en el puerto 3000 por defecto (288 ms)
+    ✓ CP-00.2 escucha en el puerto definido en PORT (86 ms)
+    ✓ CP-00.3 expone salud, OpenAPI y Swagger (172 ms)
+
+PASS tests/funcionales/auth.test.js
+  CP-01 Inicio de sesión
+    ✓ CP-01.1 credenciales válidas devuelven un JWT con rol y paciente (16 ms)
+    ✓ CP-01.2 usuario sin roles ni ficha obtiene token con rol nulo (6 ms)
+    ✓ CP-01.3 usuario inexistente responde 401 (3 ms)
+    ✓ CP-01.4 contraseña incorrecta responde 401 (3 ms)
+    ✓ CP-01.5 datos incompletos responden 400 sin consultar la BD (3 ms)
+    ✓ NF-02.7 error de base de datos responde 500 (6 ms)
+    ✓ NF-02.8 error sin mensaje usa toString() (6 ms)
+  CP-02 Registro de pacientes
+    ✓ CP-02.1 registro sin RUT crea usuario con rol paciente (5 ms)
+    ✓ CP-02.2 registro con RUT nuevo crea la ficha básica del paciente (6 ms)
+    ✓ CP-02.3 registro con RUT de ficha sin cuenta vincula la ficha existente (3 ms)
+    ✓ CP-02.4 RUT que ya tiene cuenta responde 400 (2 ms)
+    ✓ CP-02.5 usuario o correo duplicado responde 400 (3 ms)
+    ✓ CP-02.7 violación de unicidad en BD (23505) responde 400 (2 ms)
+    ✓ NF-02.9 otro error de BD responde 500 (4 ms)
+    ✓ NF-02.10 error sin mensaje usa toString() (3 ms)
+
+PASS tests/funcionales/usuarios.test.js
+  CP-06.A Crear usuario (POST /usuarios)
+    ✓ CP-06.1 rechaza sin cabecera Authorization con 401 (8 ms)
+    ✓ CP-06.1 rechaza esquema distinto de Bearer con 401 (2 ms)
+    ✓ CP-06.1 rechaza token con firma inválida con 401 (14 ms)
+    ✓ CP-06.2 admin crea usuario con rol (usuario_roles) (3 ms)
+    ✓ CP-06.3 crear sin rol no inserta relaciones (3 ms)
+    ✓ CP-06.4 token con empresa crea relación empresa_usuarios (3 ms)
+    ✓ NF-02.30 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.30 error de BD responde 500 ("y") (2 ms)
+  CP-06.B Listar usuarios (GET /usuarios)
+    ✓ CP-06.5 sin token responde 401 (3 ms)
+    ✓ CP-06.6 rol admin lista usuarios (3 ms)
+    ✓ CP-06.6 rol administrador lista usuarios (2 ms)
+    ✓ CP-06.7 rol no administrador recibe 403 (2 ms)
+    ✓ CP-06.10 lógica empresa: rol_id 1 (2 ms)
+    ✓ CP-06.10 lógica empresa: nombre admin (2 ms)
+    ✓ CP-06.10 lógica empresa: nombre administrador (2 ms)
+    ✓ CP-06.10 lógica empresa: rol no admin (2 ms)
+    ✓ CP-06.11 lógica empresa: usuario sin relación recibe 403 (3 ms)
+    ✓ NF-02.31 error de BD responde 500 ([Error: x]) (2 ms)
+    ✓ NF-02.31 error de BD responde 500 ("y") (4 ms)
+  CP-06.C Obtener usuario (GET /usuarios/:id)
+    ✓ CP-06.12 sin token responde 401 (2 ms)
+    ✓ CP-06.13 admin obtiene cualquier usuario (2 ms)
+    ✓ CP-06.13 medico obtiene cualquier usuario (1 ms)
+    ✓ CP-06.14 paciente obtiene sus propios datos (2 ms)
+    ✓ CP-06.15 paciente no obtiene datos de otro usuario (403) (2 ms)
+    ✓ CP-06.16 usuario inexistente responde 404 (2 ms)
+    ✓ CP-06.17 lógica empresa: único administrador (2 ms)
+    ✓ CP-06.17 lógica empresa: varios administradores (2 ms)
+    ✓ CP-06.18 lógica empresa: usuario no administrador y no encontrado (5 ms)
+    ✓ NF-02.32 error de BD responde 500 ([Error: x]) (2 ms)
+    ✓ NF-02.32 error de BD responde 500 ("y") (3 ms)
+  CP-06.D Actualizar usuario - sistema médico (PUT /usuarios/:id)
+    ✓ CP-06.19 sin token responde 401 (3 ms)
+    ✓ CP-06.20 admin actualiza todos los campos y el rol de otro usuario (6 ms)
+    ✓ CP-06.21 paciente actualiza su correo (2 ms)
+    ✓ CP-06.22 paciente no edita a otro usuario ni cambia su rol (403) (5 ms)
+    ✓ CP-06.23 médico no edita a otros usuarios (403) (2 ms)
+    ✓ CP-06.24 usuario sin rol clínico no puede cambiar roles (403) (3 ms)
+    ✓ CP-06.25 usuario inexistente responde 404 (2 ms)
+    ✓ CP-06.26 sin campos de datos solo actualiza el rol (handler directo) (1 ms)
+    ✓ NF-02.33 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.33 error de BD responde 500 ("y") (3 ms)
+    ✓ NF-02.34 falla al responder se captura en el manejador externo ([Error: respuesta rota]) (2 ms)
+    ✓ NF-02.34 falla al responder se captura en el manejador externo ("texto roto") (1 ms)
+  CP-06.E Actualizar usuario - lógica empresa (PUT /usuarios/:id)
+    ✓ CP-06.27 usuario sin relación con la empresa recibe 403 (2 ms)
+    ✓ CP-06.28 usuario no administrador recibe 403 (2 ms)
+    ✓ CP-06.29 administrador no puede cambiar su propio rol (400) (3 ms)
+    ✓ CP-06.30 no se puede quitar el rol al único administrador (400) (2 ms)
+    ✓ CP-06.31 cambio de rol permitido: varios admins (2 ms)
+    ✓ CP-06.31 cambio de rol permitido: único admin mantiene rol 1 (4 ms)
+    ✓ CP-06.32 usuario destino sin relación previa: no actualiza rol (3 ms)
+    ✓ CP-06.33 usuario destino inexistente en empresa_usuarios y en usuarios (2 ms)
+    ✓ CP-06.34 sin campos de datos ni rol solo devuelve el usuario (handler directo) (1 ms)
+    ✓ NF-02.35 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.35 error de BD responde 500 ("y") (2 ms)
+  CP-06.F Eliminar usuario (DELETE /usuarios/:id)
+    ✓ CP-06.35 elimina y audita con el nombre del usuario del token (2 ms)
+    ✓ CP-06.37 sin token la auditoría queda con usuario NULL (21 ms)
+    ✓ CP-06.36 usuario inexistente responde 404 (4 ms)
+    ✓ NF-02.36 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.36 error de BD responde 500 ("y") (2 ms)
+
+PASS tests/funcionales/pacientes.test.js
+  CP-03 Gestión de pacientes - control de acceso común
+    ✓ CP-03.9 GET /pacientes/:id rechaza sin cabecera Authorization con 401 (6 ms)
+    ✓ CP-03.9 GET /pacientes/:id rechaza esquema distinto de Bearer con 401 (3 ms)
+    ✓ CP-03.9 GET /pacientes/:id rechaza token con firma inválida con 401 (2 ms)
+    ✓ CP-03.10 POST sin token responde 401 (7 ms)
+    ✓ CP-03.11 rol sin permiso (sin roles) responde 403 (2 ms)
+    ✓ NF-02.11 falla al consultar roles responde 500 (4 ms)
+  CP-03.A Crear paciente (POST /pacientes)
+    ✓ CP-03.1 médico registra paciente con todos los campos (4 ms)
+    ✓ CP-03.2 campos opcionales vacíos se guardan como NULL (4 ms)
+    ✓ CP-03.3 RUT o email duplicado responde 400 (4 ms)
+    ✓ NF-02.12 error de BD al crear responde 500 ([Error: insert]) (5 ms)
+    ✓ NF-02.12 error de BD al crear responde 500 ("texto") (3 ms)
+    ✓ CP-03.4 datos inválidos responden 400 con detalle (4 ms)
+  CP-03.B Listar pacientes (GET /pacientes)
+    ✓ CP-03.5 médico obtiene el listado (3 ms)
+    ✓ CP-03.12 sin token responde 401 (6 ms)
+    ✓ NF-02.13 error de BD al listar responde 500 ([Error: select]) (3 ms)
+    ✓ NF-02.13 error de BD al listar responde 500 ("texto") (3 ms)
+  CP-03.C Obtener paciente (GET /pacientes/:id)
+    ✓ CP-03.6 médico obtiene cualquier ficha (3 ms)
+    ✓ CP-03.13 admin recibe 404 si la ficha no existe (2 ms)
+    ✓ CP-03.14 paciente obtiene su propia ficha (5 ms)
+    ✓ CP-03.15 paciente no puede ver la ficha de otro (403) (3 ms)
+    ✓ CP-03.16 paciente sin ficha asociada recibe 404 (2 ms)
+    ✓ CP-03.17 usuario sin rol clínico recibe 403 (3 ms)
+    ✓ NF-02.14 error de BD responde 500 ([Error: x]) (4 ms)
+    ✓ NF-02.14 error de BD responde 500 ("y") (13 ms)
+  CP-03.D Buscar paciente por RUT (GET /pacientes/buscar/rut/:rut)
+    ✓ CP-03.18 encuentra la ficha normalizando el RUT (3 ms)
+    ✓ CP-03.19 RUT inexistente responde 404 (3 ms)
+    ✓ NF-02.15 error de BD responde 500 ([Error: x]) (2 ms)
+    ✓ NF-02.15 error de BD responde 500 ("y") (3 ms)
+  CP-03.E Actualizar paciente (PUT /pacientes/:id)
+    ✓ CP-03.20 rechaza sin cabecera Authorization con 401 (4 ms)
+    ✓ CP-03.20 rechaza esquema distinto de Bearer con 401 (3 ms)
+    ✓ CP-03.20 rechaza token con firma inválida con 401 (3 ms)
+    ✓ CP-03.21 médico actualiza y el RUT se normaliza (4 ms)
+    ✓ CP-03.22 paciente actualiza su propia ficha (3 ms)
+    ✓ CP-03.23 paciente no puede actualizar otra ficha (403) (3 ms)
+    ✓ CP-03.24 paciente sin ficha recibe 404 (3 ms)
+    ✓ CP-03.25 usuario sin rol clínico recibe 403 (2 ms)
+    ✓ CP-03.26 ficha inexistente responde 404 (auditoría sin ID de usuario) (3 ms)
+    ✓ CP-03.27 auditoría registra NULL si el token no trae usuarioId (5 ms)
+    ✓ CP-03.28 sin campos para actualizar responde 400 (handler directo) (3 ms)
+    ✓ NF-02.16 error de BD responde 500 ([Error: x]) (4 ms)
+    ✓ NF-02.16 error de BD responde 500 ("y") (2 ms)
+  CP-03.F Eliminar paciente (DELETE /pacientes/:id)
+    ✓ CP-03.29 admin elimina la ficha (1 ms)
+    ✓ CP-03.30 médico no puede eliminar (403) (3 ms)
+    ✓ CP-03.31 ficha inexistente responde 404 (3 ms)
+    ✓ CP-03.32 auditoría registra NULL si el token no trae usuarioId (2 ms)
+    ✓ NF-02.17 error de BD responde 500 ([Error: x]) (2 ms)
+    ✓ NF-02.17 error de BD responde 500 ("y") (2 ms)
+
+PASS tests/unitarias/validaciones.test.js
+  Validaciones de autenticación
+    ✓ CP-01.6 login exige usuario de 3 a 50 caracteres y contraseña (2 ms)
+    ✓ CP-02.6 registro valida correo, contraseña y formato de RUT (2 ms)
+  Validaciones de usuarios
+    ✓ CP-06.8 creación exige nombre, contraseña y correo; rol opcional positivo (2 ms)
+    ✓ CP-06.9 actualización exige al menos un campo (2 ms)
+  Validaciones de pacientes
+    ✓ CP-03.7 creación exige campos obligatorios y dominios válidos (5 ms)
+    ✓ CP-03.8 actualización acepta parciales pero no un objeto vacío (1 ms)
+  Validaciones de exámenes
+    ✓ CP-04.8 creación exige tipo de examen y paciente positivos (2 ms)
+    ✓ CP-04.9 actualización exige al menos un campo (1 ms)
+  Validaciones empresa-usuarios (módulo heredado sin uso)
+    ✓ NF-01.4 exige usuario_id o los datos completos del usuario (1 ms)
+    ✓ NF-01.5 actualización exige empresa, usuario y rol (1 ms)
+
+PASS tests/funcionales/documentos.test.js
+  CP-05.A Subir documento (POST /documentos)
+    ✓ CP-05.1 médico sube un PDF asociado al examen (17 ms)
+    ✓ CP-05.2 acepta imágenes JPG y PNG (8 ms)
+    ✓ CP-05.3 rechaza tipos de archivo no permitidos (37 ms)
+    ✓ CP-05.4 sin token responde 401 y paciente recibe 403 (8 ms)
+    ✓ CP-05.5 exige examen_medico_id y paciente_id (7 ms)
+    ✓ CP-05.6 exige adjuntar un documento (4 ms)
+    ✓ NF-02.25 falla al consultar roles responde 500 (4 ms)
+    ✓ NF-02.26 error de BD al guardar responde 500 ([Error: x]) (7 ms)
+    ✓ NF-02.26 error de BD al guardar responde 500 ("y") (5 ms)
+  CP-05.B Listar documentos de un examen (GET /documentos/examen/:id)
+    ✓ CP-05.7 rechaza sin cabecera Authorization con 401 (3 ms)
+    ✓ CP-05.7 rechaza esquema distinto de Bearer con 401 (2 ms)
+    ✓ CP-05.7 rechaza token con firma inválida con 401 (3 ms)
+    ✓ CP-05.8 medico lista documentos (20 ms)
+    ✓ CP-05.8 admin lista documentos (4 ms)
+    ✓ CP-05.9 paciente lista documentos de su examen (3 ms)
+    ✓ CP-05.10 paciente no lista documentos ajenos o inexistentes (403) (4 ms)
+    ✓ CP-05.11 rol sin permisos recibe 403 (3 ms)
+    ✓ NF-02.27 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.27 error de BD responde 500 ("y") (2 ms)
+  CP-05.C Descargar documento (GET /documentos/:id)
+    ✓ CP-05.12 rechaza sin cabecera Authorization con 401 (3 ms)
+    ✓ CP-05.12 rechaza esquema distinto de Bearer con 401 (3 ms)
+    ✓ CP-05.12 rechaza token con firma inválida con 401 (1 ms)
+    ✓ CP-05.13 informe.pdf se entrega como application/pdf (3 ms)
+    ✓ CP-05.13 foto.JPG se entrega como image/jpeg (3 ms)
+    ✓ CP-05.13 foto.jpeg se entrega como image/jpeg (2 ms)
+    ✓ CP-05.13 scan.png se entrega como image/png (2 ms)
+    ✓ CP-05.13 sin_extension se entrega como application/pdf (2 ms)
+    ✓ CP-05.14 paciente descarga su documento (2 ms)
+    ✓ CP-05.15 paciente no descarga documentos ajenos (403) (3 ms)
+    ✓ CP-05.16 rol sin permisos recibe 403 y admin descarga (11 ms)
+    ✓ CP-05.17 documento inexistente responde 404 (4 ms)
+    ✓ NF-02.28 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.28 error de BD responde 500 ("y") (2 ms)
+  CP-05.D Eliminar documento (DELETE /documentos/:id)
+    ✓ CP-05.18 admin elimina documento y queda auditado (3 ms)
+    ✓ CP-05.19 médico no puede eliminar (403) y sin token 401 (4 ms)
+    ✓ CP-05.20 documento inexistente responde 404 (2 ms)
+    ✓ CP-05.21 auditoría registra NULL si el token no trae usuarioId (3 ms)
+    ✓ NF-02.29 error de BD responde 500 ([Error: x]) (3 ms)
+    ✓ NF-02.29 error de BD responde 500 ("y") (2 ms)
+
+PASS tests/funcionales/roles-tipos-auditoria.test.js
+  CP-07.A Roles (/roles)
+    ✓ CP-07.1 crear rol devuelve 201 y audita (44 ms)
+    ✓ CP-07.2 listar y obtener roles (9 ms)
+    ✓ CP-07.3 actualizar rol (7 ms)
+    ✓ CP-07.4 eliminar rol (8 ms)
+    ✓ NF-02.37 errores de BD en /roles responden 500 ([Error: x]) (21 ms)
+    ✓ NF-02.37 errores de BD en /roles responden 500 ("y") (13 ms)
+  CP-07.B Tipos de examen (/tipo-examen)
+    ✓ CP-07.5 lista tipos ordenados por nombre (3 ms)
+    ✓ CP-07.6 obtiene un tipo por ID o 404 (3 ms)
+    ✓ NF-02.38 errores de BD responden 500 ([Error: x]) (4 ms)
+    ✓ NF-02.38 errores de BD responden 500 ("y") (5 ms)
+  CP-08 Auditoría (/auditoria)
+    ✓ CP-08.1 POST rechaza sin cabecera Authorization con 401 (2 ms)
+    ✓ CP-08.1 POST rechaza esquema distinto de Bearer con 401 (3 ms)
+    ✓ CP-08.1 POST rechaza token con firma inválida con 401 (2 ms)
+    ✓ CP-08.2 registra una acción con y sin detalles (5 ms)
+    ✓ CP-08.3 GET rechaza sin cabecera Authorization con 401 (2 ms)
+    ✓ CP-08.3 GET rechaza esquema distinto de Bearer con 401 (2 ms)
+    ✓ CP-08.3 GET rechaza token con firma inválida con 401 (3 ms)
+    ✓ CP-08.4 administrador consulta todos los registros (3 ms)
+    ✓ CP-08.5 usuario no administrador recibe 403 (15 ms)
+    ✓ CP-08.6 lógica empresa filtra por empresa del token (4 ms)
+    ✓ NF-02.39 errores de BD responden 500 ([Error: x]) (4 ms)
+    ✓ NF-02.39 errores de BD responden 500 ("y") (5 ms)
+
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------|---------|----------|---------|---------|-------------------
+All files             |     100 |      100 |     100 |     100 |                   
+ src                  |     100 |      100 |     100 |     100 |                   
+  app.js              |     100 |      100 |     100 |     100 |                   
+  db.js               |     100 |      100 |     100 |     100 |                   
+ src/middleware       |     100 |      100 |     100 |     100 |                   
+  delay.js            |     100 |      100 |     100 |     100 |                   
+  validate.js         |     100 |      100 |     100 |     100 |                   
+ src/routes           |     100 |      100 |     100 |     100 |                   
+  audit.js            |     100 |      100 |     100 |     100 |                   
+  auth.js             |     100 |      100 |     100 |     100 |                   
+  documentos.js       |     100 |      100 |     100 |     100 |                   
+  examenes.js         |     100 |      100 |     100 |     100 |                   
+  pacientes.js        |     100 |      100 |     100 |     100 |                   
+  roles.js            |     100 |      100 |     100 |     100 |                   
+  tipo-examen.js      |     100 |      100 |     100 |     100 |                   
+  users.js            |     100 |      100 |     100 |     100 |                   
+ src/utils            |     100 |      100 |     100 |     100 |                   
+  rut.js              |     100 |      100 |     100 |     100 |                   
+ src/validations      |     100 |      100 |     100 |     100 |                   
+  auth.js             |     100 |      100 |     100 |     100 |                   
+  empresa_usuarios.js |     100 |      100 |     100 |     100 |                   
+  examenes.js         |     100 |      100 |     100 |     100 |                   
+  pacientes.js        |     100 |      100 |     100 |     100 |                   
+  users.js            |     100 |      100 |     100 |     100 |                   
+----------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 100% ( 853/853 )
+Branches     : 100% ( 522/522 )
+Functions    : 100% ( 84/84 )
+Lines        : 100% ( 822/822 )
+================================================================================
+Test Suites: 3 failed, 8 passed, 11 total
+Tests:       32 failed, 276 passed, 308 total
+Snapshots:   0 total
+Time:        1.753 s, estimated 6 s
+Ran all test suites.
