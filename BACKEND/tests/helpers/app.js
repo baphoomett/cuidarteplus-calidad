@@ -13,21 +13,8 @@ const jwt = require("jsonwebtoken");
 const SECRET_POR_DEFECTO = "inseguro";
 
 function cargarApp() {
-  let capturada = null;
-  const spy = jest
-    .spyOn(express.application, "listen")
-    .mockImplementation(function (port, cb) {
-      capturada = this;
-      if (cb) cb();
-      return { close() {} };
-    });
-  // Se carga en el mismo registro de módulos del archivo de prueba para que
-  // la app y la prueba compartan el mismo mock de ../src/db.
-  const log = jest.spyOn(console, "log").mockImplementation(() => {});
-  require("../../src/app");
-  spy.mockRestore();
-  log.mockRestore();
-  return capturada;
+  // app.js exporta la aplicación sin abrir un puerto durante las pruebas.
+  return require("../../src/app");
 }
 
 function token(payload = {}, secret = SECRET_POR_DEFECTO, opts = { expiresIn: "2h" }) {

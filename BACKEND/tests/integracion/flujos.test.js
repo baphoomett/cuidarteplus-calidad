@@ -208,8 +208,8 @@ describe("INT-04 Vulnerabilidades reproducidas contra el entorno real", () => {
     try {
       if (registro.status === 201) {
         const token = await login(nombre, "Clave$2026");
-        const ficha = await api("GET", "/pacientes/10", { token });
-        expect(ficha.status).not.toBe(200);
+        const fichaAjena = await api("GET", "/pacientes/2", { token });
+        expect(fichaAjena.status).toBe(403);
       } else {
         expect([400, 409]).toContain(registro.status);
       }

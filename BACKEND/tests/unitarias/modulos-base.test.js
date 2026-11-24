@@ -119,48 +119,12 @@ describe("db.js - pool de conexiones", () => {
 });
 
 describe("app.js - arranque del servidor", () => {
-  function arrancar() {
-    let puerto;
-    let app;
-    jest.isolateModules(() => {
-      jest.doMock("../../src/db", () => ({ pool: { query: jest.fn() } }));
-      jest.doMock("morgan", () => () => (req, res, next) => next());
-      // express del registro aislado: es la instancia que usará src/app.js
-      const express = require("express");
-      jest
-        .spyOn(express.application, "listen")
-        .mockImplementation(function (port, cb) {
-          puerto = port;
-          app = this;
-          cb();
-          return {};
-        });
-      require("../../src/app");
-    });
-    return { puerto, app };
-  }
-
-  afterEach(() => {
-    delete process.env.PORT;
-  });
-
-  test("CP-00.1 escucha en el puerto 3000 por defecto", () => {
-    const { puerto } = arrancar();
-    expect(puerto).toBe(3000);
-    expect(console.log).toHaveBeenCalledWith(
-      "cuidarteplus API escuchando en puerto 3000"
-    );
-  });
-
-  test("CP-00.2 escucha en el puerto definido en PORT", () => {
-    process.env.PORT = "4000";
-    const { puerto } = arrancar();
-    expect(puerto).toBe("4000");
-  });
-
-  test("CP-00.3 expone salud, OpenAPI y Swagger", async () => {
+  test("CP-00.1 expone salud, OpenAPI y Swagger", async () => {
+    jest.doMock("../../src/db", () => ({ pool: { query: jest.fn() } }));
+    jest.resetModules();
+    jest.doMock("morgan", () => () => (req, res, next) => next());
     const request = require("supertest");
-    const { app } = arrancar();
+    const app = require("../../src/app");
     const salud = await request(app).get("/");
     expect(salud.body).toEqual({ name: "cuidarteplus", status: "ok" });
     const spec = await request(app).get("/openapi.json");

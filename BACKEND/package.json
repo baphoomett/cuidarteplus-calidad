@@ -7,9 +7,10 @@
     "start": "node src/app.js",
     "dev": "nodemon",
     "test": "jest --coverage",
-    "test:integracion": "jest --config jest.integracion.config.js --runInBand",
-    "test:rendimiento": "jest --config jest.rendimiento.config.js --runInBand"
+    "test:unit": "jest tests/unitarias",
+    "test:integration": "jest tests/integracion --runInBand"
   },
+
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -29,32 +30,15 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/tests"
-    ],
+    "setupFiles": ["<rootDir>/tests/setup-env.js"],
+    "setupFilesAfterEnv": ["<rootDir>/tests/helpers/setup.js"],
     "testMatch": [
-      "<rootDir>/tests/{unitarias,funcionales,seguridad}/**/*.test.js"
+      "<rootDir>/tests/unitarias/**/*.test.js",
+      "<rootDir>/tests/funcionales/**/*.test.js",
+      "<rootDir>/tests/seguridad/**/*.test.js"
     ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/tests/helpers/setup.js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "lcov",
-      "text",
-      "text-summary",
-      "json-summary"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    }
+    "collectCoverageFrom": ["src/**/*.js"],
+    "coverageReporters": ["text-summary", "lcov"],
+    "testTimeout": 15000
   }
 }

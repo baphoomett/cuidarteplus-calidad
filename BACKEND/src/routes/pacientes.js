@@ -245,11 +245,36 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Buscar paciente por RUT (público para pacientes)
+// Buscar paciente por RUT (médico, admin y paciente - solo el propio RUT)
 router.get("/buscar/rut/:rut", async (req, res) => {
   try {
+    const authCheck = await requireRole(req, ["medico", "admin", "paciente"]);
+    if (authCheck.error) {
+      return res.status(authCheck.status).json({
+        error: authCheck.error,
+        glosa: "No tiene permisos para realizar esta acción",
+      });
+    }
+
     const { rut } = req.params;
     const normalizedRut = normalizeRut(rut);
+
+    if (authCheck.userRoles.includes("paciente") &&
+        !authCheck.userRoles.includes("medico") &&
+        !authCheck.userRoles.includes("admin")) {
+      const pacienteResult = await pool.query(
+        "SELECT rut FROM pacientes WHERE usuario_id = $1",
+        [authCheck.authUser.usuarioId]
+      );
+
+      if (pacienteResult.rows.length === 0 ||
+          normalizeRut(pacienteResult.rows[0].rut) !== normalizedRut) {
+        return res.status(403).json({
+          error: "No autorizado",
+          glosa: "Solo puede buscar su propio RUT",
+        });
+      }
+    }
     
     const result = await pool.query(
       `SELECT p.*, u.nombre_usuario 
