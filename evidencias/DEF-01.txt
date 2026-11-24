@@ -1,0 +1,44 @@
+DEF-01
+Titulo: Ficha clinica accesible por RUT sin autenticacion
+
+Requisito afectado:
+- Proteccion de datos clinicos
+- Control de acceso por rol
+- Seguridad de autenticacion
+
+Severidad / Prioridad:
+- Alta / Alta
+
+Archivo afectado:
+- BACKEND/src/routes/pacientes.js
+
+Ruta afectada:
+- GET /pacientes/buscar/rut/:rut
+
+Pasos para reproducir:
+1. Ejecutar la solicitud sin enviar el encabezado Authorization.
+2. Solicitar GET /pacientes/buscar/rut/16789456-K.
+
+Resultado esperado:
+- HTTP 401, sin devolver datos del paciente.
+
+Resultado obtenido antes de corregir:
+- HTTP 200, con datos de la ficha del paciente.
+- INT-04.1 fallaba con: Expected: 401 / Received: 200.
+
+Correccion:
+- Se incorporo autenticacion mediante requireRole.
+- Se permiten medico, admin y paciente.
+- Un paciente autenticado solo puede buscar su propio RUT.
+
+Resultado obtenido despues de corregir:
+- INT-04.1 devuelve HTTP 401 sin token.
+- INT-04.1 aprobada.
+- Las 7 pruebas de integracion finalizan en 7 aprobadas y 0 fallidas.
+
+Prueba de regresion:
+- BACKEND/tests/integracion/flujos.test.js
+- Test INT-04.1
+
+Estado:
+- Corregido - Verificado

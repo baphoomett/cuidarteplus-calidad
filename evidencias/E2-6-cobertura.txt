@@ -1,0 +1,18 @@
+E2-6 - Reporte de cobertura
+
+HTML:
+- BACKEND/coverage/lcov-report/index.html
+
+Datos LCOV:
+- BACKEND/coverage/lcov.info
+- BACKEND/coverage/lcov.sonar.info
+
+Resumen registrado de Jest:
+- Sentencias: 98.26%
+- Ramas: 97.57%
+- Funciones: 97.61%
+- Lineas: 98.19%
+
+Nota:
+- El informe HTML de cobertura ya existe en el proyecto y conserva el historial y
+  detalle navegable de cada archivo JavaScript analizado.
