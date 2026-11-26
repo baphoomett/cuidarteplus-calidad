@@ -1,0 +1,10 @@
+E3-3 - Accesibilidad con axe-core
+Origen: resumen transcrito de la salida compartida por el usuario; no es el log original.
+
+Comando: npm run test:accesibilidad
+Resultado: 2 pruebas aprobadas (perfiles computador y celular).
+Hallazgo OBS-01: color-contrast, impacto serious; 3 elementos por ejecución.
+No se detectaron violaciones critical.
+Duración reportada: aproximadamente 5 segundos.
+
+Nota: el test aprobó; la detección de contraste insuficiente se registra como observación pendiente, no como fallo del test.

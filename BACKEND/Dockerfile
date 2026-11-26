@@ -12,7 +12,7 @@ COPY src/ ./src/
 COPY sql/ ./sql/
  
 # 3) Carpeta de documentos con permisos para el usuario sin privilegios
-RUN mkdir -p uploads/contracts && chown -R node:node /app/uploads
+RUN mkdir -p uploads/documentos && chown -R node:node /app/uploads
  
 # 4) No ejecutar como administrador (root)
 USER node

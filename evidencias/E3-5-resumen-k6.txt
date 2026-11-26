@@ -1,0 +1,17 @@
+E3-5 - Resumen de rendimiento k6
+Origen: métricas transcritas de las salidas compartidas por el usuario; no son los logs originales.
+
+Perfil humo
+- Iteraciones: 141
+- Checks: 283/283 aprobados
+- Solicitudes fallidas: 0 %
+- p95: 11,13 ms
+- Resultado: cumple p(95) < 300 ms y http_req_failed < 1 %.
+
+Perfil de carga
+- VUs máximos: 200
+- Iteraciones: 20.290
+- Checks: 40.581/40.581 aprobados
+- Solicitudes fallidas: 0 %
+- p95: 259,34 ms
+- Resultado: cumple p(95) < 300 ms, http_req_failed < 1 % y la concurrencia objetivo.

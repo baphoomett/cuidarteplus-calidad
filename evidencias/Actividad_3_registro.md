@@ -28,9 +28,19 @@
 
 ### Paso 4 — Pruebas de aceptación
 
-- La guía espera 7 aprobadas y 1 omitida. Se omitió el cierre de sesión en celular como indica la guía.
-- Resultado actual adaptado: 5 aprobadas, 1 omitida y 2 fallidas en RB-4.
-- RB-4: el médico ve 10 botones de eliminar en la lista de pacientes. La API solo autoriza eliminar al administrador. Se conserva el código de la aplicación y se registra la diferencia como hallazgo.
+- Resultado inicial: 5 aprobadas, 1 omitida y 2 fallidas en RB-4; el médico veía 10 botones para eliminar pacientes.
+- Tras corregir la interfaz, el conjunto de aceptación quedó en **7 aprobadas, 1 omitida y 0 fallidas** entre los perfiles computador y celular. El cierre de sesión en celular se omitió como indica la guía.
+
+#### E3-2 — Tabla de criterios de aceptación
+
+| Criterio | Resultado computador | Resultado celular | Resultado |
+|---|---|---|---|
+| CA-RF1: inicio de sesión correcto abre el panel | Aprobado | Aprobado | Aprobado |
+| CA-RF1: cerrar sesión impide volver a rutas protegidas | Aprobado | Omitido según la guía | Aprobado / omitido |
+| CA-RB5: administrador ve la opción de eliminar pacientes | Aprobado | Aprobado | Aprobado |
+| CA-RB4: médico no ve la opción de eliminar pacientes | Aprobado | Aprobado | Aprobado |
+
+Evidencia detallada: `pruebas-e2e/playwright-report/index.html`. El conjunto total de aceptación suma 7 ejecuciones aprobadas, 1 omitida y 0 fallidas.
 
 ### Paso 5.1 — Accesibilidad automática
 
@@ -42,7 +52,7 @@
 
 Realizar con cinco usuarios representativos, incluidos adultos mayores. Usar cuentas y datos de prueba; no registrar nombres, diagnósticos ni otros datos personales.
 
-**Modalidad alternativa acordada:** preparar un ejercicio con cinco perfiles ficticios y datos de prueba. Se identificará explícitamente como simulación, no como participación real; tiempos, dificultades y facilidad no se reportarán como observaciones medidas. La sustitución del requisito de usuarios reales queda sujeta a aceptación de quien evalúe la guía.
+**Modalidad acordada:** ejercicio educativo simulado con cinco perfiles y datos ficticios; no participaron personas reales. Los resultados y tiempos de la tabla son hipotéticos, no mediciones ni observaciones reales.
 
 Tareas adaptadas a Cuidarte Plus:
 
@@ -52,13 +62,13 @@ Tareas adaptadas a Cuidarte Plus:
 4. Descargar un documento asociado, si hay alguno disponible; si no, registrar esa limitación.
 5. Cerrar sesión.
 
-| Participante | Perfil (adulto/adulto mayor) | Login | Buscar examen | Ver resultado | Descargar documento | Cerrar sesión | Tiempo total | Dificultades observadas | Facilidad (1–5) |
+| Participante | Perfil (adulto/adulto mayor) | Login | Buscar examen | Ver resultado | Descargar documento | Cerrar sesión | Tiempo total | Dificultades simuladas | Facilidad (1–5) |
 |---|---|---|---|---|---|---|---|---|---|
-| P1 |  |  |  |  |  |  |  |  |  |
-| P2 |  |  |  |  |  |  |  |  |  |
-| P3 |  |  |  |  |  |  |  |  |  |
-| P4 |  |  |  |  |  |  |  |  |  |
-| P5 |  |  |  |  |  |  |  |  |  |
+| P1-SIM | Adulto | Simulado: correcto | Simulado: encontró examen | Simulado: consultó resultado | Simulado: descargó documento de prueba | Simulado: correcto | 3 min (hipotético) | Ninguna supuesta | 5 (hipotético) |
+| P2-SIM | Adulto | Simulado: correcto | Simulado: encontró examen | Simulado: consultó resultado | Simulado: no había documento disponible | Simulado: correcto | 4 min (hipotético) | Supuesta duda inicial con el filtro | 4 (hipotético) |
+| P3-SIM | Adulto | Simulado: correcto | Simulado: encontró examen | Simulado: consultó resultado | Simulado: descargó documento de prueba | Simulado: correcto | 4 min (hipotético) | Ninguna supuesta | 4 (hipotético) |
+| P4-SIM | Adulto mayor | Simulado: correcto | Simulado: necesitó orientación | Simulado: consultó resultado | Simulado: no había documento disponible | Simulado: correcto | 6 min (hipotético) | Supuesta dificultad para ubicar el filtro | 3 (hipotético) |
+| P5-SIM | Adulto mayor | Simulado: correcto | Simulado: encontró examen | Simulado: consultó resultado | Simulado: descargó documento de prueba | Simulado: correcto | 5 min (hipotético) | Supuesta dificultad de lectura asociada a OBS-01 | 3 (hipotético) |
 
 ### Paso 6.1 — Script k6
 
@@ -197,6 +207,22 @@ Tareas adaptadas a Cuidarte Plus:
 - **RB-4:** la ejecución Playwright posterior reportada pasó sin fallas; se considera verificada la corrección de la interfaz para los perfiles cubiertos.
 - **Contraste de color (axe, serious):** la prueba automatizada no falla, pero detecta 3 elementos con contraste insuficiente. Ajustar los colores para cumplir WCAG y repetir accesibilidad.
 
+## Evidencias para el informe de cierre (E3-1 a E3-8)
+
+| ID | Evidencia | Estado y ubicación |
+|---|---|---|
+| E3-1 | Informe HTML de Playwright | Disponible localmente en `pruebas-e2e/playwright-report/index.html`; `npm run reporte` lo abre. El resultado más reciente registrado indica `passed`. |
+| E3-2 | Criterios de aceptación y resultado | Incluido arriba en la tabla del Paso 4: 7 aprobadas, 1 omitida y 0 fallidas. |
+| E3-3 | Salida de axe-core con OBS-01 | Resumen transcrito en `evidencias/E3-3-axe-accesibilidad.txt`; no se conservó el log original de consola. |
+| E3-4 | Pauta de revisión | Incluida en el Paso 5.2 con cinco perfiles ficticios. Es una simulación declarada, no una prueba con usuarios reales; todos los tiempos y resultados son hipotéticos. |
+| E3-5 | Resumen de k6 (humo y carga) | Resumen transcrito en `evidencias/E3-5-resumen-k6.txt`, con métricas reportadas para ambas ejecuciones. |
+| E3-6 | ZAP antes de corregir | Disponibles localmente `zap/zap-web.html` y `zap/zap-api.html`. |
+| E3-7 | ZAP después de corregir | Disponibles localmente `zap/zap-web-despues.html` y `zap/zap-api-despues.html`; también están los informes finales `zap/zap-web-final.html` y `zap/zap-api-final.html`. |
+| E3-8 | Pruebas de regresión aprobadas | Resumen transcrito en `evidencias/E3-8-regresion-final.txt`; el informe HTML de Playwright está disponible. Los logs finales originales de Jest e integración no se conservaron. |
+
+**Nota para entregar:** los HTML de Playwright y ZAP están excluidos por `.gitignore`; existen localmente, pero no se incluyen en el push. Adjuntarlos por separado si la evaluación requiere los archivos. Los resúmenes E3-3, E3-5 y E3-8 son transcripciones de resultados compartidos, no capturas ni logs originales.
+
 ## Pendiente
 
-- Paso 5.2: completar la pauta con cinco usuarios; no inventar resultados.
+- Si se exige evidencia de consola original para E3-3 o E3-8, guardar una nueva ejecución como log o captura; los resúmenes actuales no sustituyen esos originales.
+- La pauta E3-4 documenta una simulación ficticia, no una evaluación con participantes reales.

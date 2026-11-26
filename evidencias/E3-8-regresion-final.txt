@@ -1,0 +1,11 @@
+E3-8 - Resumen de regresión final
+Origen: resultados reportados por el usuario; resumen transcrito, no logs originales.
+
+- Jest backend: 311/311 pruebas aprobadas.
+- Integración: 7/7 pruebas aprobadas.
+- Playwright: 15 aprobadas, 1 omitida según la guía, 0 fallidas.
+- Suite focalizada de seguridad: 13/13 aprobadas.
+- Pruebas focalizadas de pacientes y exámenes: 101/101 aprobadas.
+
+El informe HTML de Playwright está en pruebas-e2e/playwright-report/index.html.
+Los archivos 01-backend-unit-func-seg.txt y 02-backend-integracion.txt corresponden a ejecuciones anteriores con fallos; no representan esta regresión final.
