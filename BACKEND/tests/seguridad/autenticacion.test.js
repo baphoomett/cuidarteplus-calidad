@@ -11,6 +11,7 @@ jest.mock("morgan", () => () => (req, res, next) => next());
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const { pool } = require("../../src/db");
+const authRouter = require("../../src/routes/auth");
 const { cargarApp, bearer, rows, roles } = require("../helpers/app");
 const { simularBD, consultas } = require("../helpers/bd");
 
@@ -18,7 +19,10 @@ let app;
 beforeAll(() => {
   app = cargarApp();
 });
-beforeEach(() => pool.query.mockReset());
+beforeEach(() => {
+  pool.query.mockReset();
+  authRouter.resetLoginAttempts();
+});
 
 const q = pool.query;
 const USUARIO_POR_NOMBRE = /FROM usuarios WHERE nombre_usuario = \$1/;
@@ -49,10 +53,10 @@ describe("SEG-07 Almacenamiento de contraseñas", () => {
     await request(app)
       .post("/usuarios")
       .set("Authorization", bearer({ usuarioId: 1 }))
-      .send({ nombre_usuario: "medico2", contrasena_hash: "Medico$2026", correo: "m2@c.cl" });
+      .send({ nombre_usuario: "medico2", contrasena_hash: "Medico$Seguro2026", correo: "m2@c.cl" });
 
     const [[, params]] = consultas(q, /INSERT INTO usuarios/);
-    expect(params[1]).not.toBe("Medico$2026");
+    expect(params[1]).not.toBe("Medico$Seguro2026");
   });
 
   test("SEG-07.3 el login no compara la contraseña recibida directamente contra la BD", async () => {

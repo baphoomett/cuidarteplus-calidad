@@ -4,23 +4,57 @@ const { pool } = require("../db");
 const validate = require("../middleware/validate");
 const { loginSchema, registerSchema } = require("../validations/auth");
 const { normalizeRut } = require("../utils/rut");
+const { getJwtSecret } = require("../utils/jwt");
+const { hashPassword, isPasswordHash, verifyPassword } = require("../utils/passwords");
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
+const JWT_SECRET = getJwtSecret();
+const loginAttempts = new Map();
+const MAX_LOGIN_ATTEMPTS = 10;
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+
+function getAttemptRecord(ip) {
+  const now = Date.now();
+  const record = loginAttempts.get(ip);
+  if (!record || now - record.startedAt >= LOGIN_WINDOW_MS) {
+    const freshRecord = { startedAt: now, count: 0 };
+    loginAttempts.set(ip, freshRecord);
+    return freshRecord;
+  }
+  return record;
+}
 
 router.post("/login", validate(loginSchema), async (req, res) => {
   const { nombre_usuario, password } = req.body;
+  const ip = req.ip || req.socket.remoteAddress || "unknown";
+  const attempts = getAttemptRecord(ip);
+  if (attempts.count >= MAX_LOGIN_ATTEMPTS) {
+    return res.status(429).json({ error: "Demasiados intentos; inténtelo más tarde" });
+  }
+
   try {
     const result = await pool.query(
       "SELECT id, nombre_usuario, contrasena, correo FROM usuarios WHERE nombre_usuario = $1",
       [nombre_usuario]
     );
     if (result.rows.length === 0) {
+      attempts.count += 1;
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
     const user = result.rows[0];
-    if (user.contrasena !== password) {
+    if (!(await verifyPassword(password, user.contrasena))) {
+      attempts.count += 1;
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
+
+    if (!isPasswordHash(user.contrasena)) {
+      const upgradedPassword = await hashPassword(password);
+      await pool.query(
+        "UPDATE usuarios SET contrasena = $1 WHERE id = $2 AND contrasena = $3",
+        [upgradedPassword, user.id, user.contrasena]
+      );
+    }
+
+    loginAttempts.delete(ip);
 
     // Obtener roles del usuario
     const rolesResult = await pool.query(
@@ -64,7 +98,7 @@ router.post("/login", validate(loginSchema), async (req, res) => {
     console.error(err);
     res
       .status(500)
-      .json({ error: "Error en login", glosa: err.message || err.toString() });
+      .json({ error: "Error en login", glosa: "Error interno del servidor" });
   }
 });
 
@@ -74,22 +108,17 @@ router.post("/registro", validate(registerSchema), async (req, res) => {
     // Normalizar RUT antes de procesar
     const normalizedRut = rut ? normalizeRut(rut) : null;
     
-    // Verificar si el RUT ya existe en pacientes
-    let pacienteExistente = null;
+    // Never link an account to an existing clinical record without verifying identity.
     if (normalizedRut) {
       const rutCheck = await pool.query(
         "SELECT id, usuario_id FROM pacientes WHERE rut = $1",
         [normalizedRut]
       );
       if (rutCheck.rows.length > 0) {
-        pacienteExistente = rutCheck.rows[0];
-        // Si el paciente ya tiene un usuario asociado, rechazar
-        if (pacienteExistente.usuario_id) {
-          return res.status(400).json({
-            error: "RUT ya registrado",
-            glosa: "Este RUT ya tiene una cuenta de usuario asociada",
-          });
-        }
+        return res.status(400).json({
+          error: "RUT ya registrado",
+          glosa: "No se puede asociar una ficha clínica existente sin verificar la identidad",
+        });
       }
     }
 
@@ -106,9 +135,10 @@ router.post("/registro", validate(registerSchema), async (req, res) => {
     }
 
     // Crear usuario
+    const hashedPassword = await hashPassword(password);
     const userResult = await pool.query(
       "INSERT INTO usuarios (nombre_usuario, contrasena, correo) VALUES ($1, $2, $3) RETURNING id, nombre_usuario, correo, created_at",
-      [nombre_usuario, password, correo]
+      [nombre_usuario, hashedPassword, correo]
     );
     const user = userResult.rows[0];
 
@@ -123,22 +153,13 @@ router.post("/registro", validate(registerSchema), async (req, res) => {
       );
     }
 
-    // Si se proporciona RUT, crear o actualizar paciente
+    // Si se proporciona un RUT nuevo, crear la ficha básica del paciente.
     if (normalizedRut) {
-      if (pacienteExistente) {
-        // Actualizar paciente existente con usuario_id (ya verificado que no tiene usuario)
-        await pool.query(
-          "UPDATE pacientes SET usuario_id = $1 WHERE rut = $2",
-          [user.id, normalizedRut]
-        );
-      } else {
-        // Crear paciente básico (se completará después)
-        await pool.query(
-          `INSERT INTO pacientes (rut, primer_nombre, apellido_paterno, email, fecha_nacimiento, sexo, usuario_id)
-           VALUES ($1, $2, $3, $4, '2000-01-01', 'M', $5)`,
-          [normalizedRut, nombre_usuario, "", correo, user.id]
-        );
-      }
+      await pool.query(
+        `INSERT INTO pacientes (rut, primer_nombre, apellido_paterno, email, fecha_nacimiento, sexo, usuario_id)
+         VALUES ($1, $2, $3, $4, '2000-01-01', 'M', $5)`,
+        [normalizedRut, nombre_usuario, "", correo, user.id]
+      );
     }
 
     await pool.query(
@@ -160,9 +181,11 @@ router.post("/registro", validate(registerSchema), async (req, res) => {
     }
     res.status(500).json({
       error: "Error al registrar",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
+
+router.resetLoginAttempts = () => loginAttempts.clear();
 
 module.exports = router;

@@ -2,11 +2,11 @@ const express = require("express");
 const { pool } = require("../db");
 const jwt = require("jsonwebtoken");
 const validate = require("../middleware/validate");
-const delayMiddleware = require("../middleware/delay");
 const { pacienteSchema, updatePacienteSchema } = require("../validations/pacientes");
 const { normalizeRut } = require("../utils/rut");
+const { getJwtSecret } = require("../utils/jwt");
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
+const JWT_SECRET = getJwtSecret();
 
 function getUserFromAuthHeader(req) {
   const auth = req.headers.authorization || "";
@@ -136,13 +136,13 @@ router.post("/", validate(pacienteSchema), async (req, res) => {
     }
     res.status(500).json({
       error: "Error al crear paciente",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
 
 // Listar pacientes (médico y admin)
-router.get("/", delayMiddleware(5000), async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const authCheck = await requireRole(req, ["medico", "admin"]);
     if (authCheck.error) {
@@ -164,7 +164,7 @@ router.get("/", delayMiddleware(5000), async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al listar pacientes",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -240,7 +240,7 @@ router.get("/:id", async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al obtener paciente",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -292,7 +292,7 @@ router.get("/buscar/rut/:rut", async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al buscar paciente",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -363,8 +363,12 @@ router.put("/:id", validate(updatePacienteSchema), async (req, res) => {
       "contacto_emergencia_nombre", "contacto_emergencia_telefono", "contacto_emergencia_relacion",
       "tipo_prevision", "tiene_convenio",
       "grupo_sanguineo", "alergias", "enfermedades_cronicas", "discapacidades", "observaciones_medicas_generales",
-      "usuario_id"
     ];
+    if (!isPaciente) {
+      allowedFields.push("usuario_id");
+    } else {
+      allowedFields.splice(0, 1);
+    }
 
     for (const field of allowedFields) {
       if (req.body[field] !== undefined) {
@@ -403,7 +407,7 @@ router.put("/:id", validate(updatePacienteSchema), async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al actualizar paciente",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -441,7 +445,7 @@ router.delete("/:id", async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al eliminar paciente",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });

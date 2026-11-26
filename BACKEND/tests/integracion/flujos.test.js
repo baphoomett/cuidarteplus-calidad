@@ -3,7 +3,7 @@
  * semilla de sql/dump-cuidarteplus.sql.
  *
  * Requisitos:  docker compose up -d   (desde la raíz del proyecto)
- * Ejecución:   npm run test:integracion
+ * Ejecución:   npm run test:integration
  * API_URL permite apuntar a otro entorno (por defecto http://localhost:4444).
  *
  * Cada prueba deja la base de datos como la encontró (elimina lo que crea).
@@ -132,13 +132,13 @@ describe("INT-02 Registro e inicio de sesión de un paciente nuevo", () => {
     const rut = rutValido(31000000 + Number(sufijo.slice(-6)));
     const nombre = `pac${sufijo}`;
     const registro = await api("POST", "/autenticacion/registro", {
-      body: { nombre_usuario: nombre, password: "Clave$2026", correo: `${nombre}@cuidarteplus.cl`, rut },
+      body: { nombre_usuario: nombre, password: "Clave$Segura2026", correo: `${nombre}@cuidarteplus.cl`, rut },
     });
     expect(registro.status).toBe(201);
     const usuarioId = registro.body.usuario.id;
 
     try {
-      const token = await login(nombre, "Clave$2026");
+      const token = await login(nombre, "Clave$Segura2026");
       const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64url").toString());
       expect(payload.rolNombre).toBe("paciente");
       expect(payload.pacienteId).not.toBeNull();
@@ -203,11 +203,11 @@ describe("INT-04 Vulnerabilidades reproducidas contra el entorno real", () => {
   test("INT-04.2 registrarse con el RUT de un paciente real NO debe dar acceso a su historial", async () => {
     const nombre = `intruso${sufijo}`;
     const registro = await api("POST", "/autenticacion/registro", {
-      body: { nombre_usuario: nombre, password: "Clave$2026", correo: `${nombre}@evil.cl`, rut: "17654321-K" },
+      body: { nombre_usuario: nombre, password: "Clave$Segura2026", correo: `${nombre}@evil.cl`, rut: "17654321-K" },
     });
     try {
       if (registro.status === 201) {
-        const token = await login(nombre, "Clave$2026");
+        const token = await login(nombre, "Clave$Segura2026");
         const fichaAjena = await api("GET", "/pacientes/2", { token });
         expect(fichaAjena.status).toBe(403);
       } else {

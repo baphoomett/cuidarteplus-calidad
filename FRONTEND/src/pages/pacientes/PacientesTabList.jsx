@@ -134,26 +134,28 @@ export default function PacientesTabList({ items, onDelete }) {
             >
               <EditIcon />
             </IconButton>
-            <IconButton
-              color="error"
-              size="small"
-              data-testid={`button-cliente-eliminar-${row.original.id}`}
-              onClick={() =>
-                handleDeleteClick(row.original.id, row.original.nombre)
-              }
-              sx={{
-                "&:hover": {
-                  backgroundColor: "rgba(211, 47, 47, 0.1)",
-                },
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+            {["admin", "administrador"].includes(role) && (
+              <IconButton
+                color="error"
+                size="small"
+                data-testid={`button-cliente-eliminar-${row.original.id}`}
+                onClick={() =>
+                  handleDeleteClick(row.original.id, row.original.nombre)
+                }
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "rgba(211, 47, 47, 0.1)",
+                  },
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            )}
           </Stack>
         ),
       },
     ],
-    []
+    [handleDeleteClick, navigate, role]
   );
 
   return (

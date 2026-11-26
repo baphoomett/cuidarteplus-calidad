@@ -1,9 +1,10 @@
 const express = require("express");
 const { pool } = require("../db");
 const jwt = require("jsonwebtoken");
+const { getJwtSecret } = require("../utils/jwt");
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
+const JWT_SECRET = getJwtSecret();
 
 function getUserFromAuthHeader(req) {
   const auth = req.headers.authorization || "";
@@ -24,6 +25,19 @@ router.post("/", async (req, res) => {
       return res.status(401).json({
         error: "No autorizado",
         glosa: "Token inválido",
+      });
+    }
+    const userRolesResult = await pool.query(
+      `SELECT r.nombre
+       FROM usuario_roles ur
+       JOIN roles r ON r.id = ur.rol_id
+       WHERE ur.usuario_id = $1`,
+      [authUser.usuarioId]
+    );
+    if (!userRolesResult.rows.some((role) => ["admin", "administrador"].includes(role.nombre))) {
+      return res.status(403).json({
+        error: "No autorizado",
+        glosa: "Solo los administradores pueden registrar eventos de auditoría",
       });
     }
     const actionText = detalles ? `${accion}: ${detalles}` : accion;

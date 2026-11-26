@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { passwordSchema } from "./password";
 
 export const updateUsuarioSchema = yup.object().shape({
   correo: yup
@@ -9,10 +10,7 @@ export const updateUsuarioSchema = yup.object().shape({
 });
 
 export const updatePasswordSchema = yup.object().shape({
-  contrasena_hash: yup
-    .string()
-    .required("La contraseña es requerida")
-    .min(6, "La contraseña debe tener al menos 6 caracteres"),
+  contrasena_hash: passwordSchema(),
   confirmar_contrasena: yup
     .string()
     .required("Debe confirmar la contraseña")

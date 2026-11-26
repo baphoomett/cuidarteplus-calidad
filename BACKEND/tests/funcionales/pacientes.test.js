@@ -130,14 +130,14 @@ describe("CP-03.A Crear paciente (POST /pacientes)", () => {
   test.each([
     [new Error("insert"), "insert"],
     ["texto", "texto"],
-  ])("NF-02.12 error de BD al crear responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.12 error de BD al crear responde 500 (%p)", async (err) => {
     q.mockResolvedValueOnce(roles("medico")).mockRejectedValueOnce(err);
     const res = await request(app)
       .post("/pacientes")
       .set("Authorization", MEDICO)
       .send(pacienteMinimo);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 
   test("CP-03.4 datos inválidos responden 400 con detalle", async () => {
@@ -166,11 +166,11 @@ describe("CP-03.B Listar pacientes (GET /pacientes)", () => {
   test.each([
     [new Error("select"), "select"],
     ["texto", "texto"],
-  ])("NF-02.13 error de BD al listar responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.13 error de BD al listar responde 500 (%p)", async (err) => {
     q.mockResolvedValueOnce(roles("admin")).mockRejectedValueOnce(err);
     const res = await request(app).get("/pacientes").set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
@@ -217,36 +217,42 @@ describe("CP-03.C Obtener paciente (GET /pacientes/:id)", () => {
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.14 error de BD responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.14 error de BD responde 500 (%p)", async (err) => {
     q.mockRejectedValueOnce(err);
     const res = await request(app).get("/pacientes/1").set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
 describe("CP-03.D Buscar paciente por RUT (GET /pacientes/buscar/rut/:rut)", () => {
   test("CP-03.18 encuentra la ficha normalizando el RUT", async () => {
-    q.mockResolvedValueOnce(rows({ id: 3, rut: "12345678-5" }));
-    const res = await request(app).get("/pacientes/buscar/rut/12.345.678-5");
+    q.mockResolvedValueOnce(roles("medico")).mockResolvedValueOnce(rows({ id: 3, rut: "12345678-5" }));
+    const res = await request(app)
+      .get("/pacientes/buscar/rut/12.345.678-5")
+      .set("Authorization", MEDICO);
     expect(res.status).toBe(200);
-    expect(q.mock.calls[0][1]).toEqual(["12345678-5"]);
+    expect(q.mock.calls[1][1]).toEqual(["12345678-5"]);
   });
 
   test("CP-03.19 RUT inexistente responde 404", async () => {
-    q.mockResolvedValueOnce(vacio());
-    const res = await request(app).get("/pacientes/buscar/rut/1-9");
+    q.mockResolvedValueOnce(roles("medico")).mockResolvedValueOnce(vacio());
+    const res = await request(app)
+      .get("/pacientes/buscar/rut/1-9")
+      .set("Authorization", MEDICO);
     expect(res.status).toBe(404);
   });
 
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.15 error de BD responde 500 (%p)", async (err, glosa) => {
-    q.mockRejectedValueOnce(err);
-    const res = await request(app).get("/pacientes/buscar/rut/1-9");
+  ])("NF-02.15 error de BD responde 500 (%p)", async (err) => {
+    q.mockResolvedValueOnce(roles("medico")).mockRejectedValueOnce(err);
+    const res = await request(app)
+      .get("/pacientes/buscar/rut/1-9")
+      .set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
@@ -338,14 +344,14 @@ describe("CP-03.E Actualizar paciente (PUT /pacientes/:id)", () => {
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.16 error de BD responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.16 error de BD responde 500 (%p)", async (err) => {
     q.mockRejectedValueOnce(err);
     const res = await request(app)
       .put("/pacientes/4")
       .set("Authorization", MEDICO)
       .send({ telefono: "3" });
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
@@ -382,10 +388,10 @@ describe("CP-03.F Eliminar paciente (DELETE /pacientes/:id)", () => {
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.17 error de BD responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.17 error de BD responde 500 (%p)", async (err) => {
     q.mockResolvedValueOnce(roles("admin")).mockRejectedValueOnce(err);
     const res = await request(app).delete("/pacientes/4").set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });

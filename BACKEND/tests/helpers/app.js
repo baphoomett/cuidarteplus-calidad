@@ -10,7 +10,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 
-const SECRET_POR_DEFECTO = "inseguro";
+const SECRET_POR_DEFECTO = process.env.JWT_SECRET;
 
 function cargarApp() {
   // app.js exporta la aplicación sin abrir un puerto durante las pruebas.

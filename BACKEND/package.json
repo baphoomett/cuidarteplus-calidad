@@ -8,13 +8,13 @@
     "dev": "nodemon",
     "test": "jest --coverage",
     "test:unit": "jest tests/unitarias",
-    "test:integration": "jest tests/integracion --runInBand"
+    "test:integration": "jest --config jest.integracion.config.js --runInBand"
   },
-
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
@@ -30,15 +30,24 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "setupFiles": ["<rootDir>/tests/setup-env.js"],
-    "setupFilesAfterEnv": ["<rootDir>/tests/helpers/setup.js"],
+    "setupFiles": [
+      "<rootDir>/tests/setup-env.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/helpers/setup.js"
+    ],
     "testMatch": [
       "<rootDir>/tests/unitarias/**/*.test.js",
       "<rootDir>/tests/funcionales/**/*.test.js",
       "<rootDir>/tests/seguridad/**/*.test.js"
     ],
-    "collectCoverageFrom": ["src/**/*.js"],
-    "coverageReporters": ["text-summary", "lcov"],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "lcov"
+    ],
     "testTimeout": 15000
   }
 }

@@ -7,6 +7,7 @@ import bgRegistro from "../../assets/bg-registro.jpg";
 import * as yup from "yup";
 import { formatRut, RutFormat } from "@fdograph/rut-utilities";
 import { normalizeRut } from "../../lib/utils";
+import { passwordSchema } from "../../validations/password";
 
 const registerSchema = yup.object().shape({
   nombre_usuario: yup
@@ -14,10 +15,7 @@ const registerSchema = yup.object().shape({
     .required("El nombre de usuario es requerido")
     .min(3, "El nombre de usuario debe tener al menos 3 caracteres")
     .max(50, "El nombre de usuario no puede exceder 50 caracteres"),
-  password: yup
-    .string()
-    .required("La contraseña es requerida")
-    .min(6, "La contraseña debe tener al menos 6 caracteres"),
+  password: passwordSchema(),
   correo: yup
     .string()
     .required("El correo es requerido")

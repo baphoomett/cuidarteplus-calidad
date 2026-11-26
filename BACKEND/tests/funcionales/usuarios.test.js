@@ -34,7 +34,7 @@ const SIN_ID = bearer({ usuarioId: 0 });
 const EMPRESA = bearer({ usuarioId: 1, empresaId: 10 });
 const EMPRESA_SIN_ID = bearer({ usuarioId: 0, empresaId: 10 });
 const conAuth = (req, h) => (h ? req.set("Authorization", h) : req);
-const nuevo = { nombre_usuario: "medico2", contrasena_hash: "abcdef", correo: "m2@c.cl" };
+const nuevo = { nombre_usuario: "medico2", contrasena_hash: "M3dico$Seguro2026", correo: "m2@c.cl" };
 
 describe("CP-06.A Crear usuario (POST /usuarios)", () => {
   test.each(AUTH_INVALIDAS)("CP-06.1 rechaza %s con 401", async (_d, h) => {
@@ -43,7 +43,8 @@ describe("CP-06.A Crear usuario (POST /usuarios)", () => {
   });
 
   test("CP-06.2 admin crea usuario con rol (usuario_roles)", async () => {
-    q.mockResolvedValueOnce(rows({ id: 40, nombre_usuario: "medico2" }))
+    q.mockResolvedValueOnce(roles("admin"))
+      .mockResolvedValueOnce(rows({ id: 40, nombre_usuario: "medico2" }))
       .mockResolvedValueOnce(vacio())
       .mockResolvedValueOnce(vacio());
     const res = await request(app)
@@ -51,23 +52,28 @@ describe("CP-06.A Crear usuario (POST /usuarios)", () => {
       .set("Authorization", ADMIN)
       .send({ ...nuevo, rol_id: 2 });
     expect(res.status).toBe(201);
-    expect(q.mock.calls[1][0]).toMatch(/INSERT INTO usuario_roles/);
-    expect(q.mock.calls[2][1][1]).toBe("USUARIOS_CREAR: creó usuario medico2 con rol 2");
+    expect(q.mock.calls[2][0]).toMatch(/INSERT INTO usuario_roles/);
+    expect(q.mock.calls[3][1][1]).toBe("USUARIOS_CREAR: creó usuario medico2 con rol 2");
   });
 
-  test("CP-06.3 crear sin rol no inserta relaciones", async () => {
-    q.mockResolvedValueOnce(rows({ id: 41 })).mockResolvedValueOnce(vacio());
-    const res = await request(app).post("/usuarios").set("Authorization", SIN_ID).send(nuevo);
+  test("CP-06.3 admin crea usuario sin rol y no inserta relaciones", async () => {
+    q.mockResolvedValueOnce(roles("admin"))
+      .mockResolvedValueOnce(rows({ id: 41 }))
+      .mockResolvedValueOnce(vacio());
+    const res = await request(app).post("/usuarios").set("Authorization", ADMIN).send(nuevo);
     expect(res.status).toBe(201);
-    expect(q).toHaveBeenCalledTimes(2);
-    expect(q.mock.calls[1][1]).toEqual([null, "USUARIOS_CREAR: creó usuario medico2"]);
+    expect(q).toHaveBeenCalledTimes(3);
+    expect(q.mock.calls[2][1]).toEqual([1, "USUARIOS_CREAR: creó usuario medico2"]);
   });
 
   test("CP-06.4 token con empresa crea relación empresa_usuarios", async () => {
-    q.mockResolvedValueOnce(rows({ id: 42 })).mockResolvedValueOnce(vacio()).mockResolvedValueOnce(vacio());
+    q.mockResolvedValueOnce(rows({ rol_id: 1 }))
+      .mockResolvedValueOnce(rows({ id: 42 }))
+      .mockResolvedValueOnce(vacio())
+      .mockResolvedValueOnce(vacio());
     await request(app).post("/usuarios").set("Authorization", EMPRESA).send({ ...nuevo, rol_id: 1 });
-    expect(q.mock.calls[1][0]).toMatch(/INSERT INTO empresa_usuarios/);
-    expect(q.mock.calls[1][1]).toEqual([10, 42, 1]);
+    expect(q.mock.calls[2][0]).toMatch(/INSERT INTO empresa_usuarios/);
+    expect(q.mock.calls[2][1]).toEqual([10, 42, 1]);
   });
 
   test.each([
@@ -146,7 +152,7 @@ describe("CP-06.C Obtener usuario (GET /usuarios/:id)", () => {
   });
 
   test("CP-06.16 usuario inexistente responde 404", async () => {
-    q.mockResolvedValueOnce(roles()).mockResolvedValueOnce(vacio());
+    q.mockResolvedValueOnce(roles("admin")).mockResolvedValueOnce(vacio());
     expect((await request(app).get("/usuarios/99").set("Authorization", ADMIN)).status).toBe(404);
   });
 
@@ -193,7 +199,7 @@ describe("CP-06.D Actualizar usuario - sistema médico (PUT /usuarios/:id)", () 
     const res = await request(app)
       .put("/usuarios/5")
       .set("Authorization", ADMIN)
-      .send({ nombre_usuario: "nuevo", contrasena_hash: "abcdef", correo: "n@c.cl", rol_id: 2 });
+      .send({ nombre_usuario: "nuevo", contrasena_hash: "M3dico$Seguro2026", correo: "n@c.cl", rol_id: 2 });
     expect(res.status).toBe(200);
     expect(q.mock.calls[1][0]).toMatch(/SET nombre_usuario=\$1, contrasena=\$2, correo=\$3 WHERE id=\$4/);
     expect(q.mock.calls[2][0]).toMatch(/DELETE FROM usuario_roles/);
@@ -340,7 +346,7 @@ describe("CP-06.E Actualizar usuario - lógica empresa (PUT /usuarios/:id)", () 
     const res = await request(app)
       .put("/usuarios/5")
       .set("Authorization", EMPRESA)
-      .send({ nombre_usuario: "otro", contrasena_hash: "abcdef", correo: "x@c.cl", rol_id: rol });
+      .send({ nombre_usuario: "otro", contrasena_hash: "M3dico$Seguro2026", correo: "x@c.cl", rol_id: rol });
     expect(res.status).toBe(200);
     expect(q.mock.calls[5][0]).toMatch(/UPDATE empresa_usuarios SET rol_id/);
   });
@@ -393,20 +399,22 @@ describe("CP-06.E Actualizar usuario - lógica empresa (PUT /usuarios/:id)", () 
 
 describe("CP-06.F Eliminar usuario (DELETE /usuarios/:id)", () => {
   test("CP-06.35 elimina y audita con el nombre del usuario del token", async () => {
-    q.mockResolvedValueOnce(rows({ id: 5 })).mockResolvedValueOnce(vacio());
+    q.mockResolvedValueOnce(roles("admin"))
+      .mockResolvedValueOnce(rows({ id: 5 }))
+      .mockResolvedValueOnce(vacio());
     const res = await request(app).delete("/usuarios/5").set("Authorization", ADMIN);
     expect(res.body).toEqual({ deleted: true });
-    expect(q.mock.calls[1][1]).toEqual(["admin", "USUARIOS_ELIMINAR: eliminó usuario ID 5"]);
+    expect(q.mock.calls[2][1]).toEqual([1, "USUARIOS_ELIMINAR: eliminó usuario ID 5"]);
   });
 
-  test("CP-06.37 sin token la auditoría queda con usuario NULL", async () => {
-    q.mockResolvedValueOnce(rows({ id: 6 })).mockResolvedValueOnce(vacio());
-    await request(app).delete("/usuarios/6");
-    expect(q.mock.calls[1][1][0]).toBeNull();
+  test("CP-06.37 sin token responde 401 sin borrar el usuario", async () => {
+    const res = await request(app).delete("/usuarios/6");
+    expect(res.status).toBe(401);
+    expect(q).not.toHaveBeenCalled();
   });
 
   test("CP-06.36 usuario inexistente responde 404", async () => {
-    q.mockResolvedValueOnce(vacio());
+    q.mockResolvedValueOnce(roles("admin")).mockResolvedValueOnce(vacio());
     expect((await request(app).delete("/usuarios/5").set("Authorization", ADMIN)).status).toBe(404);
   });
 

@@ -52,22 +52,29 @@ describe("CP-05.A Subir documento (POST /documentos)", () => {
         .set("Authorization", SIN_ID)
         .field("examen_medico_id", "1")
         .field("paciente_id", "11")
-        .attach("documento", Buffer.from("img"), { filename: nombre, contentType: tipo });
+        .attach(
+          "documento",
+          tipo === "image/png"
+            ? Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+            : Buffer.from([0xff, 0xd8, 0xff, 0x00]),
+          { filename: nombre, contentType: tipo }
+        );
       expect(res.status).toBe(201);
     }
     expect(q.mock.calls[2][1][0]).toBeNull();
   });
 
   test("CP-05.3 rechaza tipos de archivo no permitidos", async () => {
+    q.mockResolvedValueOnce(roles("medico"));
     const res = await request(app)
       .post("/documentos")
       .set("Authorization", MEDICO)
       .field("examen_medico_id", "1")
       .field("paciente_id", "11")
       .attach("documento", Buffer.from("MZ"), { filename: "virus.exe", contentType: "application/x-msdownload" });
-    expect(res.status).toBe(500);
-    expect(res.text).toMatch(/Solo se permiten archivos PDF, JPG o PNG/);
-    expect(q).not.toHaveBeenCalled();
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("Archivo inválido");
+    expect(q.mock.calls.some(([sql]) => /INSERT INTO documentos_examen/.test(sql))).toBe(false);
   });
 
   test("CP-05.4 sin token responde 401 y paciente recibe 403", async () => {
@@ -98,11 +105,11 @@ describe("CP-05.A Subir documento (POST /documentos)", () => {
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.26 error de BD al guardar responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.26 error de BD al guardar responde 500 (%p)", async (err) => {
     q.mockResolvedValueOnce(roles("medico")).mockRejectedValueOnce(err);
     const res = await subir(MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
@@ -142,11 +149,11 @@ describe("CP-05.B Listar documentos de un examen (GET /documentos/examen/:id)", 
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.27 error de BD responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.27 error de BD responde 500 (%p)", async (err) => {
     q.mockRejectedValueOnce(err);
     const res = await request(app).get("/documentos/examen/1").set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
@@ -200,11 +207,11 @@ describe("CP-05.C Descargar documento (GET /documentos/:id)", () => {
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.28 error de BD responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.28 error de BD responde 500 (%p)", async (err) => {
     q.mockRejectedValueOnce(err);
     const res = await request(app).get("/documentos/1").set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
@@ -240,10 +247,10 @@ describe("CP-05.D Eliminar documento (DELETE /documentos/:id)", () => {
   test.each([
     [new Error("x"), "x"],
     ["y", "y"],
-  ])("NF-02.29 error de BD responde 500 (%p)", async (err, glosa) => {
+  ])("NF-02.29 error de BD responde 500 (%p)", async (err) => {
     q.mockResolvedValueOnce(roles("admin")).mockRejectedValueOnce(err);
     const res = await request(app).delete("/documentos/1").set("Authorization", MEDICO);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe(glosa);
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });

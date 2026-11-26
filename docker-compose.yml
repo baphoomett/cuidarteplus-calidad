@@ -4,7 +4,7 @@ services:
     container_name: cuidarteplus-postgres-ev
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD en el entorno}
       POSTGRES_DB: ${POSTGRES_DB:-cuidarteplus}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
@@ -30,9 +30,9 @@ services:
     hostname: cuidarteplus-api
     environment:
       - PORT=4000
-      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@cuidarteplus-postgres-ev:5432/${POSTGRES_DB:-cuidarteplus}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD en el entorno}@cuidarteplus-postgres-ev:5432/${POSTGRES_DB:-cuidarteplus}
       - NODE_ENV=${NODE_ENV:-production}
-      - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
+      - JWT_SECRET=${JWT_SECRET:?Configura JWT_SECRET en el entorno}
       - FRONTEND_URL=http://localhost:${PORT_FRONTEND:-3333}
     ports:
       - "${PORT_BACKEND:-4444}:4000"

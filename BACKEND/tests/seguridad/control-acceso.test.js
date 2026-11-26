@@ -1,9 +1,7 @@
 /**
  * Pruebas de seguridad - Control de acceso (OWASP A01: Broken Access Control)
  *
- * Cada prueba describe el comportamiento SEGURO esperado. Si la API es
- * vulnerable la prueba falla: el fallo es el hallazgo y se reporta como
- * incidente (no se corrige el código fuente).
+ * Cada prueba verifica el comportamiento seguro esperado para el control de acceso.
  */
 jest.mock("../../src/db", () => ({ pool: { query: jest.fn() } }));
 jest.mock("../../src/middleware/delay", () => () => (req, res, next) => next());
@@ -138,7 +136,7 @@ describe("SEG-04 Escalamiento de privilegios al crear usuarios (POST /usuarios)"
       .set("Authorization", PACIENTE)
       .send({
         nombre_usuario: "atacante",
-        contrasena_hash: "abcdef",
+        contrasena_hash: "M3dico$Seguro2026",
         correo: "atacante@evil.cl",
         rol_id: 1,
       });

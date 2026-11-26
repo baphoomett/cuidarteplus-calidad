@@ -1,8 +1,9 @@
 const express = require('express');
 const { pool } = require('../db');
 const jwt = require('jsonwebtoken');
+const { getJwtSecret } = require('../utils/jwt');
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'inseguro';
+const JWT_SECRET = getJwtSecret();
 
 function getUserFromAuthHeader(req) {
   const auth = req.headers.authorization || '';
@@ -18,11 +19,21 @@ function getUserFromAuthHeader(req) {
 router.post('/', async (req, res) => {
   const { nombre } = req.body;
   try {
+    const authUser = getUserFromAuthHeader(req);
+    if (!authUser) return res.status(401).json({ error: 'No autorizado' });
+    const roleResult = await pool.query(
+      `SELECT r.nombre FROM usuario_roles ur
+       JOIN roles r ON r.id = ur.rol_id
+       WHERE ur.usuario_id = $1`,
+      [authUser.usuarioId]
+    );
+    if (!roleResult.rows.some((role) => ['admin', 'administrador'].includes(role.nombre))) {
+      return res.status(403).json({ error: 'No autorizado' });
+    }
     const result = await pool.query('INSERT INTO roles (nombre) VALUES ($1) RETURNING *', [nombre]);
 
-    const authUser = getUserFromAuthHeader(req);
     await pool.query('INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)', [
-      authUser?.nombreUsuario || null,
+      authUser.usuarioId || null,
       `ROLES_CREAR: creó rol ${nombre}`,
     ]);
 
@@ -57,12 +68,22 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { nombre } = req.body;
   try {
+    const authUser = getUserFromAuthHeader(req);
+    if (!authUser) return res.status(401).json({ error: 'No autorizado' });
+    const roleResult = await pool.query(
+      `SELECT r.nombre FROM usuario_roles ur
+       JOIN roles r ON r.id = ur.rol_id
+       WHERE ur.usuario_id = $1`,
+      [authUser.usuarioId]
+    );
+    if (!roleResult.rows.some((role) => ['admin', 'administrador'].includes(role.nombre))) {
+      return res.status(403).json({ error: 'No autorizado' });
+    }
     const result = await pool.query('UPDATE roles SET nombre=$1 WHERE id=$2 RETURNING *', [nombre, req.params.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'No encontrado' });
 
-    const authUser = getUserFromAuthHeader(req);
     await pool.query('INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)', [
-      authUser?.nombreUsuario || null,
+      authUser.usuarioId || null,
       `ROLES_ACTUALIZAR: actualizó rol ID ${req.params.id}`,
     ]);
 
@@ -75,12 +96,22 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
+    const authUser = getUserFromAuthHeader(req);
+    if (!authUser) return res.status(401).json({ error: 'No autorizado' });
+    const roleResult = await pool.query(
+      `SELECT r.nombre FROM usuario_roles ur
+       JOIN roles r ON r.id = ur.rol_id
+       WHERE ur.usuario_id = $1`,
+      [authUser.usuarioId]
+    );
+    if (!roleResult.rows.some((role) => ['admin', 'administrador'].includes(role.nombre))) {
+      return res.status(403).json({ error: 'No autorizado' });
+    }
     const result = await pool.query('DELETE FROM roles WHERE id=$1 RETURNING *', [req.params.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'No encontrado' });
 
-    const authUser = getUserFromAuthHeader(req);
     await pool.query('INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)', [
-      authUser?.nombreUsuario || null,
+      authUser.usuarioId || null,
       `ROLES_ELIMINAR: eliminó rol ID ${req.params.id}`,
     ]);
 

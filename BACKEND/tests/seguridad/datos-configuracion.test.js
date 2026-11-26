@@ -103,6 +103,9 @@ describe("SEG-13 Cabeceras HTTP de seguridad", () => {
     expect(res.headers["x-content-type-options"]).toBe("nosniff");
     expect(res.headers["x-frame-options"]).toBeDefined();
     expect(res.headers["strict-transport-security"]).toBeDefined();
+    expect(res.headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+    expect(res.headers["content-security-policy"]).toContain("form-action 'self'");
+    expect(res.headers["content-security-policy"]).toContain("base-uri 'self'");
   });
 });
 
@@ -111,6 +114,14 @@ describe("SEG-14 Política CORS", () => {
     const res = await request(app).get("/").set("Origin", "https://sitio-malicioso.example");
     const permitido = res.headers["access-control-allow-origin"];
     expect(permitido === "*" || permitido === "https://sitio-malicioso.example").toBe(false);
+  });
+
+  test("SEG-14.2 permite el frontend configurado sin emitir comodín en peticiones sin Origin", async () => {
+    const frontend = await request(app).get("/").set("Origin", "http://localhost:3333");
+    const sinOrigen = await request(app).get("/");
+
+    expect(frontend.headers["access-control-allow-origin"]).toBe("http://localhost:3333");
+    expect(sinOrigen.headers["access-control-allow-origin"]).toBeUndefined();
   });
 });
 

@@ -106,9 +106,9 @@ describe("db.js - pool de conexiones", () => {
     return { db, PoolMock };
   }
 
-  test("SEG-19.1 sin DATABASE_URL usa la cadena de conexión embebida en el código", () => {
-    const { db } = cargarDb();
-    expect(db.pool.cfg.connectionString).toMatch(/^postgres:\/\/postgres:/);
+  test("SEG-19.1 sin DATABASE_URL falla explícitamente y no usa credenciales embebidas", () => {
+    delete process.env.DATABASE_URL;
+    expect(() => cargarDb()).toThrow("Falta la variable de entorno DATABASE_URL");
   });
 
   test("NF-02.6 usa DATABASE_URL cuando está definida", () => {
@@ -128,8 +128,7 @@ describe("app.js - arranque del servidor", () => {
     const salud = await request(app).get("/");
     expect(salud.body).toEqual({ name: "cuidarteplus", status: "ok" });
     const spec = await request(app).get("/openapi.json");
-    expect(spec.status).toBe(200);
-    expect(spec.body.openapi || spec.body.swagger).toBeDefined();
+    expect(spec.status).toBe(404);
     const docs = await request(app).get("/docs/");
     expect(docs.status).toBe(200);
   });

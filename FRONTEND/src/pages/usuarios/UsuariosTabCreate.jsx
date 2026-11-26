@@ -17,6 +17,7 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { passwordSchema } from "../../validations/password";
 
 const createUserSchema = yup.object().shape({
   nombre_usuario: yup
@@ -29,10 +30,7 @@ const createUserSchema = yup.object().shape({
     .required("El correo es requerido")
     .email("El correo debe tener un formato válido")
     .max(255, "El correo no puede exceder 255 caracteres"),
-  contrasena_hash: yup
-    .string()
-    .required("La contraseña es requerida")
-    .min(6, "La contraseña debe tener al menos 6 caracteres"),
+  contrasena_hash: passwordSchema(),
   rol_id: yup
     .number()
     .required("El rol es requerido")

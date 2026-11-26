@@ -3,8 +3,16 @@ const multer = require("multer");
 const { pool } = require("../db");
 const jwt = require("jsonwebtoken");
 const delayMiddleware = require("../middleware/delay");
+const { getJwtSecret } = require("../utils/jwt");
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
+const JWT_SECRET = getJwtSecret();
+const FILE_SIGNATURES = {
+  "application/pdf": (buffer) => buffer.subarray(0, 5).toString() === "%PDF-",
+  "image/jpeg": (buffer) => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff,
+  "image/jpg": (buffer) => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff,
+  "image/png": (buffer) =>
+    buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])),
+};
 
 // Configurar multer para almacenar en memoria
 const upload = multer({
@@ -62,17 +70,56 @@ function requireRole(req, allowedRoles) {
   });
 }
 
-// Subir documento de examen (médico y admin)
-router.post("/", delayMiddleware(5000), upload.single("documento"), async (req, res) => {
-  try {
-    const authCheck = await requireRole(req, ["medico", "admin"]);
-    if (authCheck.error) {
-      return res.status(authCheck.status).json({
-        error: authCheck.error,
-        glosa: "No tiene permisos para realizar esta acción",
+function authorizeUpload(req, res, next) {
+  requireRole(req, ["medico", "admin"])
+    .then((authCheck) => {
+      if (authCheck.error) {
+        return res.status(authCheck.status).json({
+          error: authCheck.error,
+          glosa: "No tiene permisos para realizar esta acción",
+        });
+      }
+      req.authUser = authCheck.authUser;
+      next();
+    })
+    .catch(() => res.status(500).json({ error: "Error al verificar roles" }));
+}
+
+function parseUpload(req, res, next) {
+  upload.single("documento")(req, res, (error) => {
+    if (error) {
+      return res.status(400).json({
+        error: "Archivo inválido",
+        glosa: "Solo se permiten archivos PDF, JPG o PNG",
       });
     }
-    const { authUser } = authCheck;
+    next();
+  });
+}
+
+function validFileContent(file) {
+  const checkSignature = FILE_SIGNATURES[file.mimetype];
+  if (!checkSignature) return false;
+  const extension = file.originalname.split(".").pop().toLowerCase();
+  const allowedExtensions = {
+    "application/pdf": ["pdf"],
+    "image/jpeg": ["jpg", "jpeg"],
+    "image/jpg": ["jpg", "jpeg"],
+    "image/png": ["png"],
+  };
+  return allowedExtensions[file.mimetype].includes(extension) && checkSignature(file.buffer);
+}
+
+function safeFileName(name) {
+  const firstParameter = String(name || "documento").split(/[;\r\n]/, 1)[0];
+  const baseName = firstParameter.split(/[\\/]/).pop().replace(/["\\]/g, "");
+  return baseName.replace(/[^\w.-]/g, "_") || "documento";
+}
+
+// Subir documento de examen (médico y admin)
+router.post("/", delayMiddleware(5000), authorizeUpload, parseUpload, async (req, res) => {
+  try {
+    const { authUser } = req;
 
     const { examen_medico_id, paciente_id } = req.body;
 
@@ -89,12 +136,18 @@ router.post("/", delayMiddleware(5000), upload.single("documento"), async (req, 
         glosa: "Debe subir un documento",
       });
     }
+    if (!validFileContent(req.file)) {
+      return res.status(400).json({
+        error: "Archivo inválido",
+        glosa: "El contenido no coincide con el tipo de archivo permitido",
+      });
+    }
 
     const result = await pool.query(
       `INSERT INTO documentos_examen (
         examen_medico_id, paciente_id, documento, nombre_archivo
       ) VALUES ($1, $2, $3, $4) RETURNING id, nombre_archivo, created_at`,
-      [examen_medico_id, paciente_id, req.file.buffer, req.file.originalname]
+      [examen_medico_id, paciente_id, req.file.buffer, safeFileName(req.file.originalname)]
     );
 
     const documento = result.rows[0];
@@ -112,7 +165,7 @@ router.post("/", delayMiddleware(5000), upload.single("documento"), async (req, 
     console.error(err);
     res.status(500).json({
       error: "Error al subir documentos",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -175,7 +228,7 @@ router.get("/examen/:examen_id", async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al obtener documentos",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -247,14 +300,14 @@ router.get("/:id", async (req, res) => {
     res.setHeader("Content-Type", contentType);
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="${documento.nombre_archivo}"`
+      `attachment; filename="${safeFileName(documento.nombre_archivo)}"`
     );
     res.send(documento.documento);
   } catch (err) {
     console.error(err);
     res.status(500).json({
       error: "Error al descargar documento",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });
@@ -292,7 +345,7 @@ router.delete("/:id", async (req, res) => {
     console.error(err);
     res.status(500).json({
       error: "Error al eliminar documento",
-      glosa: err.message || err.toString(),
+      glosa: "Error interno del servidor",
     });
   }
 });

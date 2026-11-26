@@ -3,9 +3,11 @@ const { pool } = require("../db");
 const jwt = require("jsonwebtoken");
 const validate = require("../middleware/validate");
 const { createUserSchema, updateUserSchema } = require("../validations/users");
+const { getJwtSecret } = require("../utils/jwt");
+const { hashPassword } = require("../utils/passwords");
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
+const JWT_SECRET = getJwtSecret();
 
 function getUserFromAuthHeader(req) {
   const auth = req.headers.authorization || "";
@@ -20,6 +22,29 @@ function getUserFromAuthHeader(req) {
   }
 }
 
+async function hasAdminRole(authUser) {
+  const result = authUser.empresaId
+    ? await pool.query(
+        `SELECT r.nombre, eu.rol_id
+         FROM empresa_usuarios eu
+         LEFT JOIN roles r ON r.id = eu.rol_id
+         WHERE eu.usuario_id = $1 AND eu.empresa_id = $2`,
+        [authUser.usuarioId, authUser.empresaId]
+      )
+    : await pool.query(
+        `SELECT r.nombre, ur.rol_id
+         FROM usuario_roles ur
+         JOIN roles r ON r.id = ur.rol_id
+         WHERE ur.usuario_id = $1`,
+        [authUser.usuarioId]
+      );
+  return result.rows.some(
+    (role) =>
+      Number(role.rol_id) === 1 ||
+      ["admin", "administrador"].includes(String(role.nombre).toLowerCase())
+  );
+}
+
 router.post("/", validate(createUserSchema), async (req, res) => {
   const { nombre_usuario, contrasena_hash, correo, rol_id } = req.body;
   try {
@@ -30,11 +55,17 @@ router.post("/", validate(createUserSchema), async (req, res) => {
         glosa: "Token inválido",
       });
     }
+    if (!(await hasAdminRole(authUser))) {
+      return res.status(403).json({
+        error: "No autorizado",
+        glosa: "Solo los administradores pueden crear usuarios",
+      });
+    }
 
-    // Crear usuario
+    const hashedPassword = await hashPassword(contrasena_hash);
     const result = await pool.query(
       "INSERT INTO usuarios (nombre_usuario, contrasena, correo) VALUES ($1, $2, $3) RETURNING id, nombre_usuario, correo, created_at",
-      [nombre_usuario, contrasena_hash, correo]
+      [nombre_usuario, hashedPassword, correo]
     );
     const newUser = result.rows[0];
 
@@ -56,7 +87,7 @@ router.post("/", validate(createUserSchema), async (req, res) => {
     await pool.query(
       "INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)",
       [
-        authUser?.usuarioId || null,
+        authUser.usuarioId,
         `USUARIOS_CREAR: creó usuario ${nombre_usuario}${rol_id ? ` con rol ${rol_id}` : ""}`,
       ]
     );
@@ -207,6 +238,12 @@ router.get("/:id", async (req, res) => {
       return res.status(403).json({
         error: "No autorizado",
         glosa: "Solo puede ver sus propios datos",
+      });
+    }
+    if (!isPaciente && !isAdminOrMedico) {
+      return res.status(403).json({
+        error: "No autorizado",
+        glosa: "No tiene permisos para consultar usuarios",
       });
     }
 
@@ -364,7 +401,7 @@ async function updateUsuarioEmpresa(
     }
     if (contrasena_hash !== undefined) {
       updateFields.push(`contrasena=$${paramIndex++}`);
-      updateValues.push(contrasena_hash);
+      updateValues.push(await hashPassword(contrasena_hash));
     }
     if (correo !== undefined) {
       updateFields.push(`correo=$${paramIndex++}`);
@@ -480,8 +517,7 @@ async function updateUsuarioSistemaMedico(
       });
     }
 
-    // Si no es admin o médico, no puede cambiar roles de otros usuarios
-    if (rol_id !== undefined && !isAdminOrMedico) {
+    if (rol_id !== undefined && !isAdmin) {
       return res.status(403).json({
         error: "No autorizado",
         glosa: "No tiene permisos para cambiar roles",
@@ -499,7 +535,7 @@ async function updateUsuarioSistemaMedico(
     }
     if (contrasena_hash !== undefined) {
       updateFields.push(`contrasena=$${paramIndex++}`);
-      updateValues.push(contrasena_hash);
+      updateValues.push(await hashPassword(contrasena_hash));
     }
     if (correo !== undefined) {
       updateFields.push(`correo=$${paramIndex++}`);
@@ -519,7 +555,7 @@ async function updateUsuarioSistemaMedico(
     }
 
     // Actualizar rol si se proporciona y tiene permisos
-    if (rol_id !== undefined && isAdminOrMedico) {
+    if (rol_id !== undefined && isAdmin) {
       // Eliminar roles existentes
       await pool.query(`DELETE FROM usuario_roles WHERE usuario_id = $1`, [
         req.params.id,
@@ -570,6 +606,20 @@ async function updateUsuarioSistemaMedico(
 
 router.delete("/:id", async (req, res) => {
   try {
+    const authUser = getUserFromAuthHeader(req);
+    if (!authUser) {
+      return res.status(401).json({
+        error: "No autorizado",
+        glosa: "Token inválido",
+      });
+    }
+    if (!(await hasAdminRole(authUser))) {
+      return res.status(403).json({
+        error: "No autorizado",
+        glosa: "Solo los administradores pueden eliminar usuarios",
+      });
+    }
+
     const result = await pool.query(
       "DELETE FROM usuarios WHERE id=$1 RETURNING *",
       [req.params.id]
@@ -577,11 +627,10 @@ router.delete("/:id", async (req, res) => {
     if (result.rows.length === 0)
       return res.status(404).json({ error: "No encontrado" });
 
-    const authUser = getUserFromAuthHeader(req);
     await pool.query(
       "INSERT INTO auditoria (usuario_id, accion) VALUES ($1, $2)",
       [
-        authUser?.nombreUsuario || null,
+        authUser.usuarioId,
         `USUARIOS_ELIMINAR: eliminó usuario ID ${req.params.id}`,
       ]
     );

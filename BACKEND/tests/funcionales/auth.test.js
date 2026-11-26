@@ -7,19 +7,24 @@ jest.mock("morgan", () => () => (req, res, next) => next());
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const { pool } = require("../../src/db");
+const authRouter = require("../../src/routes/auth");
 const { cargarApp, rows, vacio } = require("../helpers/app");
 
 let app;
 beforeAll(() => {
   app = cargarApp();
 });
-beforeEach(() => pool.query.mockReset());
+beforeEach(() => {
+  pool.query.mockReset();
+  authRouter.resetLoginAttempts();
+});
 
 const q = pool.query;
 
 describe("CP-01 Inicio de sesión", () => {
   test("CP-01.1 credenciales válidas devuelven un JWT con rol y paciente", async () => {
     q.mockResolvedValueOnce(rows({ id: 7, nombre_usuario: "paciente", contrasena: "paciente" }))
+      .mockResolvedValueOnce(vacio())
       .mockResolvedValueOnce(rows({ id: 3, nombre: "paciente" }))
       .mockResolvedValueOnce(rows({ id: 11 }))
       .mockResolvedValueOnce(vacio());
@@ -37,7 +42,7 @@ describe("CP-01 Inicio de sesión", () => {
       rolNombre: "paciente",
       pacienteId: 11,
     });
-    expect(q.mock.calls[3][1]).toEqual([7, "LOGIN: usuario inició sesión"]);
+    expect(q.mock.calls[4][1]).toEqual([7, "LOGIN: usuario inició sesión"]);
   });
 
   test("CP-01.2 usuario sin roles ni ficha obtiene token con rol nulo", async () => {
@@ -91,12 +96,12 @@ describe("CP-01 Inicio de sesión", () => {
     const res = await request(app)
       .post("/autenticacion/login")
       .send({ nombre_usuario: "admin", password: "admin" });
-    expect(res.body.glosa).toBe("conexión rechazada");
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });
 
 describe("CP-02 Registro de pacientes", () => {
-  const base = { nombre_usuario: "juanito", password: "secreto1", correo: "j@c.cl" };
+  const base = { nombre_usuario: "juanito", password: "Secreto$Seguro2026", correo: "j@c.cl" };
   const usuarioCreado = { id: 20, nombre_usuario: "juanito", correo: "j@c.cl" };
 
   test("CP-02.1 registro sin RUT crea usuario con rol paciente", async () => {
@@ -126,19 +131,14 @@ describe("CP-02 Registro de pacientes", () => {
     expect(q.mock.calls[4][0]).toMatch(/INSERT INTO pacientes/);
   });
 
-  test("CP-02.3 registro con RUT de ficha sin cuenta vincula la ficha existente", async () => {
-    q.mockResolvedValueOnce(rows({ id: 5, usuario_id: null }))
-      .mockResolvedValueOnce(vacio())
-      .mockResolvedValueOnce(rows(usuarioCreado))
-      .mockResolvedValueOnce(rows({ id: 3 }))
-      .mockResolvedValueOnce(vacio())
-      .mockResolvedValueOnce(vacio())
-      .mockResolvedValueOnce(vacio());
+  test("CP-02.3 registro con RUT de ficha sin cuenta se rechaza sin verificación de identidad", async () => {
+    q.mockResolvedValueOnce(rows({ id: 5, usuario_id: null }));
     const res = await request(app)
       .post("/autenticacion/registro")
       .send({ ...base, rut: "12345678-5" });
-    expect(res.status).toBe(201);
-    expect(q.mock.calls[5][0]).toMatch(/UPDATE pacientes SET usuario_id/);
+    expect(res.status).toBe(400);
+    expect(q).toHaveBeenCalledTimes(1);
+    expect(q.mock.calls[0][0]).toMatch(/SELECT id, usuario_id FROM pacientes/);
   });
 
   test("CP-02.4 RUT que ya tiene cuenta responde 400", async () => {
@@ -168,12 +168,12 @@ describe("CP-02 Registro de pacientes", () => {
     q.mockRejectedValueOnce(new Error("timeout"));
     const res = await request(app).post("/autenticacion/registro").send(base);
     expect(res.status).toBe(500);
-    expect(res.body.glosa).toBe("timeout");
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 
   test("NF-02.10 error sin mensaje usa toString()", async () => {
     q.mockRejectedValueOnce("caído");
     const res = await request(app).post("/autenticacion/registro").send(base);
-    expect(res.body.glosa).toBe("caído");
+    expect(res.body.glosa).toBe("Error interno del servidor");
   });
 });

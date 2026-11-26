@@ -17,6 +17,7 @@ beforeEach(() => pool.query.mockReset());
 
 const q = pool.query;
 const ADMIN = bearer({ usuarioId: 1, nombreUsuario: "admin" });
+const MEDICO = bearer({ usuarioId: 2, nombreUsuario: "medico" });
 const SIN_ID = bearer({ usuarioId: 0 });
 const EMPRESA = bearer({ usuarioId: 1, empresaId: 10 });
 const conAuth = (req, h) => (h ? req.set("Authorization", h) : req);
@@ -28,13 +29,13 @@ const errores = [
 
 describe("CP-07.A Roles (/roles)", () => {
   test("CP-07.1 crear rol devuelve 201 y audita", async () => {
-    q.mockResolvedValueOnce(rows({ id: 4, nombre: "enfermero" })).mockResolvedValueOnce(vacio());
+    q.mockResolvedValueOnce(roles("admin"))
+      .mockResolvedValueOnce(rows({ id: 4, nombre: "enfermero" }))
+      .mockResolvedValueOnce(vacio());
     const res = await request(app).post("/roles").set("Authorization", ADMIN).send({ nombre: "enfermero" });
     expect(res.status).toBe(201);
-    expect(q.mock.calls[1][1]).toEqual(["admin", "ROLES_CREAR: creó rol enfermero"]);
-    q.mockResolvedValueOnce(rows({ id: 5 })).mockResolvedValueOnce(vacio());
-    await request(app).post("/roles").send({ nombre: "tecnico" });
-    expect(q.mock.calls[3][1][0]).toBeNull();
+    expect(q.mock.calls[2][1]).toEqual([1, "ROLES_CREAR: creó rol enfermero"]);
+    expect((await request(app).post("/roles").send({ nombre: "tecnico" })).status).toBe(401);
   });
 
   test("CP-07.2 listar y obtener roles", async () => {
@@ -47,30 +48,34 @@ describe("CP-07.A Roles (/roles)", () => {
   });
 
   test("CP-07.3 actualizar rol", async () => {
-    q.mockResolvedValueOnce(rows({ id: 4, nombre: "x" })).mockResolvedValueOnce(vacio());
-    expect((await request(app).put("/roles/4").send({ nombre: "x" })).status).toBe(200);
-    expect(q.mock.calls[1][1][0]).toBeNull();
-    q.mockResolvedValueOnce(vacio());
-    expect((await request(app).put("/roles/9").send({ nombre: "x" })).status).toBe(404);
+    q.mockResolvedValueOnce(roles("admin"))
+      .mockResolvedValueOnce(rows({ id: 4, nombre: "x" }))
+      .mockResolvedValueOnce(vacio());
+    expect((await request(app).put("/roles/4").set("Authorization", ADMIN).send({ nombre: "x" })).status).toBe(200);
+    expect(q.mock.calls[2][1][0]).toBe(1);
+    q.mockResolvedValueOnce(roles("admin")).mockResolvedValueOnce(vacio());
+    expect((await request(app).put("/roles/9").set("Authorization", ADMIN).send({ nombre: "x" })).status).toBe(404);
   });
 
   test("CP-07.4 eliminar rol", async () => {
-    q.mockResolvedValueOnce(rows({ id: 4 })).mockResolvedValueOnce(vacio());
-    const res = await request(app).delete("/roles/4").set("Authorization", "Bearer malo");
+    q.mockResolvedValueOnce(roles("admin"))
+      .mockResolvedValueOnce(rows({ id: 4 }))
+      .mockResolvedValueOnce(vacio());
+    const res = await request(app).delete("/roles/4").set("Authorization", ADMIN);
     expect(res.body).toEqual({ deleted: true });
-    q.mockResolvedValueOnce(vacio());
-    expect((await request(app).delete("/roles/9").set("Authorization", "Basic x")).status).toBe(404);
+    expect((await request(app).delete("/roles/9").set("Authorization", "Basic x")).status).toBe(401);
   });
 
   test.each(errores)("NF-02.37 errores de BD en /roles responden 500 (%p)", async (err, glosa) => {
     const llamadas = [
-      () => request(app).post("/roles").send({ nombre: "z" }),
+      () => request(app).post("/roles").set("Authorization", ADMIN).send({ nombre: "z" }),
       () => request(app).get("/roles"),
       () => request(app).get("/roles/1"),
-      () => request(app).put("/roles/1").send({ nombre: "z" }),
-      () => request(app).delete("/roles/1"),
+      () => request(app).put("/roles/1").set("Authorization", ADMIN).send({ nombre: "z" }),
+      () => request(app).delete("/roles/1").set("Authorization", ADMIN),
     ];
-    for (const llamar of llamadas) {
+    for (const [index, llamar] of llamadas.entries()) {
+      if ([0, 3, 4].includes(index)) q.mockResolvedValueOnce(roles("admin"));
       q.mockRejectedValueOnce(err);
       const res = await llamar();
       expect(res.status).toBe(500);
@@ -109,13 +114,14 @@ describe("CP-08 Auditoría (/auditoria)", () => {
   });
 
   test("CP-08.2 registra una acción con y sin detalles", async () => {
-    q.mockResolvedValueOnce(rows({ id: 1 }));
+    q.mockResolvedValueOnce(roles("admin")).mockResolvedValueOnce(rows({ id: 1 }));
     await request(app).post("/auditoria").set("Authorization", ADMIN).send({ accion: "VER", detalles: "ficha 3" });
-    expect(q.mock.calls[0][1]).toEqual([1, "VER: ficha 3"]);
-    q.mockResolvedValueOnce(rows({ id: 2 }));
-    const res = await request(app).post("/auditoria").set("Authorization", SIN_ID).send({ accion: "VER" });
-    expect(res.status).toBe(201);
-    expect(q.mock.calls[1][1]).toEqual([null, "VER"]);
+    expect(q.mock.calls[1][1]).toEqual([1, "VER: ficha 3"]);
+    q.mockResolvedValueOnce(roles("medico"));
+    const callsBeforeDeniedPost = q.mock.calls.length;
+    const res = await request(app).post("/auditoria").set("Authorization", MEDICO).send({ accion: "VER" });
+    expect(res.status).toBe(403);
+    expect(q.mock.calls.slice(callsBeforeDeniedPost).some(([sql]) => /INSERT INTO auditoria/.test(sql))).toBe(false);
   });
 
   test.each(AUTH_INVALIDAS)("CP-08.3 GET rechaza %s con 401", async (_d, h) => {

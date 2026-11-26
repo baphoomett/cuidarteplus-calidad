@@ -4,8 +4,9 @@ const jwt = require("jsonwebtoken");
 const validate = require("../middleware/validate");
 const delayMiddleware = require("../middleware/delay");
 const { examenMedicoSchema, updateExamenMedicoSchema } = require("../validations/examenes");
+const { getJwtSecret } = require("../utils/jwt");
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
+const JWT_SECRET = getJwtSecret();
 
 function getUserFromAuthHeader(req) {
   const auth = req.headers.authorization || "";
@@ -96,7 +97,7 @@ router.post("/", delayMiddleware(5000), validate(examenMedicoSchema), async (req
 });
 
 // Listar exámenes médicos (médico, admin y paciente)
-router.get("/", delayMiddleware(5000), async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const authUser = getUserFromAuthHeader(req);
     if (!authUser) {
