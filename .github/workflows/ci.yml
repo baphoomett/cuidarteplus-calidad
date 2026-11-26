@@ -61,6 +61,7 @@ jobs:
       POSTGRES_DB: cuidarteplus
       JWT_SECRET: ci-test-cuidarteplus-jwt-secret-with-enough-length
       PORT_POSTGRES: 15442
+      PORT_BACKEND: 4444
 
     steps:
       - uses: actions/checkout@v4
@@ -83,6 +84,19 @@ jobs:
       - name: Ejecutar pruebas unitarias, funcionales y de seguridad
         working-directory: BACKEND
         run: npm test -- --runInBand
+
+      - name: Encender la API para pruebas de integración
+        run: docker compose up -d --wait cuidarteplus-backend-ev
+
+      - name: Esperar a que la API responda
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4444/ > /dev/null && exit 0
+            sleep 2
+          done
+          docker compose logs cuidarteplus-backend-ev
+          echo "La API no respondió a tiempo"
+          exit 1
 
       - name: Ejecutar pruebas de integración
         working-directory: BACKEND
