@@ -170,7 +170,7 @@ jobs:
       - name: Instalar Playwright
         working-directory: pruebas-e2e
         run: |
-          npm ci --ignore-scripts
+          npm ci --include=dev --ignore-scripts
           ./node_modules/.bin/playwright install --with-deps chromium
 
       - name: Pruebas de sistema, aceptación y accesibilidad
@@ -197,10 +197,12 @@ jobs:
         run: |
           mkdir -p zap
           docker run --rm --network host --user "$(id -u):$(id -g)" -e HOME=/tmp \
+            --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 \
             -v "$PWD/zap:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py -t http://localhost:3333 -r zap-web.html -I
           docker run --rm --network host --user "$(id -u):$(id -g)" -e HOME=/tmp \
+            --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 \
             -v "$PWD/zap:/zap/wrk:rw" \
             -v "$PWD/BACKEND/src/openapi.json:/tmp/openapi.json:ro" \
             ghcr.io/zaproxy/zaproxy:stable \
