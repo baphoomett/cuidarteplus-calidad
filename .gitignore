@@ -5,6 +5,8 @@ node_modules/
 .env
 .env.sonar
 **/.env
+.sonar-token
+.sonar-user-token
  
 # Resultados generados por las herramientas
 coverage/
