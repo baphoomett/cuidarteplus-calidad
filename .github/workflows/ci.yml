@@ -136,7 +136,7 @@ jobs:
     name: 3 · Sistema, aceptación, rendimiento y seguridad
     # Solo comienza cuando terminan correctamente las pruebas de codigo y SonarQube.
     needs: [pruebas-codigo]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ci-postgres-password
@@ -196,13 +196,10 @@ jobs:
         if: always()
         run: |
           mkdir -p zap
-          docker run --rm --network host --user "$(id -u):$(id -g)" -e HOME=/tmp \
-            --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 \
-            -v "$PWD/zap:/zap/wrk:rw" \
+          docker run --rm --network host -v "$PWD/zap:/zap/wrk:rw" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py -t http://localhost:3333 -r zap-web.html -I
-          docker run --rm --network host --user "$(id -u):$(id -g)" -e HOME=/tmp \
-            --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 \
+          docker run --rm --network host \
             -v "$PWD/zap:/zap/wrk:rw" \
             -v "$PWD/BACKEND/src/openapi.json:/tmp/openapi.json:ro" \
             ghcr.io/zaproxy/zaproxy:stable \
