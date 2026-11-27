@@ -194,15 +194,21 @@ jobs:
       - name: Escaneo de seguridad ZAP (web y API)
         # -I ignora WARN; los hallazgos FAIL siguen haciendo fallar el escaneo.
         if: always()
+        timeout-minutes: 15
         run: |
           mkdir -p zap
+          chmod 755 zap
+          ZAP_IMAGE=ghcr.io/zaproxy/zaproxy:stable
+          ZAP_UID_GID=$(docker run --rm --entrypoint sh "$ZAP_IMAGE" \
+            -c 'printf "%s:%s\n" "$(id -u)" "$(id -g)"')
+          sudo chown "$ZAP_UID_GID" zap
           docker run --rm --network host -v "$PWD/zap:/zap/wrk:rw" \
-            ghcr.io/zaproxy/zaproxy:stable \
+            "$ZAP_IMAGE" \
             zap-baseline.py -t http://localhost:3333 -r zap-web.html -I
           docker run --rm --network host \
             -v "$PWD/zap:/zap/wrk:rw" \
             -v "$PWD/BACKEND/src/openapi.json:/tmp/openapi.json:ro" \
-            ghcr.io/zaproxy/zaproxy:stable \
+            "$ZAP_IMAGE" \
             zap-api-scan.py -t /tmp/openapi.json -f openapi -O http://localhost:4444 -r zap-api.html -I
 
       - name: Guardar reportes de ZAP
