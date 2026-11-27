@@ -192,7 +192,7 @@ jobs:
             grafana/k6:1.3.0 run -e PERFIL=humo -e BASE_URL=http://localhost:4444 /scripts/carga.js
 
       - name: Escaneo de seguridad ZAP (web y API)
-        # -I ignora WARN; los hallazgos FAIL siguen haciendo fallar el escaneo.
+        # -I ignora WARN; los hallazgos FAIL siguen fallando y el hook acota el escaneo activo API.
         if: always()
         timeout-minutes: 15
         run: |
@@ -207,9 +207,11 @@ jobs:
             zap-baseline.py -t http://localhost:3333 -r zap-web.html -I
           docker run --rm --network host \
             -v "$PWD/zap:/zap/wrk:rw" \
+            -v "$PWD/.github/scripts/zap-api-limits.py:/zap/wrk/zap-api-limits.py:ro" \
             -v "$PWD/BACKEND/src/openapi.json:/tmp/openapi.json:ro" \
             "$ZAP_IMAGE" \
-            zap-api-scan.py -t /tmp/openapi.json -f openapi -O http://localhost:4444 -r zap-api.html -I
+            zap-api-scan.py -t /tmp/openapi.json -f openapi -O http://localhost:4444 \
+            -r zap-api.html -I -T 3 --hook /zap/wrk/zap-api-limits.py
 
       - name: Guardar reportes de ZAP
         if: always()
